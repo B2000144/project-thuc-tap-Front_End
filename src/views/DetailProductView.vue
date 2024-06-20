@@ -45,6 +45,7 @@
                 <div class="input-group-btn">
                   <button
                     class="btn btn-sm btn-minus rounded-circle bg-light border"
+                    @click=" reduceQuanlity"
                   >
                     <i class="fa fa-minus"></i>
                   </button>
@@ -52,21 +53,23 @@
                 <input
                   type="text"
                   class="form-control form-control-sm text-center border-0"
-                  value="1"
+                  :value="quantity"
                 />
                 <div class="input-group-btn">
                   <button
                     class="btn btn-sm btn-plus rounded-circle bg-light border"
+                    @click=" increaseQuanlity"
                   >
                     <i class="fa fa-plus"></i>
                   </button>
                 </div>
               </div>
               <a
-                href="#"
-                class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"
-                ><i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng</a
-              >
+              @click.prevent="addToCartClick(products.ID)"
+      href="#"
+      class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"
+    ><i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng</a>
+    <p v-if="showSuccessMessage" class="alert alert-success mt-3">Thêm vào giỏ hàng thành công!</p>
 
 
       <div class="flex KIoPj6 W5LiQM">
@@ -580,6 +583,7 @@ import productService from "@/services/product.service";
 import PriceService from "@/services/price.service";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
+import cartService from "@/services/cart.service";
 export default {
   name: "UserDetail",
   components: {
@@ -590,9 +594,13 @@ export default {
     return {
       products: {},
       price: [],
+      cart: [],
       selectedColor: null,
       selectedSize: null,
-      is_loading:true, // chạy loading trước sao đó mới gọi api
+      is_loading: true, // chạy loading trước sao đó mới gọi api
+      quantity: 1,
+      showSuccessMessage: false // chạy thông báo
+
     };
   },
   async created() {
@@ -636,12 +644,46 @@ export default {
         throw error; // Re-throw error to be caught by the caller
       }
     },
+     async addToCartClick() {
+      try {
+        const productId = this.$route.params.id;
+        const colorKey = this.products.LIST_PRODUCT_METADATA[0].KEY;
+        const sizeKey = this.products.LIST_PRODUCT_METADATA[1].KEY;
+        const selectedColorValue = this.selectedColor;
+        const selectedSizeValue = this.selectedSize;
+        const payload = {
+          key: [colorKey, sizeKey],
+          value:[ selectedColorValue, selectedSizeValue]
+        };
+        this.showSuccessMessage = true; // thông báo khi thành công
+        setTimeout(() => { // thông báo mất sao 3 giây
+          this.showSuccessMessage = false;
+        }, 3000);
+        const response = await cartService.addToCart(productId,payload);
+        if (response && response.data) {  
+          console.log("Đã thêm sản phẩm vào giỏ hàng:", response.data);
+            // console.log(`${colorKey}:${selectedColorValue}, ${sizeKey}:${selectedSizeValue}`);
+        } else {
+          console.error("Lỗi khi thêm vào giỏ hàng:", response);
+        }
+      } catch (error) {
+        console.error("Lỗi khi thêm vào giỏ hàng:", error);
+      }
+    },
     selectColor(color) {
       this.selectedColor = color;
     },
     selectSize(size) {
       this.selectedSize = size;
     },
+     increaseQuanlity() {
+      this.quantity++;
+    },
+    reduceQuanlity() {
+      if (this.quantity > 1) {
+        this.quantity--;
+      }
+    }
   },
 };
 
