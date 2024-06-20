@@ -27,6 +27,14 @@ class CartService {
       console.error(error);
     }
   }
+  async deleteCart(id) {
+    try {
+      const response = await this.api.delete(`/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 export default new CartService();

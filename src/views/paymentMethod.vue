@@ -21,6 +21,13 @@
             >
               Thanh toán qua Momo
             </button>
+            <button
+              @click="paymentZaloPay()"
+              type="button"
+              class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
+            >
+              Thanh toán qua ZaloPay
+            </button>
           </div>
           <div class="col-md-12 col-lg-6 col-xl-5">
             <div class="table-responsive">
@@ -198,6 +205,13 @@ export default {
       } catch (error) {
         console.error("Lỗi khi thanh toán qua MOMO:", error);
         // Xử lý lỗi (nếu cần)
+      }
+    },
+    async paymentZaloPay() {
+      const response = await paymentService.paymentZaloPay();
+      if (response) {
+        const order_url = response.order_url;
+        window.location.href = order_url;
       }
     },
   },

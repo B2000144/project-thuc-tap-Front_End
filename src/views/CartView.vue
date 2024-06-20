@@ -93,7 +93,10 @@
                 </p>
               </td>
               <td>
-                <button class="btn btn-md rounded-circle bg-light border mt-4">
+                <button
+                  class="btn btn-md rounded-circle bg-light border mt-4"
+                  @click="deleteCart(item.ITEM._id)"
+                >
                   <i class="fa fa-times text-danger"></i>
                 </button>
               </td>
@@ -183,7 +186,7 @@ export default {
       this.$router.push("/login");
     } else {
       await this.getCart(); // Lấy dữ liệu giỏ hàng
-      console.log("giỏ hàng:", this.cart);
+      console.log("giỏ hàng:", this.cart1);
       await this.populateProducts(); // Lấy chi tiết sản phẩm cho từng mục trong giỏ hàng
       await this.updateNumberCartPlus();
     }
@@ -294,6 +297,22 @@ export default {
           } else {
             console.error("Cập nhật giỏ hàng thất bại", response.message);
           }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteCart(id) {
+      try {
+        const response = await cartService.deleteCart(id);
+        if (response && response.success) {
+          // Xóa mục trong giỏ hàng cục bộ
+          const itemIndex = this.cart.findIndex((item) => item.ITEM._id === id);
+          if (itemIndex !== -1) {
+            this.cart.splice(itemIndex, 1);
+          }
+        } else {
+          console.error("Xóa giỏ hàng thất bại", response.message);
         }
       } catch (error) {
         console.error(error);
