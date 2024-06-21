@@ -186,7 +186,7 @@ export default {
       this.$router.push("/login");
     } else {
       await this.getCart(); // Lấy dữ liệu giỏ hàng
-      console.log("giỏ hàng:", this.cart1);
+      console.log("giỏ hàng:", this.cart);
       await this.populateProducts(); // Lấy chi tiết sản phẩm cho từng mục trong giỏ hàng
       await this.updateNumberCartPlus();
     }
