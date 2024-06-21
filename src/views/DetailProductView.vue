@@ -22,7 +22,7 @@
             </div>
             <div class="col-lg-6">
               <h4 class="fw-bold mb-3">{{ products.NAME_PRODUCT }}</h4>
-              <p class="mb-3">Danh mục: đang cập nhật</p>
+              <p class="mb-3">Danh mục: {{ getCategoryName(products.CATEGORY_ID) }} </p>
               <h5 class="fw-bold mb-3">
                 {{
                   price.toLocaleString("vi-VN", {
@@ -31,13 +31,13 @@
                   })
                 }}
               </h5>
-              <div class="d-flex mb-4">
+              <!-- <div class="d-flex mb-4">
                 <i class="fa fa-star text-secondary"></i>
                 <i class="fa fa-star text-secondary"></i>
                 <i class="fa fa-star text-secondary"></i>
                 <i class="fa fa-star text-secondary"></i>
                 <i class="fa fa-star"></i>
-              </div>
+              </div> -->
               <p class="mb-4">
                 {{ products.SHORT_DESC }}
               </p>
@@ -148,7 +148,7 @@
                   >
                     Chi Tiết Sản Phẩm
                   </button>
-                  <button
+                  <!-- <button
                     class="nav-link border-white border-bottom-0"
                     type="button"
                     role="tab"
@@ -159,7 +159,7 @@
                     aria-selected="false"
                   >
                     Đánh Giá Sản Phẩm
-                  </button>
+                  </button> -->
                 </div>
               </nav>
               <div class="tab-content mb-5">
@@ -230,7 +230,7 @@
                     </div>
                   </div> -->
                 </div> 
-                <div
+                <!-- <div
                   class="tab-pane"
                   id="nav-mission"
                   role="tabpanel"
@@ -298,13 +298,34 @@
                     Diam dolor diam ipsum et tempor sit. Aliqu diam amet diam et
                     eos labore. Clita erat ipsum et lorem et sit
                   </p>
-                </div>
+                </div>-->
               </div>
             </div>
           </div>
         </div>
       </div>
       <h1 class="fw-bold mb-0">Related products</h1>
+     <div class="row g-4 ">
+          <div v-for="product in allProducts" :key="product._id" class="col-md-6 col-lg-4 col-xl-3">
+            <a :href="`/product/${product._id}`">
+              <img v-if="product.LIST_FILE_ATTACHMENT_DEFAULT && product.LIST_FILE_ATTACHMENT_DEFAULT.length > 0"
+                  :src="product.LIST_FILE_ATTACHMENT_DEFAULT[0].FILE_URL"
+                  class="img-fluid rounded"
+                  :alt="product.NAME_PRODUCT"
+              />
+              <div class="card-body">
+                <h5 class="card-title">{{ product.NAME_PRODUCT }}</h5>
+                <p class="fw-bold mb-3">  {{
+                    price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })
+                  }}</p>  
+              </div>
+            </a>
+          </div>   
+    </div>
+
       <div class="vesitable">
         <div class="owl-carousel vegetable-carousel justify-content-center">
           <div
@@ -584,6 +605,7 @@ import PriceService from "@/services/price.service";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
 import cartService from "@/services/cart.service";
+import categoryService  from "@/services/category.service";
 export default {
   name: "UserDetail",
   components: {
@@ -595,6 +617,8 @@ export default {
       products: {},
       price: [],
       cart: [],
+      productCategory: [],
+      nameCategory: [],
       selectedColor: null,
       selectedSize: null,
       is_loading: true, // chạy loading trước sao đó mới gọi api
@@ -603,13 +627,21 @@ export default {
 
     };
   },
+    computed: {
+      allProducts() {
+        return this.productCategory.flat();
+      },
+    },
   async created() {
     try {
       await this.getProduct();
-      console.log("Mãng product", this.products.LIST_PRODUCT_METADATA
-      );
+      console.log("Mãng product", this.products);
       await this.getPriceProduct();
       console.log("Mảng price", this.price);
+      await this.getCategory();
+      console.log("Mảng categories", this.nameCategory);
+      await this.getProductCategory();
+      console.log("mãng product category", this.productCategory);
     } catch (error) {
       console.error(error);
     }
@@ -644,7 +676,7 @@ export default {
         throw error; // Re-throw error to be caught by the caller
       }
     },
-     async addToCartClick() {
+    async addToCartClick() {
       try {
         const productId = this.$route.params.id;
         const colorKey = this.products.LIST_PRODUCT_METADATA[0].KEY;
@@ -670,13 +702,43 @@ export default {
         console.error("Lỗi khi thêm vào giỏ hàng:", error);
       }
     },
+    async getCategory() {
+      try {
+        const response = await categoryService.getAll();
+        if (response && response.data) {
+          this.nameCategory = response.data;
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    },
+   async getProductCategory() {
+  try {
+    const categoryId = this.products.CATEGORY_ID; // Lấy CATEGORY_ID của sản phẩm hiện tại
+    const productPromises = this.nameCategory.map(async (category) => {
+      if (category._id === categoryId) {
+        const response = await productService.getProductByIdCategory(category._id);
+        return response && response.data ? response.data : [];
+      }
+      return []; // Trả về mảng rỗng nếu không phải danh mục hiện tại
+    });
+    this.productCategory = await Promise.all(productPromises);
+  } catch (error) {
+    console.log("error", error);
+  }
+},
+
+    getCategoryName(categoryId) {
+      const category = this.nameCategory.find(cat => cat._id === categoryId);
+      return category ? category.CATEGORY_NAME : "Không xác định";
+    },
     selectColor(color) {
       this.selectedColor = color;
     },
     selectSize(size) {
       this.selectedSize = size;
     },
-     increaseQuanlity() {
+    increaseQuanlity() {
       this.quantity++;
     },
     reduceQuanlity() {
@@ -815,5 +877,24 @@ body {
     border: 2px solid blue;
     background-color: rgb(247, 243, 242);
 }
+a {
+    color: #000000;
+    text-decoration: none;
+}
 
+/*related*/
+.card-body {
+    padding: 1rem;
+  }
+ .card-body img {
+    width: 100%; /* Đảm bảo hình ảnh điền đầy card */
+    height: auto; /* Để hình ảnh tự động tính tỷ lệ */
+  }
+  .product-container {
+    margin-bottom: 1.5rem; /* Khoảng cách giữa các sản phẩm */
+  }
+   .card-img-top {
+    object-fit: cover;
+    height: 200px; /* Chiều cao cố định cho hình ảnh */
+  }
 </style>
