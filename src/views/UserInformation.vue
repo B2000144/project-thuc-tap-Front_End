@@ -1,4 +1,5 @@
 <template>
+  <NavBar />
   <div class="container light-style flex-grow-1 container-p-y">
     <h4 class="font-weight-bold py-3 mb-4">Thông tin tài khoản</h4>
     <div v-if="message" :class="['alert', alertClass]" role="alert">
@@ -283,9 +284,8 @@
                           <label for="">Tỉnh</label>
                           <input
                             type="text"
-                          v-model="updateAddress.PROVINCE"
                             class="form-control"
-                            placeholder="Tỉnh"
+                            v-model="updateAddress.PROVINCE"
                           />
                         </div>
                         <div class="form-group">
@@ -293,35 +293,35 @@
                           <input
                             type="text"
                             class="form-control"
-                            placeholder="Huyện"
-                            v-model="updateAddress.district"
+                            v-model="updateAddress.DISTRICT"
                           />
                         </div>
                         <div class="form-group">
                           <label for="">Xã</label>
                           <input
                             type="text"
-                            v-model="updateAddress.commune"
+                            v-model="updateAddress.COMMUNE"
                             class="form-control"
-                            placeholder="Xã"
                           />
                         </div>
                         <div class="form-group">
                           <label for="">Địa chỉ chi tiết</label>
                           <input
                             type="text"
-                            v-model="updateAddress.desc"
+                            v-model="updateAddress.DESC"
                             class="form-control"
-                            placeholder="Địa chỉ chi tiết"
                           />
                         </div>
                       </div>
                       <div class="modal-footer">
                         <button
+                          data-dismiss="modal"
+                          aria-label="Close"
                           type="button"
-                          class="btn btn-primary"
-                          @click="saveUpdateAddress(current_address._id)"
+                          class="btn btn-primary close"
+                          @click="saveUpdateAddress(updateAddress._id)"
                         >
+                          <span aria-hidden="true"></span>
                           Lưu
                         </button>
                       </div>
@@ -343,7 +343,7 @@
                 <div class="col-md-6">
                   <p>
                     {{
-                      item.COMMUNE + item.DESC + item.DISTRICT + item.PROVINCE
+                      item.DESC + item.COMMUNE + item.DISTRICT + item.PROVINCE
                     }}
                   </p>
                   <p>số điện thoại</p>
@@ -367,33 +367,32 @@
         </div>
       </div>
     </div>
-    <div class="text-right mt-3">
-      <button type="button" class="btn btn-primary" >
-        Lưu thay đổi</button
-      >&nbsp;
-      <button type="button" class="btn btn-default" @click="cancelEdit">
-        Hủy
-      </button>
-    </div>
   </div>
+  <AppFooter />
 </template>
 <script>
 import VueCookies from "vue-cookies";
 import AddressService from "@/services/addresses.service";
-
-
+import NavBar from "@/components/User/layout/NavBar.vue";
+import AppFooter from "@/components/User/layout/AppFooter.vue";
 export default {
   name: "UserInformation",
+  components: {
+    NavBar,
+    AppFooter,
+  },
   data() {
     return {
       is_loading: true,
+      showModal: false,
+      showModalEdit: false,
       address: [],
-      current_address:[],
-      updateAddress:{
-        commune: "",
-        provide: "",
-        district: "",
-        desc: ""
+      current_address: [],
+      updateAddress: {
+        COMMUNE: "",
+        DESC: "",
+        DISTRICT: "",
+        PROVINCE: "",
       },
       newAddress: {
         provide: "",
@@ -418,6 +417,7 @@ export default {
   async created() {
     await this.fetchAddresses();
     console.log("địa chỉ", this.address);
+    console.log("dịa chỉ get ", this.updateAddress);
   },
   methods: {
     async createAddress() {
@@ -440,23 +440,14 @@ export default {
     },
     async fetchAddressById(id) {
       try {
-        // Gọi đến service để lấy địa chỉ dựa trên id
         const getAddressResponse = await AddressService.getAddressById(id);
-
-        // Kiểm tra nếu có dữ liệu trả về từ service và tồn tại getAddressResponse.data
         if (getAddressResponse && getAddressResponse.data) {
-          // Gán địa chỉ vào biến current_address
-          this.updateAddress = getAddressResponse.data.LIST_ADDRESS
-          ;
-
-          // In ra thông báo khi địa chỉ đã được lấy thành công (có thể thay đổi tùy ý)
+          this.updateAddress = getAddressResponse.data.LIST_ADDRESS[0];
           console.log("Địa chỉ đã được lấy thành công:", this.updateAddress);
         } else {
-          // Xử lý trường hợp không có dữ liệu trả về từ service
           console.log("Không có dữ liệu địa chỉ cho id này.");
         }
       } catch (error) {
-        // Xử lý lỗi nếu có lỗi xảy ra trong quá trình gọi service
         console.error("Lỗi khi gọi service lấy địa chỉ:", error);
       }
     },
@@ -476,8 +467,6 @@ export default {
 
     async saveChanges() {
       try {
-        // Ở đây bạn có thể thực hiện lưu các thay đổi của editedUser lên server
-        // const response = await YourService.saveChanges(this.editedUser);
         this.message = "Đã lưu thay đổi thành công.";
         this.alertClass = "alert-success";
       } catch (error) {
@@ -517,25 +506,31 @@ export default {
       }
     },
 
-    async saveUpdateAddress(id){
-     const response = await AddressService.updateAddress(id, this.current_address);
-     if(response){
-      console.log("đã update")
-     }
+    async saveUpdateAddress(id) {
+      const response = await AddressService.updateAddress(
+        id,
+        this.updateAddress
+      );
+      if (response) {
+        this.showModal = false;
+        this.fetchAddresses();
+      }
     },
 
     selectTab(tab) {
       this.selectedTab = tab;
     },
   },
-
+  closeModal() {
+    this.showModal = false;
+  },
   mounted() {
     this.fetchAddresses();
   },
 };
 </script>
 
- <style scoped>
+<style scoped>
 body {
   background: #f5f5f5;
   margin-top: 20px;
@@ -650,4 +645,3 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
   font-size: 30px;
 }
 </style>
-  
