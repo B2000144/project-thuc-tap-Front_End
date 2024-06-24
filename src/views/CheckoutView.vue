@@ -30,9 +30,25 @@
               </div>
               <div class="col-md-12">
                 <div class="form-control bg-white my-3">
-                  <select name="" id="" class="w-100 border-0 bg-white">
+                  <select
+                    name=""
+                    id="select-address"
+                    class="w-100 border-0 bg-white"
+                    v-for="(item, index) in address"
+                    :key="index._id"
+                  >
                     <option value="">Địa chỉ đã lưu</option>
-                    <option value="" selected>39/1 đường 3/2 xuân khánh</option>
+                    <option :value="item._id">
+                      {{
+                        item.DESC +
+                        " " +
+                        item.COMMUNE +
+                        " " +
+                        item.DISTRICT +
+                        " " +
+                        item.PROVINCE
+                      }}
+                    </option>
                   </select>
                 </div>
                 <div class="col-md-12 col-lg-6 w-100">
@@ -151,6 +167,7 @@ import AppFooter from "@/components/User/layout/AppFooter.vue";
 import SinglePageHeader from "../components/User/checkout/SinglePageHeader.vue";
 import checkLogin from "../utils/checkLogin";
 import userService from "@/services/user.service";
+import addressesService from "@/services/addresses.service";
 export default {
   name: "CheckOutView",
   components: {
@@ -162,6 +179,7 @@ export default {
     return {
       cart: [],
       user: [],
+      address: [],
     };
   },
   async created() {
@@ -169,7 +187,11 @@ export default {
       await this.getCart();
       await this.getUser();
       await this.populateProducts();
+      await this.getAddresses();
+      this.getIdSelect();
       console.log("Mãng user", this.user);
+      console.log("Mãng address", this.address);
+      console.log("Mãng cart", this.cart);
     } else {
       this.$router.push("/login");
     }
@@ -238,6 +260,23 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+    async getAddresses() {
+      try {
+        const response = await addressesService.getAddress();
+        if (response && response.data) {
+          this.address = response.data;
+        }
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+        this.message = "Có lỗi xảy ra khi tải danh sách địa chỉ.";
+        this.alertClass = "alert-danger";
+      }
+    },
+    getIdSelect() {
+      var e = document.getElementById("select-address");
+      var value = e.value;
+      return value;
     },
   },
 };

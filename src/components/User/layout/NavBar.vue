@@ -14,38 +14,27 @@
       </button>
       <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
         <ul class="navbar-nav mx-auto">
-        <li class="nav-item">
+          <li class="nav-item">
             <router-link to="/" class="nav-link" active-class="active">
-                <i class="fas fa-home"></i> Trang chủ
+              <i class="fas fa-home"></i> Trang chủ
             </router-link>
-        </li>
-        <li class="nav-item">
-            <router-link to="/shop" class="nav-link" active-class="active">
-                <i class="fas fa-store"></i> Cửa hàng
-            </router-link>
-        </li>
-        <li class="nav-item">
-            <router-link to="/details" class="nav-link" active-class="active">
-                <i class="fas fa-info-circle"></i> Chi tiết cửa hàng
-            </router-link>
-        </li>
-        <li class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <i class="fas fa-bars"></i> Trang
-            </a>
-
-            <div class="dropdown-menu m-0 bg-secondary rounded-0">
-              <a href="cart.html" class="dropdown-item"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
-                <a href="checkout.html" class="dropdown-item"><i class="fas fa-money-check"></i> Thanh toán</a>
-                <a href="testimonial.html" class="dropdown-item"><i class="fas fa-star"></i> Đánh giá sản phẩm</a>
-                <a href="404.html" class="dropdown-item"><i class="fas fa-exclamation-circle"></i> Lỗi trang</a>
-            </div>
           </li>
-        <li class="nav-item">
-            <router-link to="/contact" class="nav-link" active-class="active">
-                <i class="fas fa-envelope"></i> Liên hệ
+          <li class="nav-item">
+            <router-link to="/shop" class="nav-link" active-class="active">
+              <i class="fas fa-store"></i> Cửa hàng
             </router-link>
-        </li>
+          </li>
+          <li class="nav-item">
+            <router-link to="/details" class="nav-link" active-class="active">
+              <i class="fas fa-info-circle"></i> Chi tiết cửa hàng
+            </router-link>
+          </li>
+
+          <li class="nav-item">
+            <router-link to="/contact" class="nav-link" active-class="active">
+              <i class="fas fa-envelope"></i> Liên hệ
+            </router-link>
+          </li>
         </ul>
         <div class="d-flex m-3 me-0">
           <button
@@ -56,13 +45,14 @@
             <i class="fas fa-search text-primary"></i>
           </button>
           <router-link to="/cart" class="position-relative me-4 my-auto">
-              <i class="fa fa-shopping-bag fa-2x"></i>
-              <span
-                class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-                style="top: -5px; left: 15px; height: 20px; min-width: 20px"
-                >3</span>
+            <i class="fa fa-shopping-bag fa-2x"></i>
+            <span
+              class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
+              style="top: -5px; left: 15px; height: 20px; min-width: 20px"
+              >3</span
+            >
           </router-link>
-          <router-link to="/login" class="my-auto">
+          <router-link to="/userinformation" class="my-auto">
             <i class="fas fa-user fa-2x"></i>
           </router-link>
         </div>
@@ -77,5 +67,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

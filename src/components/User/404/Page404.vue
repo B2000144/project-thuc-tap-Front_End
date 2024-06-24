@@ -7,12 +7,14 @@
           <h1 class="display-1">404</h1>
           <h1 class="mb-4">Không tìm thấy trang</h1>
           <p class="mb-4">
-            Xin lỗi, trang bạn tìm kiếm không tồn tại trong trang của chúng tôi,Có thể truy cập trang chủ của chúng tôi hoặc thử sử dụng tìm kiếm trang khác?
+            Xin lỗi, trang bạn tìm kiếm không tồn tại trong trang của chúng
+            tôi,Có thể truy cập trang chủ của chúng tôi hoặc thử sử dụng tìm
+            kiếm trang khác?
           </p>
-          <a
-            class="btn border-secondary rounded-pill py-3 px-5"
-            href="index.html"
-            >Trở lại trang chủ</a
+          <router-link to="/"
+            ><a class="btn border-secondary rounded-pill py-3 px-5"
+              >Trở lại trang chủ</a
+            ></router-link
           >
         </div>
       </div>
