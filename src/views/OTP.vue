@@ -11,7 +11,8 @@
           <p v-if="timeRemaining > 0" class="time-remaining">Thời gian còn lại: {{ timeRemainingDisplay }}</p>
         </form>
         <p v-if="showResendMessage" class="resend-message">{{ resendMessage }}</p>
-        <p class="resend">Không nhận được mã? <router-link to="/otp/reset">Gửi lại mã</router-link></p>
+        
+        <p class="resend" >Không nhận được mã? <a @click="EmailOtp">Gửi lại mã</a></p>
       </div>
     </div>
     <AppFooter />
@@ -22,7 +23,7 @@
 import AppFooter from "@/components/User/layout/AppFooter.vue";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AuthService from "@/services/auth.service";
-
+import EmailService from "@/services/email.service";
 export default {
   name: "otpUser",
   components: {
@@ -46,11 +47,28 @@ export default {
       return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     }
   },
-  methods: {
-    async resetOtp(){
-      const response = AuthService.resetOtp(localStorage.getItem('registeredEmail'));
-      const message = response;
+  methods:{
+        async EmailOtp(){
+        try {
+           const response = EmailService.sendMailOTP({
+            email: localStorage.getItem('registeredEmail')
+           });
+        const { message, success } = response;
+        if (success) {
+          this.showResendMessage = true;
+          this.resendMessage = message || 'Mã OTP mới đã được gửi.';
+          this.otpSentTime = new Date();
+          this.timeRemaining = 300;
+          alert('Mã OTP mới đã được gửi.');
+        } else {
+          alert(message || 'Có lỗi xảy ra khi gửi lại mã OTP.');
+        }
+      } catch (error) {
+        console.error('Lỗi khi gửi lại mã OTP:', error);
+        alert('Đã xảy ra lỗi trong quá trình gửi lại mã OTP.');
+      }
     },
+  
     async verifyOtp() {
       const currentTime = new Date();
       if (!this.otpSentTime || (currentTime - this.otpSentTime) > 300000) {
@@ -167,10 +185,10 @@ button:hover {
 
 .resend a {
   color: #0072ff;
-  text-decoration: none;
+
 }
 
 .resend a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 </style>
