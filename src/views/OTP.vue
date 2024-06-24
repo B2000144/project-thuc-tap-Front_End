@@ -1,27 +1,27 @@
 <template>
-  <NavBar />
   <div>
+    <NavBar />
     <div class="container">
       <div class="content">
         <h2>Xác Minh Tài Khoản</h2>
         <p>Mã OTP đã được gửi đến địa chỉ email của bạn. Vui lòng nhập mã OTP để xác minh.</p>
         <form @submit.prevent="verifyOtp">
-          <input type="text" v-model="otp" maxlength="6" placeholder="Nhập mã OTP" required>
+          <input type="text" v-model="code" maxlength="6" placeholder="Nhập mã OTP" required>
           <button type="submit">Xác Minh</button>
           <p v-if="timeRemaining > 0" class="time-remaining">Thời gian còn lại: {{ timeRemainingDisplay }}</p>
         </form>
         <p v-if="showResendMessage" class="resend-message">{{ resendMessage }}</p>
-        <p class="resend">Không nhận được mã? <router-link to="otp/reset">Gửi lại mã</router-link></p>
+        <p class="resend">Không nhận được mã? <router-link to="/otp/reset">Gửi lại mã</router-link></p>
       </div>
     </div>
+    <AppFooter />
   </div>
-  <AppFooter />
 </template>
 
 <script>
-import router  from "@/router"; // Import router từ Vue Router
 import AppFooter from "@/components/User/layout/AppFooter.vue";
 import NavBar from "@/components/User/layout/NavBar.vue";
+import AuthService from "@/services/auth.service";
 
 export default {
   name: "otpUser",
@@ -31,11 +31,12 @@ export default {
   },
   data() {
     return {
-      otp: '',
-      otpSentTime: null, // Thời gian bắt đầu khi gửi OTP
-      timeRemaining: 300, // Thời gian còn lại của OTP (5 phút = 300 giây)
-      showResendMessage: false, // Hiển thị thông báo khi gửi lại mã
-      resendMessage: 'Mã OTP mới đã được gửi.' // Thông báo khi gửi lại mã
+      email: '',
+      code: '',
+      otpSentTime: null,
+      timeRemaining: 300,
+      showResendMessage: false,
+      resendMessage: 'Mã OTP mới đã được gửi.'
     };
   },
   computed: {
@@ -46,40 +47,57 @@ export default {
     }
   },
   methods: {
-    verifyOtp() {
+    async resetOtp(){
+      const response = AuthService.resetOtp(localStorage.getItem('registeredEmail'));
+      const message = response;
+    },
+    async verifyOtp() {
       const currentTime = new Date();
       if (!this.otpSentTime || (currentTime - this.otpSentTime) > 300000) {
         alert('Mã OTP đã hết hạn. Vui lòng gửi lại mã.');
+        this.resendOtp();
         return;
       }
       
-      // Fake OTP validation (you need to implement real validation with backend)
-      if (this.otp === '123456') {
-        alert('Xác minh thành công!');
-      } else {
-        alert('Mã OTP không hợp lệ. Vui lòng thử lại.');
+      try {
+        const response = await AuthService.activeOtp(localStorage.getItem('registeredEmail'), this.code);
+        const  success  = response;
+        console.log (response)
+        if (success) {
+          alert('Xác minh thành công.');
+          //this.otpSentTime = new Date(); // Cập nhật lại thời gian gửi OTP thành công
+          this.$router.push( '/login');
+    
+        }
+      } catch (error) {
+        console.error('Lỗi khi xác minh OTP:', error);
+        alert('Đã xảy ra lỗi trong quá trình xác minh OTP.');
       }
     },
     resendOtp() {
-      this.showResendMessage = true; // Hiển thị thông báo khi gửi lại mã
-      this.otpSentTime = new Date(); // Cập nhật thời gian bắt đầu khi gửi lại OTP
-      this.timeRemaining = 300; // Reset thời gian còn lại về 5 phút (300 giây)
-      // Here you would actually trigger a resend OTP action on your backend
+      this.showResendMessage = true;
+      this.otpSentTime = new Date();
+      this.timeRemaining = 300;
+      localStorage.setItem('registeredEmail', this.email);
     },
     updateTimeRemaining() {
       const currentTime = new Date();
-      const elapsedTime = Math.floor((currentTime - this.otpSentTime) / 1000); // Tính thời gian còn lại theo giây
-      this.timeRemaining = Math.max(300 - elapsedTime, 0); // Cập nhật thời gian còn lại
+      const elapsedTime = Math.floor((currentTime - this.otpSentTime) / 1000);
+      this.timeRemaining = Math.max(300 - elapsedTime, 0);
     }
   },
   mounted() {
-    this.resendOtp(); // Khởi tạo thời gian còn lại khi component được tạo
-    setInterval(this.updateTimeRemaining, 1000); // Cập nhật thời gian còn lại mỗi giây
-    this.showResendMessage = false; // Ẩn thông báo khi lần đầu truy cập
+    const storedEmail = localStorage.getItem('registeredEmail');
+    if (storedEmail) {
+      this.email = storedEmail;
+    }
+    
+    this.resendOtp();
+    setInterval(this.updateTimeRemaining, 1000);
   },
-  router // Thêm router vào component
 };
 </script>
+
 <style scoped>
 .container {
   display: flex;
