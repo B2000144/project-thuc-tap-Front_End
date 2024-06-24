@@ -176,7 +176,6 @@
     <AppFooter />
   </div>
 </template>
-
 <script>
 import AuthService from "@/services/auth.service";
 import NavBar from "@/components/User/layout/NavBar.vue";
@@ -208,6 +207,8 @@ export default {
       isMiddleNameValid: true,
       isPhoneNumberValid: true,
       isPasswordMatch: true,
+      usernameExists: false,
+      emailExists: false,
     };
   },
   methods: {
@@ -223,20 +224,65 @@ export default {
           return;
         }
 
+        // Gọi API đăng ký
         const response = await AuthService.register(this.formData);
+
+        // Kiểm tra kết quả trả về
+        if (response.data.usernameExists) {
+          this.usernameExists = true;
+          this.message = "Tên đăng nhập đã tồn tại";
+          this.alertClass = "alert-danger";
+          return;
+        }
+        if (response.data.emailExists) {
+          this.emailExists = true;
+          this.message = "Email đã tồn tại";
+          this.alertClass = "alert-danger";
+          return;
+        }
+
+        // Nếu không tồn tại vấn đề gì, đăng ký thành công
+        this.resetForm();
         this.message = "Đăng ký thành công!";
         this.alertClass = "alert-success";
         console.log("Registration response:", response);
-        // Lưu email vào localStorage
         localStorage.setItem("registeredEmail", this.formData.email_user);
-        // Tùy chọn redirect sang trang khác sau khi đăng ký thành công
         this.$router.push({ name: "OTP" });
       } catch (error) {
-        this.message = `Lỗi: ${error.message}`;
-        this.alertClass = "alert-danger";
+        if (error.response && error.response.status === 400) {
+          if (error.response.data.message === "Username already exists") {
+            this.message = "Tên đăng nhập đã tồn tại";
+          } else if (error.response.data.message === "Email already exists") {
+            this.message = "Email đã tồn tại";
+          } else {
+            this.message = `Lỗi: ${error.response.data.message}`;
+          }
+          this.alertClass = "alert-danger";
+        } else {
+          this.message = `Lỗi: ${error.message}`;
+          this.alertClass = "alert-danger";
+        }
         console.error("Registration error:", error);
       }
     },
+    resetForm() {
+      this.formData.first_name = "";
+      this.formData.middle_name = "";
+      this.formData.last_name = "";
+      this.formData.user_name = "";
+      this.formData.email_user = "";
+      this.formData.phone_number = "";
+      this.formData.password = "";
+      this.formData.gender_user = "";
+      this.confirmPassword = "";
+      this.usernameExists = false;
+      this.emailExists = false;
+      this.isFirstNameValid = true;
+      this.isLastNameValid = true;
+      this.isMiddleNameValid = true;
+      this.isPhoneNumberValid = true;
+      this.isPasswordMatch = true;
+    }
   },
   watch: {
     'formData.first_name'(newVal) {
@@ -257,7 +303,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .alert {
