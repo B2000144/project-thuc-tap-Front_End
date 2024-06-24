@@ -36,8 +36,8 @@
               <i class="fas fa-exchange-alt fa-3x text-white"></i>
             </div>
             <div class="featurs-content text-center">
-              <h5>Hoàng trả trong 30 ngày</h5>
-              <p class="mb-0">Hoàng tiền trong 30 ngày</p>
+              <h5>Hoàn trả trong 30 ngày</h5>
+              <p class="mb-0">Hoàn tiền trong 30 ngày</p>
             </div>
           </div>
         </div>

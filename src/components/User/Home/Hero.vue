@@ -18,7 +18,7 @@
             <div class="carousel-inner" role="listbox">
               <div class="carousel-item active rounded">
                 <img
-                  src="img/hero-img-1.png"
+                  src="../../../assets/thoitrang.jpg"
                   class="img-fluid w-100 h-100 bg-secondary rounded"
                   alt="First slide"
                 />
@@ -26,12 +26,23 @@
               </div>
               <div class="carousel-item rounded">
                 <img
-                  src="img/hero-img-2.jpg"
+                  src="../../../assets/dienthoai.jpg"
                   class="img-fluid w-100 h-100 rounded"
                   alt="Second slide"
                 />
                 <a href="#" class="btn px-4 py-2 text-white rounded"
                   >Điện thoại</a
+                >
+              </div>
+
+              <div class="carousel-item rounded">
+                <img
+                  src="../../../assets/banh.jpg"
+                  class="img-fluid w-100 h-100 rounded"
+                  alt="Second slide"
+                />
+                <a href="#" class="btn px-4 py-2 text-white rounded"
+                  >Bánh</a
                 >
               </div>
             </div>
