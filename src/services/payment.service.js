@@ -19,5 +19,13 @@ class PaymentService {
       console.log(error);
     }
   }
+  async paymentZaloPay() {
+    try {
+      const response = await this.api.post("/paymentZalo");
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 export default new PaymentService();

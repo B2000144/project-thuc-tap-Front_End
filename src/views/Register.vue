@@ -11,7 +11,6 @@
                   Thông Tin Đăng Ký
                 </h3>
                 <form class="px-md-2" @submit.prevent="register">
-                  
                   <div class="row">
                     <div class="col-md-6 mb-4">
                       <div data-mdb-input-init class="form-outline">
@@ -128,7 +127,7 @@
                           type="password"
                           id="confirmPassword"
                           class="form-control form-control-lg"
-                         
+                          v-model="confirmPassword"
                           required
                         />
                         <label class="form-label" for="confirmPassword">Nhập lại mật khẩu</label>
@@ -199,9 +198,9 @@ export default {
         email_user: "",
         phone_number: "",
         password: "",
-        //confirm_password: "",
         gender_user: "",
       },
+      confirmPassword: "",
       message: "",
       alertClass: "",
       isFirstNameValid: true,
@@ -218,12 +217,20 @@ export default {
       }
 
       try {
+        // Kiểm tra xem confirmPassword có khớp với password hay không
+        if (this.confirmPassword !== this.formData.password) {
+          this.isPasswordMatch = false;
+          return;
+        }
+
         const response = await AuthService.register(this.formData);
         this.message = "Đăng ký thành công!";
         this.alertClass = "alert-success";
         console.log("Registration response:", response);
+        // Lưu email vào localStorage
+        localStorage.setItem("registeredEmail", this.formData.email_user);
         // Tùy chọn redirect sang trang khác sau khi đăng ký thành công
-         this.$router.push({ name: "OTP" });
+        this.$router.push({ name: "OTP" });
       } catch (error) {
         this.message = `Lỗi: ${error.message}`;
         this.alertClass = "alert-danger";
@@ -244,12 +251,13 @@ export default {
     'formData.phone_number'(newVal) {
       this.isPhoneNumberValid = /^\d{10}$/.test(newVal.trim());
     },
-    'formData.confirm_password'(newVal) {
+    confirmPassword(newVal) {
       this.isPasswordMatch = newVal === this.formData.password;
     }
   },
 };
 </script>
+
 
 <style scoped>
 .alert {
