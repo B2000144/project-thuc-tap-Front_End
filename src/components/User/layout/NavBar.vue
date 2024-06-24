@@ -49,7 +49,7 @@
             <span
               class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
               style="top: -5px; left: 15px; height: 20px; min-width: 20px"
-              >3</span
+              >{{ cart.length }}</span
             >
           </router-link>
           <router-link to="/userinformation" class="my-auto">
@@ -62,8 +62,29 @@
 </template>
 
 <script>
+import cartService from "@/services/cart.service";
 export default {
-  name: "UserNavbar",
+  name: "NavBar",
+  data() {
+    return {
+      cart: [],
+    };
+  },
+  async created() {
+    await this.getCart();
+  },
+  methods: {
+    async getCart() {
+      try {
+        const response = await cartService.getCart();
+        if (response && response.data) {
+          this.cart = response.data; // Đặt dữ liệu giỏ hàng vào biến cục bộ
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
 };
 </script>
 

@@ -22,7 +22,7 @@
             <div class="col-6"></div>
             <div class="col-xl-3">
               <div
-                class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4"  
+                class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4"
               >
                 <label for="fruits">Default Sorting:</label>
                 <select
@@ -321,13 +321,14 @@
                             })
                           }}
                         </p>
-                        <a
+                        <p
                           @click="addCartNonKV(item._id)"
                           href="#"
                           class="btn border border-secondary rounded-pill px-3 text-primary"
-                          ><i class="fa fa-shopping-bag me-2 text-primary"></i>
-                          Thêm Vào Giỏ Hàng</a
                         >
+                          <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                          Thêm Vào Giỏ Hàng
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -351,7 +352,7 @@ import PaginationLayout from "@/components/User/layout/PaginationLayout.vue";
 import productService from "@/services/product.service";
 import PriceService from "@/services/price.service";
 import cartService from "@/services/cart.service";
-
+import Swal from "sweetalert2";
 export default {
   name: "ShopView",
   components: {
@@ -423,11 +424,25 @@ export default {
         return "Đang cập nhật giá";
       }
     },
-    addCartNonKV(productId) {
+    async addCartNonKV(productId) {
       try {
-        const response = cartService.addCart(productId);
+        const response = await cartService.addCart(productId);
         if (response && response.data) {
-          console.log("Thêm sản phẩm vào giỏ thành công");
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Thêm sản phẩm vào giỏ hàng thành công",
+          });
         } else {
           console.error("Unexpected response structure:", response);
         }
@@ -440,26 +455,26 @@ export default {
 </script>
 
 <style>
-  .fruite-img {
-    overflow: hidden; 
-    width: 305px; 
-    height: 350px; 
-    border-radius: 10px; 
-  }
+.fruite-img {
+  overflow: hidden;
+  width: 305px;
+  height: 350px;
+  border-radius: 10px;
+}
 
-  .fruite-img img {
-    width: 100%; /* Đảm bảo rằng hình ảnh luôn đầy đủ chiều rộng của khung */
-    height: 100%; /* Đảm bảo rằng hình ảnh luôn đầy đủ chiều cao của khung */
-    object-fit: cover; /* Hiển thị hình ảnh mà không biến dạng tỷ lệ */
-  }
-  .min-height{
-    min-height: 595px;
-    font-size: 1.4rem;
-  }
-  .size-text > h4 {
-    font-size: 1.4rem;
-  }
-  .size-text p{
-    font-size: 1.2rem;
-  }
+.fruite-img img {
+  width: 100%; /* Đảm bảo rằng hình ảnh luôn đầy đủ chiều rộng của khung */
+  height: 100%; /* Đảm bảo rằng hình ảnh luôn đầy đủ chiều cao của khung */
+  object-fit: cover; /* Hiển thị hình ảnh mà không biến dạng tỷ lệ */
+}
+.min-height {
+  min-height: 595px;
+  font-size: 1.4rem;
+}
+.size-text > h4 {
+  font-size: 1.4rem;
+}
+.size-text p {
+  font-size: 1.2rem;
+}
 </style>

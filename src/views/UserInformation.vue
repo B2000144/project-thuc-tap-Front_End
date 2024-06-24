@@ -373,6 +373,7 @@
 <script>
 import VueCookies from "vue-cookies";
 import AddressService from "@/services/addresses.service";
+import userService from "@/services/user.service";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
 export default {
@@ -388,6 +389,7 @@ export default {
       showModalEdit: false,
       address: [],
       current_address: [],
+      user: [],
       updateAddress: {
         COMMUNE: "",
         DESC: "",
@@ -415,11 +417,22 @@ export default {
     };
   },
   async created() {
-    await this.fetchAddresses();
-    console.log("địa chỉ", this.address);
-    console.log("dịa chỉ get ", this.updateAddress);
+    await this.fetchUserLogin();
+    console.log(this.user);
   },
   methods: {
+    async fetchUserLogin() {
+      try {
+        const response = await userService.getUserLogin();
+        if (response && response.data) {
+          this.user = response.data;
+        } else {
+          console.log("Không có dữ liệu người dùng đăng nhập.");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async createAddress() {
       try {
         const addAddress = await AddressService.createAddress(this.newAddress);

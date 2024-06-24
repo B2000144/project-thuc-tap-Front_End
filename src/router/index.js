@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import getCookieValue from "../utils/getCookie";
+import deleteCookie from "../utils/deleteCookie";
+import isTokenValid from "../utils/isTokenValid";
 const routes = [
   {
     path: "/",
@@ -120,15 +122,20 @@ const router = createRouter({
   routes,
 });
 router.beforeEach((to, from, next) => {
-  console.log(to, from);
   if (to.meta.requiredAuth) {
     const token = getCookieValue("access_token");
     if (token) {
-      next();
+      if (isTokenValid(token)) {
+        next();
+      } else {
+        deleteCookie("access_token");
+        next("/login");
+      }
     } else {
       next("/login");
     }
+  } else {
+    next();
   }
-  next();
 });
 export default router;
