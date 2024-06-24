@@ -31,14 +31,17 @@
               <div class="col-md-12">
                 <div class="form-control bg-white my-3">
                   <select
+                    @change="HandleSelect"
                     name=""
                     id="select-address"
                     class="w-100 border-0 bg-white"
-                    v-for="(item, index) in address"
-                    :key="index._id"
                   >
                     <option value="">Địa chỉ đã lưu</option>
-                    <option :value="item._id">
+                    <option
+                      v-for="(item, index) in address"
+                      :key="index._id"
+                      :value="item._id"
+                    >
                       {{
                         item.DESC +
                         " " +
@@ -53,20 +56,46 @@
                 </div>
                 <div class="col-md-12 col-lg-6 w-100">
                   <div class="form-item">
-                    <label class="form-label my-3">Last Name<sup>*</sup></label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label my-3">Tỉnh/Thành Phố</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="selectedAddress.PROVINCE"
+                      readonly
+                    />
                   </div>
                 </div>
                 <div class="col-md-12 col-lg-6 w-100">
                   <div class="form-item">
-                    <label class="form-label my-3">Last Name<sup>*</sup></label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label my-3">Quận/Huyện</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="selectedAddress.DISTRICT"
+                      readonly
+                    />
                   </div>
                 </div>
                 <div class="col-md-12 col-lg-6 w-100">
                   <div class="form-item">
-                    <label class="form-label my-3">Last Name<sup>*</sup></label>
-                    <input type="text" class="form-control" />
+                    <label class="form-label my-3">Xã/Phường</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="selectedAddress.COMMUNE"
+                      readonly
+                    />
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-6 w-100">
+                  <div class="form-item">
+                    <label class="form-label my-3">Địa chỉ chi tiết</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="selectedAddress.DESC"
+                      readonly
+                    />
                   </div>
                 </div>
               </div>
@@ -84,11 +113,11 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th scope="col">Products</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Total</th>
+                    <th scope="col">Sản phẩm</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Tổng cộng</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -118,28 +147,18 @@
 
                   <tr>
                     <th scope="row"></th>
-                    <td class="py-5"></td>
-                    <td class="py-5"></td>
                     <td class="py-5">
-                      <p class="mb-0 text-dark py-3">Subtotal</p>
-                    </td>
-                    <td class="py-5">
-                      <div class="py-3 border-bottom border-top">
-                        <p class="mb-0 text-dark">$414.00</p>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <th scope="row"></th>
-                    <td class="py-5">
-                      <p class="mb-0 text-dark text-uppercase py-3">TOTAL</p>
+                      <p class="mb-0 text-dark text-uppercase py-3">
+                        Tổng đơn hàng
+                      </p>
                     </td>
                     <td class="py-5"></td>
                     <td class="py-5"></td>
                     <td class="py-5">
                       <div class="py-3 border-bottom border-top">
-                        <p class="mb-0 text-dark">$135.00</p>
+                        <p class="mb-0 text-dark">
+                          {{ formatPrice(calculateTotalCart()) }}
+                        </p>
                       </div>
                     </td>
                   </tr>
@@ -165,9 +184,9 @@ import productService from "@/services/product.service";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
 import SinglePageHeader from "../components/User/checkout/SinglePageHeader.vue";
-import checkLogin from "../utils/checkLogin";
 import userService from "@/services/user.service";
 import addressesService from "@/services/addresses.service";
+import formatUtils from "../utils/format";
 export default {
   name: "CheckOutView",
   components: {
@@ -180,21 +199,20 @@ export default {
       cart: [],
       user: [],
       address: [],
+      selectedAddress: {
+        DESC: "",
+        COMMUNE: "",
+        DISTRICT: "",
+        PROVINCE: "",
+      },
+      addressSelected: false,
     };
   },
   async created() {
-    if (checkLogin) {
-      await this.getCart();
-      await this.getUser();
-      await this.populateProducts();
-      await this.getAddresses();
-      this.getIdSelect();
-      console.log("Mãng user", this.user);
-      console.log("Mãng address", this.address);
-      console.log("Mãng cart", this.cart);
-    } else {
-      this.$router.push("/login");
-    }
+    await this.getCart();
+    await this.getUser();
+    await this.populateProducts();
+    await this.getAddresses();
   },
   methods: {
     async getCart() {
@@ -231,6 +249,14 @@ export default {
         return null;
       }
     },
+    formatPrice(price) {
+      if (typeof price !== "undefined") {
+        const formatter = formatUtils.formatNumber(); // Initialize the formatter function
+        return formatter(price); // Format the price using the formatter function
+      } else {
+        return "0"; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+      }
+    },
     totalPrice(price, quantity) {
       return price * quantity;
     },
@@ -243,7 +269,11 @@ export default {
     },
     async addOrder() {
       try {
-        const response = await orderService.addOrder();
+        const response = await orderService.addOrder(this.selectedAddress);
+        if (!this.addressSelected) {
+          alert("Vui lòng chọn địa chỉ giao hàng");
+          return;
+        }
         if (response && response.success) {
           this.$router.push("/checkout/paymentMethods");
         }
@@ -277,6 +307,21 @@ export default {
       var e = document.getElementById("select-address");
       var value = e.value;
       return value;
+    },
+    HandleSelect(event) {
+      const selectedId = event.target.value;
+      const selectedAddress = this.address.find(
+        (item) => item._id === selectedId
+      );
+      if (selectedAddress) {
+        this.selectedAddress = selectedAddress;
+        this.addressSelected = true;
+      }
+    },
+    calculateTotalCart() {
+      return this.cart.reduce((total, item) => {
+        return total + this.totalPrice(item.ITEM.PRICE, item.ITEM.QUANTITY);
+      }, 0);
     },
   },
 };

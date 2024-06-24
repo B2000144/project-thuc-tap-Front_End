@@ -56,7 +56,8 @@
                         updateNumberCartMinus(
                           item.ITEM.ID_PRODUCT,
                           '',
-                          item.ITEM.QUANTITY - 1
+                          item.ITEM.QUANTITY - 1,
+                          item.ITEM._id
                         )
                       "
                       class="btn btn-sm btn-minus rounded-circle bg-light border"
@@ -124,25 +125,16 @@
             <div class="bg-light rounded">
               <div class="p-4">
                 <h1 class="display-6 mb-4">
-                  Cart <span class="fw-normal">Total</span>
+                  <span class="fw-normal">Tổng đơn hàng</span>
                 </h1>
-                <div class="d-flex justify-content-between mb-4">
-                  <h5 class="mb-0 me-4">Subtotal:</h5>
-                  <p class="mb-0">$96.00</p>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <h5 class="mb-0 me-4">Shipping</h5>
-                  <div class="">
-                    <p class="mb-0">Flat rate: $3.00</p>
-                  </div>
-                </div>
-                <p class="mb-0 text-end">Shipping to Ukraine.</p>
               </div>
               <div
                 class="py-4 mb-4 border-top border-bottom d-flex justify-content-between"
               >
-                <h5 class="mb-0 ps-4 me-4">Total</h5>
-                <p class="mb-0 pe-4">$99.00</p>
+                <h5 class="mb-0 ps-4 me-4">Tổng cộng</h5>
+                <p class="mb-0 pe-4">
+                  {{ formatPrice(calculateTotalCart()) }}
+                </p>
               </div>
 
               <button
@@ -150,7 +142,7 @@
                 class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
                 type="button"
               >
-                Proceed Checkout
+                Thanh toán
               </button>
             </div>
           </div>
@@ -167,8 +159,8 @@ import productService from "@/services/product.service";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
 import SinglePageHeaderVue from "@/components/User/cart/SinglePageHeader.vue";
-import checkLogin from "../utils/checkLogin";
 import formatUtils from "../utils/format";
+import Swal from "sweetalert2";
 export default {
   name: "CartView",
   components: {
@@ -178,15 +170,17 @@ export default {
   },
   data() {
     return {
-      cart: [], // Khởi tạo mảng giỏ hàng
+      cart: [],
     };
   },
   async created() {
     await this.getCart(); // Lấy dữ liệu giỏ hàng
     console.log("giỏ hàng:", this.cart);
+    console.log("số lượng sp trong giỏ", this.getNumberCart);
     await this.populateProducts(); // Lấy chi tiết sản phẩm cho từng mục trong giỏ hàng
     await this.updateNumberCartPlus();
   },
+
   methods: {
     async getCart() {
       try {
@@ -198,6 +192,7 @@ export default {
         console.error(error);
       }
     },
+
     async populateProducts() {
       for (let item of this.cart) {
         // Duyệt qua từng mục trong giỏ hàng và lấy chi tiết sản phẩm sử dụng `getProduct`
@@ -272,7 +267,12 @@ export default {
         console.error(error);
       }
     },
-    async updateNumberCartMinus(id_product, list_match_key, newNumber) {
+    async updateNumberCartMinus(
+      id_product,
+      list_match_key,
+      newNumber,
+      id_delete
+    ) {
       try {
         if (newNumber >= 0) {
           const response = await cartService.updateCart({
@@ -280,13 +280,23 @@ export default {
             list_match_key: list_match_key,
             numberCart: newNumber && newNumber >= 0,
           });
-
           if (response && response.success) {
-            // Cập nhật số lượng trong giỏ hàng cục bộ
             const itemIndex = this.cart.findIndex(
               (item) => item.ITEM.ID_PRODUCT === id_product
             );
-            if (itemIndex !== -1) {
+            if (newNumber === 0) {
+              const result = await Swal.fire({
+                title: "Bạn có muốn xóa sản phẩm ra khỏi giỏ hàng",
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: "Có",
+                denyButtonText: `Không`,
+              });
+              if (result.isConfirmed) {
+                await cartService.deleteCart(id_delete); // xem lai
+                this.cart.splice(itemIndex, 1);
+              }
+            } else {
               // Update QUANTITY trong ITEM
               this.cart[itemIndex].ITEM.QUANTITY = newNumber;
             }
@@ -300,19 +310,35 @@ export default {
     },
     async deleteCart(id) {
       try {
-        const response = await cartService.deleteCart(id);
-        if (response && response.success) {
-          // Xóa mục trong giỏ hàng cục bộ
-          const itemIndex = this.cart.findIndex((item) => item.ITEM._id === id);
-          if (itemIndex !== -1) {
-            this.cart.splice(itemIndex, 1);
+        const result = await Swal.fire({
+          title: "Bạn có muốn xóa sản phẩm ra khỏi giỏ hàng",
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: "Có",
+          denyButtonText: `Không`,
+        });
+
+        if (result.isConfirmed) {
+          const response = await cartService.deleteCart(id);
+          if (response && response.success) {
+            const itemIndex = this.cart.findIndex(
+              (item) => item.ITEM._id === id
+            );
+            if (itemIndex !== -1) {
+              this.cart.splice(itemIndex, 1);
+            }
+          } else {
+            console.error("Xóa giỏ hàng thất bại", response.message);
           }
-        } else {
-          console.error("Xóa giỏ hàng thất bại", response.message);
         }
       } catch (error) {
         console.error(error);
       }
+    },
+    calculateTotalCart() {
+      return this.cart.reduce((total, item) => {
+        return total + this.totalPrice(item.ITEM.PRICE, item.ITEM.QUANTITY);
+      }, 0);
     },
   },
 };
