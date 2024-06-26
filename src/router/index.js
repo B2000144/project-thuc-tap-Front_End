@@ -115,6 +115,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/DashBoard.vue"),
   },
+  {
+    path: "/admin/products",
+    name: "DashboardProduct",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/DashBoardProduct.vue"),
+  },
 ];
 
 const router = createRouter({
