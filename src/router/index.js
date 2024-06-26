@@ -4,13 +4,6 @@ import getCookieValue from "../utils/getCookie";
 import deleteCookie from "../utils/deleteCookie";
 import isTokenValid from "../utils/isTokenValid";
 const routes = [
-
-  {
-    path: '/contact',
-    name: 'Contact',
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Contact.vue"),
-  },
   {
     path: "/",
     name: "home",
@@ -127,6 +120,14 @@ const routes = [
     name: "DashboardProduct",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/DashBoardProduct.vue"),
+  },
+  {
+    path: "/admin/addProducts",
+    name: "DashboardAddProduct",
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/DashBoardAddProduct.vue"
+      ),
   },
 ];
 

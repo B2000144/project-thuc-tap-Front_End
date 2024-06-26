@@ -5,37 +5,11 @@
       <Nav />
       <main class="content px-3 py-2">
         <div class="container-fluid">
-          <h1>Sản phẩm trong cửa hàng</h1>
-          <table>
-            <tr>
-              <th>STT</th>
-              <th>Tên sản phẩm</th>
-              <th>Tổng số lượng</th>
-              <th>Ảnh sản phẩm</th>
-              <th>Số lượng chi tiết</th>
-              <th>Thao tác</th>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>Áo</td>
-              <td>100</td>
-              <td>
-                <img
-                  src="https://res.cloudinary.com/dgfwiff6k/image/upload/v1717990031/test_folder/cvxbxxrrj88h70kzdb4r.webp"
-                  width="100px"
-                  alt=""
-                />
-              </td>
-              <td>
-                <ul>
-                  <li>Kích cỡ: M, Màu sắc: Đỏ, Số lượng: 10</li>
-                  <li>Kích cỡ: M, Màu sắc: Đỏ, Số lượng: 20</li>
-                  <li>Kích cỡ: M, Màu sắc: Đỏ, Số lượng: 30</li>
-                </ul>
-              </td>
-              <td>Sửa | Xóa</td>
-            </tr>
-          </table>
+          <h1>Thêm sản phẩm</h1>
+          <p>Bạn muốn thêm sản phẩm thuộc danh mục nào?</p>
+          <button>Quần áo</button>
+          <button>Thức ăn</button>
+          <button>Điện thoại</button>
         </div>
       </main>
     </div>
