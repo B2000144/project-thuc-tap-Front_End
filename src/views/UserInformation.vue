@@ -68,7 +68,8 @@
                     id="lastName"
                     type="text"
                     class="form-control"
-                    v-model="editedUser.lastName"
+                    v-model="userById.LAST_NAME"
+                    readonly
                   />
                 </div>
                 <div class="form-group">
@@ -77,7 +78,8 @@
                     id="middleName"
                     type="text"
                     class="form-control"
-                    v-model="editedUser.middleName"
+                    v-model="userById.MIDDLE_NAME"
+                    readonly
                   />
                 </div>
                 <div class="form-group">
@@ -86,7 +88,8 @@
                     id="firstName"
                     type="text"
                     class="form-control"
-                    v-model="editedUser.firstName"
+                    v-model="userById.FIRST_NAME"
+                    readonly
                   />
                 </div>
                 <div class="form-group">
@@ -95,7 +98,8 @@
                     id="phone"
                     type="text"
                     class="form-control"
-                    v-model="editedUser.phone"
+                    v-model="userById.PHONE_NUMBER"
+                    readonly
                   />
                 </div>
                 <div class="form-group">
@@ -104,16 +108,19 @@
                     id="email"
                     type="email"
                     class="form-control"
-                    v-model="editedUser.email"
+                    v-model="userById.EMAIL_USER"
+                    readonly
                   />
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Giới tính</label>
-                  <select class="custom-select" v-model="editedUser.gender">
-                    <option value="male">Nam</option>
-                    <option value="female">Nữ</option>
-                    <option value="other">Khác</option>
-                  </select>
+                  <label for="email" class="form-label">Giới tính</label>
+                  <input
+                    id="email"
+                    type="email"
+                    class="form-control"
+                    v-model="userById.GENGER_USER"
+                    readonly
+                  />
                 </div>
               </div>
             </div>
@@ -390,6 +397,7 @@ export default {
       address: [],
       current_address: [],
       user: [],
+      userById: [],
       updateAddress: {
         COMMUNE: "",
         DESC: "",
@@ -419,8 +427,23 @@ export default {
   async created() {
     await this.fetchUserLogin();
     console.log(this.user);
+    await this.fetchUserById();
+    console.log("lấy user theo ID", this.userById);
   },
   methods: {
+    async fetchUserById() {
+      try {
+        const response = await userService.getUserById(this.user.USER_ID);
+        if (response && response.data) {
+          this.userById = response.data;
+        } else {
+          console.log("Không có dữ liệu người dùng đăng nhập.");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     async fetchUserLogin() {
       try {
         const response = await userService.getUserLogin();

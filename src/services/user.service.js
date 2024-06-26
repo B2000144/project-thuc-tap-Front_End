@@ -11,5 +11,13 @@ class UserService {
       console.error(error);
     }
   }
+  async getUserById(id) {
+    try {
+      const response = await this.api.get(`/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 export default new UserService();
