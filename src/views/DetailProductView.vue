@@ -1,5 +1,6 @@
 <template>
   <NavBar />
+  <Search />
   <div class="container-fluid py-5 mt-5">
     <div class="container py-5">
       <div class="row g-4 mb-5">
@@ -7,17 +8,32 @@
           <div class="row g-4">
             <div class="col-lg-6">
               <div class="border rounded">
-                <a href="#">
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" >
+                  <div class="carousel-inner" >
+                    <div class="carousel-item active" v-for=" ( item, index) in products.LIST_FILE_ATTACHMENT" :key="index._id">
+                      <img :src="item.FILE_URL" class="d-block w-100" alt="">
+                    </div>
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+                <!-- <a href="#">
                   <img
                     v-if="
                       products.LIST_FILE_ATTACHMENT_DEFAULT &&
                       products.LIST_FILE_ATTACHMENT_DEFAULT.length > 0
                     "
-                    :src="products.LIST_FILE_ATTACHMENT_DEFAULT[0].FILE_URL"
+                    :src="image_url"
                     class="img-fluid rounded"
                     alt="Image"
                   />
-                </a>
+                </a> -->
               </div>
             </div>
             <div class="col-lg-6">
@@ -172,7 +188,7 @@
       </div>
       <h1 class="fw-bold mb-0">Related products</h1>
      <div class="row g-4 ">
-        <div v-for="product in allProducts" 
+        <div v-for="product in productCategory.flat()" 
           :key="product._id" 
           class="col-md-6 col-lg-4 col-xl-3">
           <router-link :to="{ name: 'UserDetail', params: { id: product._id } }">
@@ -470,6 +486,7 @@
     </div>
   </div>
   <AppFooter />
+
 </template>
 
 <script>
@@ -479,16 +496,18 @@ import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
 import cartService from "@/services/cart.service";
 import categoryService from "@/services/category.service";
+import Search from "@/components/User/Home/Search.vue";
 import Swal from "sweetalert2";
 export default {
   name: "UserDetail",
   components: {
     NavBar,
     AppFooter,
+    Search
   },
   data() {
     return {
-      products: {},
+      products: [],
       price: [],
       cart: [],
       productCategory: [],
@@ -497,14 +516,25 @@ export default {
       selectedSize: null,
       is_loading: true, // chạy loading trước sao đó mới gọi api
       quantity: 1,
-
+      image_url: "",
     };
   },
-    computed: {
-      allProducts() {
-        return this.productCategory.flat();
-      },
+  computed: {
+    allProducts() {
+      return this.productCategory.flat();
     },
+  },
+   watch: {
+    '$route.params.id': {
+      immediate: true, // Kích hoạt ngay lập tức khi component được tạo
+      handler(newId, oldId) {
+        if (newId !== oldId) {
+          // Nếu id sản phẩm mới khác với id sản phẩm cũ
+          this.getProduct(); // Gọi lại phương thức getProduct để tải lại dữ liệu sản phẩm mới
+        }
+      }
+    }
+  },
   async created() {
     try {
       await this.getProduct();
@@ -531,7 +561,9 @@ export default {
         if (response && response.data) {
           this.is_loading = false
           this.products = response.data;
-                  console.log('Dữ liệu sản phẩm:', this.products); // Log dữ liệu sản phẩm để kiểm tra
+          this.image_url = this.products.LIST_FILE_ATTACHMENT_DEFAULT[0].FILE_URL;
+          await this.getPriceProduct();
+          console.log('Dữ liệu sản phẩm:', this.products); // Log dữ liệu sản phẩm để kiểm tra
 
         } else {
           console.error("Unexpected response structure:", response);
@@ -543,9 +575,7 @@ export default {
     },
     async getPriceProduct() {
       try {
-        const response = await PriceService.getDefaultPrice(
-          this.$route.params.id
-        );
+        const response = await PriceService.getDefaultPrice(this.$route.params.id);
         if (response && response.data && response.data[0]) {
           this.price = response.data[0].PRICE_NUMBER;
         } else {
