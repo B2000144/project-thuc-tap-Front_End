@@ -1,6 +1,6 @@
 <template>
   <NavBar />
-  <div class="container-fluid fruite py-5">
+  <div class="container-fluid fruite">
     <div class="container py-5">
       <h1 class="mb-4">Fresh fruits shop</h1>
       <div class="row g-4">
@@ -340,15 +340,25 @@
       </div>
     </div>
   </div>
-  <PaginationLayout />
+  <div class="col-12">
+    <div class="pagination">
+      <pagination
+        v-model="page"
+        :records="productAll.length"
+        :per-page="limit"
+        @paginate="myCallback"
+        class="pagination-3"
+      />
+    </div>
+  </div>
+
   <AppFooter />
 </template>
-
 <script>
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
-import PaginationLayout from "@/components/User/layout/PaginationLayout.vue";
 
+import Pagination from "v-pagination-3";
 import productService from "@/services/product.service";
 import PriceService from "@/services/price.service";
 import cartService from "@/services/cart.service";
@@ -359,32 +369,44 @@ export default {
   components: {
     NavBar,
     AppFooter,
-    PaginationLayout,
+    Pagination,
   },
   data() {
     return {
       products: [],
+      productAll: [],
       prices: [],
       cart: [],
+      page: 1,
+      limit: 6,
+      skip: 1,
     };
   },
 
   async created() {
     try {
       await this.getProduct();
-      console.log("Mảng products:", this.products);
+      await this.getAllProduct();
       await this.getPriceProduct();
-      console.log("Mãng prices:", this.prices);
       await this.addCartNonKV();
-      console.log("trả về Cart", this.cart);
     } catch (error) {
       console.error("Error during component initialization:", error);
     }
   },
   methods: {
+    async getAllProduct() {
+      try {
+        const product = await productService.getAllProduct();
+        if (product && product.data) {
+          this.productAll = product.data;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async getProduct() {
       try {
-        const response = await productService.getAll();
+        const response = await productService.getAll(this.skip, this.limit);
         if (response && response.data) {
           this.products = response.data; // Lưu mảng sản phẩm vào this.products
         } else {
@@ -394,6 +416,10 @@ export default {
         console.error("Error fetching products:", error);
         throw error; // Re-throw error to be caught by the caller
       }
+    },
+    myCallback() {
+      this.skip = this.page; // Cập nhật skip từ page
+      this.getProduct();
     },
     async getPriceProduct() {
       try {
@@ -477,5 +503,33 @@ export default {
 }
 .size-text p {
   font-size: 1.2rem;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+.pagination .pagination-3 {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.pagination .pagination-3 li {
+  margin-right: 5px;
+}
+.pagination .pagination-3 li a {
+  display: block;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #333;
+}
+.pagination .pagination-3 li.active a {
+  background-color: #007bff;
+  color: #fff;
+}
+.VuePagination__count {
+  display: none;
 }
 </style>
