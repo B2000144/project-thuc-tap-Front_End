@@ -32,5 +32,14 @@ class ProductService {
       console.log(error);
     }
   }
+  async searchProducts(keyword) {
+    try {
+      const response = await this.api.get(`/search?query=${keyword}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error searching products with keyword ${keyword}:`, error);
+      throw error;
+    }
+  }
 }
 export default new ProductService();

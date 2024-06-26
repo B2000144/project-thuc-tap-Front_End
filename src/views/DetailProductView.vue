@@ -69,16 +69,8 @@
       href="#"
       class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"
     ><i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng</a>
-    <p v-if="showSuccessMessage" class="alert alert-success mt-3">Thêm vào giỏ hàng thành công!</p>
 
-
-      <div class="flex KIoPj6 W5LiQM">
-        <!-- <div  v-if="is_loading ==false">
-           <div>
-          <div>item{{ products.LIST_PRODUCT_METADATA[0].KEY}} end</div>
-        </div>
-        </div> -->
-       
+      <div class="flex KIoPj6 W5LiQM">   
         <div class="flex flex-column">
             <!-- Section for Colors -->
             <section v-if="!is_loading" class="flex items-center" style="margin-bottom: 24px; align-items: baseline" 
@@ -172,133 +164,7 @@
                   <p>
                     {{ products.DESC_PRODUCT }}
                   </p>
-
-                  <!-- <div class="px-2">
-                    <div class="row g-4">
-                      <div class="col-6">
-                        <div
-                          class="row bg-light align-items-center text-center justify-content-center py-2"
-                        >
-                          <div class="col-6">
-                            <p class="mb-0">Chiều Cao</p>
-                          </div>
-                          <div class="col-6">
-                            <p class="mb-0">1m6-1m7</p>
-                          </div>
-                        </div>
-                        <div
-                          class="row text-center align-items-center justify-content-center py-2"
-                        >
-                          <div class="col-6">
-                            <p class="mb-0">Cân Nặng</p>
-                          </div>
-                          <div class="col-6">
-                            <p class="mb-0">50-70kg</p>
-                          </div>
-                        </div>
-                        <div
-                          class="row bg-light text-center align-items-center justify-content-center py-2"
-                        >
-                          <div class="col-6">
-                            <p class="mb-0">Số Lượng</p>
-                          </div>
-                          <div class="col-6">
-                            <p class="mb-0">100</p>
-                          </div>
-                        </div>
-                        <div
-                          class="row text-center align-items-center justify-content-center py-2"
-                        >
-                          <div class="col-6">
-                            <p class="mb-0">Xuất Xứ</p>
-                          </div>
-                          <div class="col-6">
-                            <p class="mb-0">Mỹ Tho</p>
-                          </div>
-                        </div>
-                        <div
-                          class="row bg-light text-center align-items-center justify-content-center py-2"
-                        >
-                          <div class="col-6">
-                            <p class="mb-0">Chất Liệu</p>
-                          </div>
-                          <div class="col-6">
-                            <p class="mb-0">Da cá sấu</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
                 </div> 
-                <!-- <div
-                  class="tab-pane"
-                  id="nav-mission"
-                  role="tabpanel"
-                  aria-labelledby="nav-mission-tab"
-                >
-                  <div class="d-flex">
-                    <img
-                      src="img/avatar.jpg"
-                      class="img-fluid rounded-circle p-3"
-                      style="width: 100px; height: 100px"
-                      alt=""
-                    />
-                    <div class="">
-                      <p class="mb-2" style="font-size: 14px">April 12, 2024</p>
-                      <div class="d-flex justify-content-between">
-                        <h5>Jason Smith</h5>
-                        <div class="d-flex mb-3">
-                          <i class="fa fa-star text-secondary"></i>
-                          <i class="fa fa-star text-secondary"></i>
-                          <i class="fa fa-star text-secondary"></i>
-                          <i class="fa fa-star text-secondary"></i>
-                          <i class="fa fa-star"></i>
-                        </div>
-                      </div>
-                      <p>
-                        The generated Lorem Ipsum is therefore always free from
-                        repetition injected humour, or non-characteristic words
-                        etc. Susp endisse ultricies nisi vel quam suscipit
-                      </p>
-                    </div>
-                  </div>
-                  <div class="d-flex">
-                    <img
-                      src="img/avatar.jpg"
-                      class="img-fluid rounded-circle p-3"
-                      style="width: 100px; height: 100px"
-                      alt=""
-                    />
-                    <div class="">
-                      <p class="mb-2" style="font-size: 14px">April 12, 2024</p>
-                      <div class="d-flex justify-content-between">
-                        <h5>Sam Peters</h5>
-                        <div class="d-flex mb-3">
-                          <i class="fa fa-star text-secondary"></i>
-                          <i class="fa fa-star text-secondary"></i>
-                          <i class="fa fa-star text-secondary"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </div>
-                      </div>
-                      <p class="text-dark">
-                        The generated Lorem Ipsum is therefore always free from
-                        repetition injected humour, or non-characteristic words
-                        etc. Susp endisse ultricies nisi vel quam suscipit
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="tab-pane" id="nav-vision" role="tabpanel">
-                  <p class="text-dark">
-                    Tempor erat elitr rebum at clita. Diam dolor diam ipsum et
-                    tempor sit. Aliqu diam amet diam et eos labore. 3
-                  </p>
-                  <p class="mb-0">
-                    Diam dolor diam ipsum et tempor sit. Aliqu diam amet diam et
-                    eos labore. Clita erat ipsum et lorem et sit
-                  </p>
-                </div>-->
               </div>
             </div>
           </div>
@@ -306,23 +172,30 @@
       </div>
       <h1 class="fw-bold mb-0">Related products</h1>
      <div class="row g-4 ">
-          <div v-for="product in allProducts" :key="product._id" class="col-md-6 col-lg-4 col-xl-3">
-            <a :href="`/product/${product._id}`">
-              <img v-if="product.LIST_FILE_ATTACHMENT_DEFAULT && product.LIST_FILE_ATTACHMENT_DEFAULT.length > 0"
-                  :src="product.LIST_FILE_ATTACHMENT_DEFAULT[0].FILE_URL"
-                  class="img-fluid rounded"
-                  :alt="product.NAME_PRODUCT"
-              />
-              <div class="card-body">
-                <h5 class="card-title">{{ product.NAME_PRODUCT }}</h5>
-                <p class="fw-bold mb-3">  {{
-                    price.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })
-                  }}</p>  
-              </div>
-            </a>
+        <div v-for="product in allProducts" 
+          :key="product._id" 
+          class="col-md-6 col-lg-4 col-xl-3">
+          <router-link :to="{ name: 'UserDetail', params: { id: product._id } }">
+            <div>
+              <img 
+                v-if="product.LIST_FILE_ATTACHMENT_DEFAULT && product.LIST_FILE_ATTACHMENT_DEFAULT.length > 0"
+                :src="product.LIST_FILE_ATTACHMENT_DEFAULT[0].FILE_URL"
+                class="img-fluid rounded"
+                :alt="product.NAME_PRODUCT"
+                />
+                <div class="card-body">
+                  <h5 class="card-title">{{ product.NAME_PRODUCT }}</h5>
+                  <p class="fw-bold mb-3">  
+                    {{
+                      price.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })
+                    }}
+                  </p>  
+                </div>
+            </div>
+          </router-link>
           </div>   
     </div>
 
@@ -605,7 +478,8 @@ import PriceService from "@/services/price.service";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
 import cartService from "@/services/cart.service";
-import categoryService  from "@/services/category.service";
+import categoryService from "@/services/category.service";
+import Swal from "sweetalert2";
 export default {
   name: "UserDetail",
   components: {
@@ -623,7 +497,6 @@ export default {
       selectedSize: null,
       is_loading: true, // chạy loading trước sao đó mới gọi api
       quantity: 1,
-      showSuccessMessage: false // chạy thông báo
 
     };
   },
@@ -642,6 +515,9 @@ export default {
       console.log("Mảng categories", this.nameCategory);
       await this.getProductCategory();
       console.log("mãng product category", this.productCategory);
+      await this.selectColor();
+      // console.log("mau sac duoc chon", this.color);
+      console.log('ID sản phẩm:', this.productId);
     } catch (error) {
       console.error(error);
     }
@@ -649,10 +525,14 @@ export default {
   methods: {
     async getProduct() {
       try {
-        const response = await productService.getById(this.$route.params.id);
+        const productId = this.$route.params.id;
+      console.log('ID sản phẩm từ URL:', productId);
+        const response = await productService.getById(productId);
         if (response && response.data) {
           this.is_loading = false
           this.products = response.data;
+                  console.log('Dữ liệu sản phẩm:', this.products); // Log dữ liệu sản phẩm để kiểm tra
+
         } else {
           console.error("Unexpected response structure:", response);
         }
@@ -687,13 +567,24 @@ export default {
           key: [colorKey, sizeKey],
           value:[ selectedColorValue, selectedSizeValue]
         };
-        this.showSuccessMessage = true; // thông báo khi thành công
-        setTimeout(() => { // thông báo mất sao 3 giây
-          this.showSuccessMessage = false;
-        }, 3000);
         const response = await cartService.addToCart(productId,payload);
-        if (response && response.data) {  
-          console.log("Đã thêm sản phẩm vào giỏ hàng:", response.data);
+        if (response && response.data) { 
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Thêm sản phẩm vào giỏ hàng thành công",
+          }); 
+          // console.log("Đã thêm sản phẩm vào giỏ hàng:", response.data);
             // console.log(`${colorKey}:${selectedColorValue}, ${sizeKey}:${selectedSizeValue}`);
         } else {
           console.error("Lỗi khi thêm vào giỏ hàng:", response);
@@ -712,21 +603,32 @@ export default {
         console.log("error", error);
       }
     },
-   async getProductCategory() {
-  try {
-    const categoryId = this.products.CATEGORY_ID; // Lấy CATEGORY_ID của sản phẩm hiện tại
-    const productPromises = this.nameCategory.map(async (category) => {
-      if (category._id === categoryId) {
-        const response = await productService.getProductByIdCategory(category._id);
-        return response && response.data ? response.data : [];
+    // async getProductCategory() {
+    //   try {
+    //     const categoryId = this.products.CATEGORY_ID; // Lấy CATEGORY_ID của sản phẩm hiện tại
+    //     const response = await productService.getProductByIdCategory(categoryId);
+    //     this.productCategory = response && response.data ? response.data : [];
+    //   } catch (error) {
+    //     console.error("Error fetching product category:", error);
+    //   }
+    // },
+
+    async getProductCategory() {
+      try {
+        const categoryId = this.products.CATEGORY_ID; // Lấy CATEGORY_ID của sản phẩm hiện tại
+        const productPromises = this.nameCategory.map(async (category) => {
+          if (category._id === categoryId) {
+            const response = await productService.getProductByIdCategory(category._id);
+            return response && response.data ? response.data.filter(product => product._id !== this.products._id) : [];
+            //filter loại bỏ sản phẩm hiện tại
+          }
+          return []; // Trả về mảng rỗng nếu không phải danh mục hiện tại
+        });
+        this.productCategory = await Promise.all(productPromises);
+      } catch (error) {
+        console.log("error", error);
       }
-      return []; // Trả về mảng rỗng nếu không phải danh mục hiện tại
-    });
-    this.productCategory = await Promise.all(productPromises);
-  } catch (error) {
-    console.log("error", error);
-  }
-},
+    },
 
     getCategoryName(categoryId) {
       const category = this.nameCategory.find(cat => cat._id === categoryId);
