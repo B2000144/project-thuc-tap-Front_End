@@ -55,7 +55,7 @@
                       @click="
                         updateNumberCartMinus(
                           item.ITEM.ID_PRODUCT,
-                          '',
+                          item.ITEM._id,
                           item.ITEM.QUANTITY - 1,
                           item.ITEM._id
                         )
@@ -75,7 +75,7 @@
                       @click="
                         updateNumberCartPlus(
                           item.ITEM.ID_PRODUCT,
-                          '',
+                          item.ITEM._id,
                           item.ITEM.QUANTITY + 1
                         )
                       "
@@ -243,11 +243,11 @@ export default {
         alert("bạn chưa có hàng trong giỏ");
       }
     },
-    async updateNumberCartPlus(id_product, list_match_key, newNumber) {
+    async updateNumberCartPlus(id_product, id_list_product, newNumber) {
       try {
         const response = await cartService.updateCart({
           id_product: id_product,
-          list_match_key: list_match_key,
+          id_list_product: id_list_product,
           numberCart: newNumber,
         });
 
@@ -269,16 +269,19 @@ export default {
     },
     async updateNumberCartMinus(
       id_product,
-      list_match_key,
+      id_list_product,
       newNumber,
       id_delete
     ) {
+      console.log("id_product", id_product);
+      console.log("id_list_product", id_list_product);
+      console.log("newNumber", newNumber);
       try {
         if (newNumber >= 0) {
           const response = await cartService.updateCart({
             id_product: id_product,
-            list_match_key: list_match_key,
-            numberCart: newNumber && newNumber >= 0,
+            id_list_product: id_list_product,
+            numberCart: newNumber,
           });
           if (response && response.success) {
             const itemIndex = this.cart.findIndex(

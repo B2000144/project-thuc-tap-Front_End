@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded position-relative fruite-item">
+  <div class="rounded border position-relative fruite-item">
     <div class="fruite-img">
       <img :src="productImage" class="img-fluid w-100 rounded-top" alt="" />
     </div>
@@ -9,7 +9,7 @@
     >
       {{ product.CATEGORY_ID }}
     </div> -->
-    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+    <div class="p-4 border-top-0 rounded-bottom">
       <h4>{{ product.NAME_PRODUCT }}</h4>
       <p>{{ product.SHORT_DESC }}</p>
       <div class="d-flex justify-content-between flex-lg-wrap">
