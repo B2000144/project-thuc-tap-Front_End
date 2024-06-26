@@ -289,7 +289,9 @@
                   v-for="item in products"
                   :key="item._id"
                 >
-                  <div class="rounded position-relative fruite-item">
+                  <div
+                    class="border border-top-0 rounded position-relative fruite-item"
+                  >
                     <router-link
                       :to="{ name: 'UserDetail', params: { id: item._id } }"
                       ><div class="fruite-img">
@@ -305,9 +307,7 @@
                     >
                       New
                     </div> -->
-                    <div
-                      class="p-4 border border-secondary border-top-0 rounded-bottom size-text"
-                    >
+                    <div class="p-4 rounded-bottom size-text">
                       <h4>{{ item.NAME_PRODUCT }}</h4>
                       <p>
                         {{ item.SHORT_DESC }}
@@ -353,6 +353,7 @@ import productService from "@/services/product.service";
 import PriceService from "@/services/price.service";
 import cartService from "@/services/cart.service";
 import Swal from "sweetalert2";
+const numberCart = 0;
 export default {
   name: "ShopView",
   components: {
@@ -447,7 +448,7 @@ export default {
           console.error("Unexpected response structure:", response);
         }
       } catch (error) {
-        console.error("lỗi khi thêm sp vào giỏ :", error);
+        console.error("lỗi khi thêm sp vào giỏ:", error);
       }
     },
   },

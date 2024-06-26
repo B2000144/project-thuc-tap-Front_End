@@ -1,16 +1,26 @@
 import axios from "axios";
 import getCookieValue from "@/utils/getCookie";
-const commonConfig = {
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    token: getCookieValue("access_token"),
-  },
-};
-console.log(getCookieValue("access_token"));
-export default (baseURL) => {
-  return axios.create({
+
+// Tạo một instance của axios với baseURL
+const createAxiosInstance = (baseURL) => {
+  const instance = axios.create({
     baseURL,
-    ...commonConfig,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
   });
+
+  // Thêm interceptor để đẩy token lên header cho mỗi request
+  instance.interceptors.request.use((config) => {
+    const token = getCookieValue("access_token");
+    if (token) {
+      config.headers.token = token;
+    }
+    return config;
+  });
+
+  return instance;
 };
+
+export default createAxiosInstance;

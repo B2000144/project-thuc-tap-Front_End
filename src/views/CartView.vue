@@ -56,7 +56,8 @@
                         updateNumberCartMinus(
                           item.ITEM.ID_PRODUCT,
                           item.ITEM._id,
-                          item.ITEM.QUANTITY - 1
+                          item.ITEM.QUANTITY - 1,
+                          item.ITEM._id
                         )
                       "
                       class="btn btn-sm btn-minus rounded-circle bg-light border"
@@ -266,7 +267,12 @@ export default {
         console.error(error);
       }
     },
-    async updateNumberCartMinus(id_product, id_list_product, newNumber) {
+    async updateNumberCartMinus(
+      id_product,
+      id_list_product,
+      newNumber,
+      id_delete
+    ) {
       console.log("id_product", id_product);
       console.log("id_list_product", id_list_product);
       console.log("newNumber", newNumber);
