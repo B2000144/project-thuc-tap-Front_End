@@ -4,6 +4,13 @@ import getCookieValue from "../utils/getCookie";
 import deleteCookie from "../utils/deleteCookie";
 import isTokenValid from "../utils/isTokenValid";
 const routes = [
+
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Contact.vue"),
+  },
   {
     path: "/",
     name: "home",
