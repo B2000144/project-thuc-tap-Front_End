@@ -3,7 +3,7 @@ class ProductService {
   constructor(baseUrl = "/api/v1/product") {
     this.api = createApiClient(baseUrl);
   }
-  async getAll(page,limit) {
+  async getAll(page, limit) {
     try {
       const response = await this.api.get(`/?page=${page}&limit=${limit}`);
       return response.data;

@@ -1,6 +1,5 @@
 <template>
   <NavBar />
-  <Search />
   <div class="container-fluid fruite">
     <div class="container py-5">
       <h1 class="mb-4">Fresh fruits shop</h1>
@@ -323,6 +322,8 @@
                           }}
                         </p>
                         <p
+                          @mouseenter="showSizes = true"
+                          @mouseleave="showSizes = false"
                           @click="addCartNonKV(item._id)"
                           href="#"
                           class="btn border border-secondary rounded-pill px-3 text-primary"
@@ -330,6 +331,28 @@
                           <i class="fa fa-shopping-bag me-2 text-primary"></i>
                           Thêm Vào Giỏ Hàng
                         </p>
+
+                        <!-- Add the sizes dropdown inside the button div -->
+                        <div class="sizes-dropdown" v-if="showSizes">
+                          <ul class="list-unstyled">
+                            <li>
+                              <button class="btn btn-outline-secondary">
+                                Size S
+                              </button>
+                            </li>
+                            <li>
+                              <button class="btn btn-outline-secondary">
+                                Size M
+                              </button>
+                            </li>
+                            <li>
+                              <button class="btn btn-outline-secondary">
+                                Size L
+                              </button>
+                            </li>
+                            <!-- Add more sizes as needed -->
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -352,28 +375,29 @@
       />
     </div>
   </div>
+
   <AppFooter />
 </template>
 <script>
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
-
 import Pagination from "v-pagination-3";
 import productService from "@/services/product.service";
 import PriceService from "@/services/price.service";
 import cartService from "@/services/cart.service";
 import Swal from "sweetalert2";
-import Search from "@/components/User/Home/Search.vue";
+import getCookie from "@/utils/getCookie";
+const numberCart = 0;
 export default {
   name: "ShopView",
   components: {
     NavBar,
     AppFooter,
     Pagination,
-    Search
   },
   data() {
     return {
+      showSizes: false,
       products: [],
       productAll: [],
       prices: [],
@@ -389,7 +413,6 @@ export default {
       await this.getProduct();
       await this.getAllProduct();
       await this.getPriceProduct();
-      await this.addCartNonKV();
     } catch (error) {
       console.error("Error during component initialization:", error);
     }
@@ -454,25 +477,33 @@ export default {
     },
     async addCartNonKV(productId) {
       try {
-        const response = await cartService.addCart(productId);
-        if (response && response.data) {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 800,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Thêm sản phẩm vào giỏ hàng thành công",
-          });
+        if (getCookie("access_token")) {
+          const response = await cartService.addCart(productId);
+          if (response && response.data) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 800,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Thêm sản phẩm vào giỏ hàng thành công",
+            });
+          } else {
+            console.error("Unexpected response structure:", response);
+          }
         } else {
-          console.error("Unexpected response structure:", response);
+          Swal.fire({
+            title: "Bạn chưa đăng nhập?",
+            text: "hãy đăng nhập để thêm sản phẩm vào giỏ hàng",
+            icon: "question",
+          });
         }
       } catch (error) {
         console.error("lỗi khi thêm sp vào giỏ:", error);
@@ -532,5 +563,20 @@ export default {
 }
 .VuePagination__count {
   display: none;
+}
+/* drop down */
+.sizes-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  display: none; /* Initially hidden */
+}
+.btn:hover .sizes-dropdown {
+  display: block;
 }
 </style>
