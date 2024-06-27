@@ -8,7 +8,17 @@ class PriceService {
       const response = await this.api.get(`/defaultPrice/${id}`);
       return response.data;
     } catch (error) {
-      console.error(error);
+      console.log(error);
+    }
+  }
+
+  async getPriceKeyValue(id, payload) {
+    try {
+      console.log("payload service", payload);
+      const response = await this.api.get(`/${id}`, payload);
+      return response.data;
+    } catch (error) {
+      console.log(error);
     }
   }
 }
