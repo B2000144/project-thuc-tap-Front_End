@@ -1,5 +1,6 @@
 <template>
   <NavBar />
+  <Search />
   <div class="container-fluid fruite">
     <div class="container py-5">
       <h1 class="mb-4">Fresh fruits shop</h1>
@@ -351,7 +352,6 @@
       />
     </div>
   </div>
-
   <AppFooter />
 </template>
 <script>
@@ -363,13 +363,14 @@ import productService from "@/services/product.service";
 import PriceService from "@/services/price.service";
 import cartService from "@/services/cart.service";
 import Swal from "sweetalert2";
-const numberCart = 0;
+import Search from "@/components/User/Home/Search.vue";
 export default {
   name: "ShopView",
   components: {
     NavBar,
     AppFooter,
     Pagination,
+    Search
   },
   data() {
     return {
