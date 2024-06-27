@@ -35,6 +35,46 @@
               </td>
               <td>Sửa | Xóa</td>
             </tr>
+            <tr>
+              <td>1</td>
+              <td>Áo</td>
+              <td>100</td>
+              <td>
+                <img
+                  src="https://res.cloudinary.com/dgfwiff6k/image/upload/v1717990031/test_folder/cvxbxxrrj88h70kzdb4r.webp"
+                  width="100px"
+                  alt=""
+                />
+              </td>
+              <td>
+                <ul>
+                  <li>Kích cỡ: M, Màu sắc: Đỏ, Số lượng: 10</li>
+                  <li>Kích cỡ: M, Màu sắc: Đỏ, Số lượng: 20</li>
+                  <li>Kích cỡ: M, Màu sắc: Đỏ, Số lượng: 30</li>
+                </ul>
+              </td>
+              <td>Sửa | Xóa</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>Áo</td>
+              <td>100</td>
+              <td>
+                <img
+                  src="https://res.cloudinary.com/dgfwiff6k/image/upload/v1717990031/test_folder/cvxbxxrrj88h70kzdb4r.webp"
+                  width="100px"
+                  alt=""
+                />
+              </td>
+              <td>
+                <ul>
+                  <li>Kích cỡ: M, Màu sắc: Đỏ, Số lượng: 10</li>
+                  <li>Kích cỡ: M, Màu sắc: Đỏ, Số lượng: 20</li>
+                  <li>Kích cỡ: M, Màu sắc: Đỏ, Số lượng: 30</li>
+                </ul>
+              </td>
+              <td>Sửa | Xóa</td>
+            </tr>
           </table>
         </div>
       </main>

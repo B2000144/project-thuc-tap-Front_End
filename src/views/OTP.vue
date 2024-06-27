@@ -95,7 +95,7 @@ export default {
 
       try {
         const response = await AuthService.activeOtp(this.email, this.code);
-        const success  = response; // Trích xuất dữ liệu từ phản hồi
+        const success = response; // Trích xuất dữ liệu từ phản hồi
         if (success) {
           alert("Xác minh thành công.");
           localStorage.removeItem("registeredEmail"); // Xóa email đã lưu trong localStorage

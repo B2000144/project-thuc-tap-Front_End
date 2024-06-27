@@ -401,6 +401,7 @@ export default {
       products: [],
       productAll: [],
       prices: [],
+
       cart: [],
       page: 1,
       limit: 6,
@@ -433,6 +434,7 @@ export default {
         const response = await productService.getAll(this.skip, this.limit);
         if (response && response.data) {
           this.products = response.data; // Lưu mảng sản phẩm vào this.products
+          await this.getPriceProduct();
         } else {
           console.error("Unexpected response structure:", response);
         }
