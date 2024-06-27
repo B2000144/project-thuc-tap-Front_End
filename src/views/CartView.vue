@@ -17,6 +17,7 @@
             <tr>
               <th scope="col">Ảnh sản phẩm</th>
               <th scope="col">Tên sản phẩm</th>
+              <th scope="col">Phân loại</th>
               <th scope="col">Giá</th>
               <th scope="col">Số lượng</th>
               <th scope="col">Tổng cộng</th>
@@ -39,11 +40,24 @@
                   />
                 </div>
               </td>
+
               <td>
                 <p class="mb-0 mt-4" v-if="item.ITEM.PRODUCT_DETAILS">
                   {{ item.ITEM.PRODUCT_DETAILS.name }}
                 </p>
                 <p class="mb-0 mt-4" v-else>Thông tin sản phẩm không có sẵn</p>
+              </td>
+              <td>
+                <p class="mb-0 mt-4">
+                  <span class="d-block"
+                    >{{ item.ITEM.LIST_MATCH_KEY[0].KEY }}:
+                    {{ item.ITEM.LIST_MATCH_KEY[0].VALUE }}</span
+                  >
+                  <span class="d-block"
+                    >{{ item.ITEM.LIST_MATCH_KEY[1].KEY }}:
+                    {{ item.ITEM.LIST_MATCH_KEY[1].VALUE }}</span
+                  >
+                </p>
               </td>
               <td>
                 <p class="mb-0 mt-4">{{ formatPrice(item.ITEM.PRICE) }}</p>
