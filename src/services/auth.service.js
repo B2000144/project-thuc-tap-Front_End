@@ -42,8 +42,6 @@ class AuthService {
     }
   }
 
-
-
   handleError(error) {
     if (error.response) {
       console.error("Response error:", error.response.data);

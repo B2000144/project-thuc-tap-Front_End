@@ -1,9 +1,7 @@
 <template>
   <div class="login-page">
     <NavBar />
-    <div
-      class="login-container d-flex align-items-center justify-content-center"
-    >
+    <div class="login-container d-flex align-items-center justify-content-center">
       <div class="card login-card shadow-lg p-3 mb-5 bg-white rounded">
         <div class="card-body">
           <h5 class="card-title text-center mb-4">Đăng nhập</h5>
@@ -15,24 +13,21 @@
                 id="form2Example1"
                 class="form-control text-center"
               />
-              <label
-                class="form-label text-center text-muted"
-                for="form2Example1"
-                >Tên người dùng</label
-              >
+              <label class="form-label text-center text-muted" for="form2Example1">Tên người dùng</label>
             </div>
             <div data-mdb-input-init class="form-outline mb-4">
-              <input
-                v-model="password"
-                type="password"
-                id="form2Example2"
-                class="form-control text-center"
-              />
-              <label
-                class="form-label text-center text-muted"
-                for="form2Example2"
-                >Mật khẩu</label
-              >
+              <div class="password-container">
+                <input
+                  v-model="password"
+                  :type="showPassword ? 'text' : 'password'"
+                  id="form2Example2"
+                  class="form-control text-center"
+                />
+                <span class="toggle-password" @click="togglePasswordVisibility">
+                  <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+                </span>
+              </div>
+              <label class="form-label text-center text-muted" for="form2Example2">Mật khẩu</label>
             </div>
             <div class="text-center mb-4">
               <button type="submit" class="btn-custom-green">Đăng nhập</button>
@@ -41,9 +36,7 @@
           <div class="text-center mb-4">
             <p class="text-muted">Trở thành thành viên của chúng tôi</p>
             <p>
-              <strong class="register-link" @click="redirectToRegister"
-                >Đăng ký ngay</strong
-              >
+              <strong class="register-link" @click="redirectToRegister">Đăng ký ngay</strong>
             </p>
           </div>
           <div v-if="errorMessage" class="alert alert-danger" role="alert">
@@ -73,11 +66,13 @@ export default {
       user_name: "",
       password: "",
       errorMessage: "",
+      showPassword: false, // Track password visibility
     };
   },
   methods: {
     async login() {
       console.log("Bắt đầu yêu cầu đăng nhập");
+
       try {
         const data = await AuthService.login({
           user_name: this.user_name,
@@ -85,15 +80,11 @@ export default {
         });
         console.log("Dữ liệu phản hồi:", data.data);
 
-        // Kiểm tra xem biến data có tồn tại không
         if (data && typeof data === "object") {
-          // Kiểm tra xem biến data có thuộc tính accessToken không
           if (data.data.accessToken) {
             console.log("Đăng nhập thành công");
             Cookies.set("access_token", data.data.accessToken, { expires: 1 });
-            Cookies.set("refresh_token", data.data.refreshToken, {
-              expires: 1,
-            });
+            Cookies.set("refresh_token", data.data.refreshToken, { expires: 1 });
             this.$router.push("/");
           } else {
             throw new Error("Không có accessToken trong phản hồi");
@@ -103,12 +94,14 @@ export default {
         }
       } catch (error) {
         console.error("Lỗi:", error);
-        this.errorMessage =
-          error.message || "Đăng nhập không thành công. Vui lòng thử lại sau.";
+        this.errorMessage = "Bạn đã nhập sai tên đăng nhập hoặc mật khẩu.";
       }
     },
     redirectToRegister() {
       this.$router.push("/register");
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
     },
   },
 };
@@ -183,5 +176,26 @@ export default {
 
 .register-link:hover {
   color: #0056b3;
+}
+
+.password-container {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.toggle-password i {
+  font-size: 16px;
+  color: #888;
+}
+
+.toggle-password i:hover {
+  color: #333;
 }
 </style>
