@@ -24,7 +24,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in cart" :key="index">
+            <tr v-for="item in cart" :key="item.ITEM._id">
               <td>
                 <div class="d-flex align-items-center">
                   <img
@@ -76,7 +76,8 @@
                         updateNumberCartPlus(
                           item.ITEM.ID_PRODUCT,
                           item.ITEM._id,
-                          item.ITEM.QUANTITY + 1
+                          item.ITEM.QUANTITY + 1,
+                          item.ITEM._id
                         )
                       "
                       class="btn btn-sm btn-plus rounded-circle bg-light border"
@@ -243,7 +244,12 @@ export default {
         alert("bạn chưa có hàng trong giỏ");
       }
     },
-    async updateNumberCartPlus(id_product, id_list_product, newNumber) {
+    async updateNumberCartPlus(
+      id_product,
+      id_list_product,
+      newNumber,
+      item_id
+    ) {
       try {
         const response = await cartService.updateCart({
           id_product: id_product,
@@ -254,7 +260,7 @@ export default {
         if (response && response.success) {
           // Cập nhật số lượng trong giỏ hàng cục bộ
           const itemIndex = this.cart.findIndex(
-            (item) => item.ITEM.ID_PRODUCT === id_product
+            (item) => item.ITEM._id === item_id
           );
           if (itemIndex !== -1) {
             // Update QUANTITY trong ITEM
@@ -271,11 +277,8 @@ export default {
       id_product,
       id_list_product,
       newNumber,
-      id_delete
+      item_id
     ) {
-      console.log("id_product", id_product);
-      console.log("id_list_product", id_list_product);
-      console.log("newNumber", newNumber);
       try {
         if (newNumber >= 0) {
           const response = await cartService.updateCart({
@@ -285,7 +288,7 @@ export default {
           });
           if (response && response.success) {
             const itemIndex = this.cart.findIndex(
-              (item) => item.ITEM.ID_PRODUCT === id_product
+              (item) => item.ITEM._id === item_id
             );
             if (newNumber === 0) {
               const result = await Swal.fire({
@@ -296,7 +299,7 @@ export default {
                 denyButtonText: `Không`,
               });
               if (result.isConfirmed) {
-                await cartService.deleteCart(id_delete); // xem lai
+                await cartService.deleteCart(item_id);
                 this.cart.splice(itemIndex, 1);
               }
             } else {

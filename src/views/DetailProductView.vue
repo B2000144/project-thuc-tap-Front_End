@@ -705,7 +705,11 @@ export default {
           console.error("Lỗi khi thêm vào giỏ hàng:", response);
         }
       } catch (error) {
-        console.error("Lỗi khi thêm vào giỏ hàng:", error);
+        Swal.fire({
+          title: "Bạn chưa đăng nhập?",
+          text: "hãy đăng nhập để thêm sản phẩm vào giỏ hàng",
+          icon: "question",
+        });
       }
     },
     async getCategory() {
