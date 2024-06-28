@@ -49,5 +49,6 @@ class ProductService {
       throw error;
     }
   }
+   
 }
 export default new ProductService();

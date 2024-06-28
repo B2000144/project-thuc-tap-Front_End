@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import Pagination from "v-pagination-3";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
 import Featurs from "@/components/User/Home/Featurs.vue";
@@ -100,7 +99,6 @@ export default {
     Featurs,
     Hero,
     ProductCard,
-    Pagination,
   },
   data() {
     return {
