@@ -11,7 +11,7 @@
             </div>
             <div class="featurs-content text-center">
               <h5>Miễn phí vận chuyển</h5>
-              <p class="mb-0">Miễn phí cho đơn hàng từ 300$</p>
+              <p class="mb-0">Miễn phí cho đơn hàng từ 300.000đ</p>
             </div>
           </div>
         </div>
