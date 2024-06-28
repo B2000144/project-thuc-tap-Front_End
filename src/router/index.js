@@ -144,6 +144,15 @@ const routes = [
         /* webpackChunkName: "about" */ "../views/DashBoardUser.vue"
       ),
   },
+
+  {
+    path: "/admin/category",
+    name: "DashboardCategory",
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/DashBoardCategory.vue"
+      ),
+  },
 ];
 
 const router = createRouter({
