@@ -695,7 +695,7 @@ export default {
           });
         }
       } catch (error) {
-        console.error(error.message, response);
+        console.error(error.message,);
       }
     },
     async getPriceKV() {
@@ -720,7 +720,7 @@ export default {
           console.error("Unexpected response structure:", response);
         }
       } catch (error) {
-        console.error(error.message, response);
+        console.error(error.message, );
       }
     },
     async getCategory() {
