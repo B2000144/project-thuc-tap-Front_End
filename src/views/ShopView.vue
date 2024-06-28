@@ -1,5 +1,6 @@
 <template>
   <NavBar />
+  <Search />
   <div class="container-fluid fruite">
     <div class="container py-5">
       <h1 class="mb-4">Fresh fruits shop</h1>
@@ -7,35 +8,23 @@
         <div class="col-lg-12">
           <div class="row g-4">
             <div class="col-xl-3">
-              <div class="input-group w-100 mx-auto d-flex">
-                <input
-                  type="search"
-                  class="form-control p-3"
-                  placeholder=""
-                  aria-describedby="search-icon-1"
-                />
-                <span id="search-icon-1" class="input-group-text p-3"
-                  ><i class="fa fa-search"></i
-                ></span>
-              </div>
             </div>
             <div class="col-6"></div>
             <div class="col-xl-3">
               <div
                 class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4"
               >
-                <label for="fruits">Default Sorting:</label>
+                <label for="fruits">Xếp Theo:</label>
                 <select
                   id="fruits"
                   name="fruitlist"
                   class="border-0 form-select-sm bg-light me-3"
                   form="fruitform"
-                >
-                  <option value="volvo">Nothing</option>
-                  <option value="saab">Popularity</option>
-                  <option value="opel">Organic</option>
-                  <option value="audi">Fantastic</option>
-                </select>
+                  >
+                    <option value="all">Tất Cả</option>
+                    <option value="high">Giá Thấp Đến Cao</option>
+                    <option value="short">Giá Cao Đến Thấp</option>
+                  </select>
               </div>
             </div>
           </div>
@@ -44,49 +33,18 @@
               <div class="row g-4">
                 <div class="col-lg-12">
                   <div class="mb-3">
-                    <h4>Categories</h4>
-                    <ul class="list-unstyled fruite-categorie">
-                      <li>
-                        <div class="d-flex justify-content-between fruite-name">
-                          <a href="#"
-                            ><i class="fas fa-apple-alt me-2"></i>Thời Trang</a
-                          >
-                          <span>(3)</span>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="d-flex justify-content-between fruite-name">
-                          <a href="#"
-                            ><i class="fas fa-apple-alt me-2"></i>Đồ Ăn</a
-                          >
-                          <span>(5)</span>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="d-flex justify-content-between fruite-name">
-                          <a href="#"
-                            ><i class="fas fa-apple-alt me-2"></i>Điện Thoại</a
-                          >
-                          <span>(2)</span>
-                        </div>
-                      </li>
-                      <!-- <li>
-                        <div class="d-flex justify-content-between fruite-name">
-                          <a href="#"
-                            ><i class="fas fa-apple-alt me-2"></i>Banana</a
-                          >
-                          <span>(8)</span>
-                        </div> -->
-                      <!-- </li>
-                      <li>
-                        <div class="d-flex justify-content-between fruite-name">
-                          <a href="#"
-                            ><i class="fas fa-apple-alt me-2"></i>Pumpkin</a
-                          >
-                          <span>(5)</span>
-                        </div>
-                      </li> -->
-                    </ul>
+                     <h4>Categories</h4>
+                      <ul class="list-unstyled fruite-categorie">
+                        <li v-for="category in nameCategory" :key="category._id">
+                          <div class="d-flex justify-content-between fruite-name">
+                            <a href="#" class="a" 
+                              @click="filterProductsByCategory(category._id)">
+                              <i class="fas fa-apple-alt me-2"></i>{{ category.CATEGORY_NAME }}
+                            </a>
+                            <span>({{ getProductCountByCategory(category._id) }})</span>
+                          </div>
+                        </li>
+                      </ul>
                   </div>
                 </div>
                 <div class="col-lg-12">
@@ -112,7 +70,7 @@
                     >
                   </div>
                 </div>
-                <div class="col-lg-12">
+                <!-- <div class="col-lg-12">
                   <div class="mb-3">
                     <h4>Additional</h4>
                     <div class="mb-2">
@@ -166,8 +124,8 @@
                       <label for="Categories-5"> Expired</label>
                     </div>
                   </div>
-                </div>
-                <div class="col-lg-12">
+                </div> -->
+                <!-- <div class="col-lg-12">
                   <h4 class="mb-3">Featured products</h4>
                   <div class="d-flex align-items-center justify-content-start">
                     <div
@@ -252,15 +210,15 @@
                         </h5>
                       </div>
                     </div>
-                  </div>
-                  <div class="d-flex justify-content-center my-4">
+                  </div> -->
+                  <!-- <div class="d-flex justify-content-center my-4">
                     <a
                       href="#"
                       class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100"
                       >Vew More</a
                     >
                   </div>
-                </div>
+                </div> -->
                 <div class="col-lg-12">
                   <div class="position-relative">
                     <img
@@ -322,8 +280,6 @@
                           }}
                         </p>
                         <p
-                          @mouseenter="showSizes = true"
-                          @mouseleave="showSizes = false"
                           @click="addCartNonKV(item._id)"
                           href="#"
                           class="btn border border-secondary rounded-pill px-3 text-primary"
@@ -331,28 +287,6 @@
                           <i class="fa fa-shopping-bag me-2 text-primary"></i>
                           Thêm Vào Giỏ Hàng
                         </p>
-
-                        <!-- Add the sizes dropdown inside the button div -->
-                        <div class="sizes-dropdown" v-if="showSizes">
-                          <ul class="list-unstyled">
-                            <li>
-                              <button class="btn btn-outline-secondary">
-                                Size S
-                              </button>
-                            </li>
-                            <li>
-                              <button class="btn btn-outline-secondary">
-                                Size M
-                              </button>
-                            </li>
-                            <li>
-                              <button class="btn btn-outline-secondary">
-                                Size L
-                              </button>
-                            </li>
-                            <!-- Add more sizes as needed -->
-                          </ul>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -375,7 +309,6 @@
       />
     </div>
   </div>
-
   <AppFooter />
 </template>
 <script>
@@ -386,18 +319,20 @@ import productService from "@/services/product.service";
 import PriceService from "@/services/price.service";
 import cartService from "@/services/cart.service";
 import Swal from "sweetalert2";
-import getCookie from "@/utils/getCookie";
-const numberCart = 0;
+import Search from "@/components/User/Home/Search.vue";
+import categoryService from "@/services/category.service";
 export default {
   name: "ShopView",
   components: {
     NavBar,
     AppFooter,
-    Pagination,
+    Search,
+    Pagination
   },
   data() {
     return {
-      showSizes: false,
+      nameCategory: [], // Danh sách các danh mục
+      productCategory: [], // Danh sách sản phẩm theo danh mục
       products: [],
       productAll: [],
       prices: [],
@@ -411,9 +346,12 @@ export default {
 
   async created() {
     try {
+      await this.getCategory(); // Lấy danh sách danh mục
+      await this.getProductCategory(); // Lấy sản phẩm cho từng danh mục
       await this.getProduct();
       await this.getAllProduct();
       await this.getPriceProduct();
+      await this.addCartNonKV();
     } catch (error) {
       console.error("Error during component initialization:", error);
     }
@@ -428,6 +366,43 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    async getCategory() {
+      try {
+        // Gọi service để lấy danh sách danh mục
+        const response = await categoryService.getAll();
+        if (response && response.data) {
+          this.nameCategory = response.data;
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    },
+    async getProductCategory() {
+      try {
+        // Gọi service để lấy sản phẩm cho từng danh mục
+        const promises = this.nameCategory.map(async (category) => {
+          const response = await productService.getProductByIdCategory(category._id);
+          return response && response.data ? response.data : [];
+        });
+        this.productCategory = await Promise.all(promises);
+      } catch (error) {
+        console.error("Error fetching products by category:", error);
+      }
+    },
+    filterProductsByCategory(categoryId) {
+      // Lọc sản phẩm theo loại danh mục
+      this.products = this.productAll.filter(product => product.CATEGORY_ID === categoryId);
+    },
+    getProductCountByCategory(categoryId, typeProductId) {
+  // Tính số lượng sản phẩm trong danh mục và loại sản phẩm
+  let count = 0;
+  for (const product of this.productAll) {
+    if (product.CATEGORY_ID === categoryId && product.TYPE_PRODUCT_ID === typeProductId) {
+      count += 1;
+    }
+  }
+  return count;
     },
     async getProduct() {
       try {
@@ -479,38 +454,31 @@ export default {
     },
     async addCartNonKV(productId) {
       try {
-        if (getCookie("access_token")) {
-          const response = await cartService.addCart(productId);
-          if (response && response.data) {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 800,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Thêm sản phẩm vào giỏ hàng thành công",
-            });
-          } else {
-            console.error("Unexpected response structure:", response);
-          }
-        } else {
-          Swal.fire({
-            title: "Bạn chưa đăng nhập?",
-            text: "hãy đăng nhập để thêm sản phẩm vào giỏ hàng",
-            icon: "question",
+        const response = await cartService.addCart(productId);
+        if (response && response.data) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 800,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
           });
+          Toast.fire({
+            icon: "success",
+            title: "Thêm sản phẩm vào giỏ hàng thành công",
+          });
+        } else {
+          console.error("Unexpected response structure:", response);
         }
       } catch (error) {
         console.error("lỗi khi thêm sp vào giỏ:", error);
       }
     },
+    
   },
 };
 </script>
@@ -566,19 +534,8 @@ export default {
 .VuePagination__count {
   display: none;
 }
-/* drop down */
-.sizes-dropdown {
-  position: absolute;
-  top: calc(100% + 10px);
-  left: 0;
-  width: 100%;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  display: none; /* Initially hidden */
+.a{
+  color: black;
 }
-.btn:hover .sizes-dropdown {
-  display: block;
-}
+
 </style>
