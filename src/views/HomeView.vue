@@ -3,6 +3,7 @@
     <NavBar />
     <Hero />
     <Featurs />
+    <Search />
     <div class="container-fluid fruite py-5">
       <div class="container py-5">
         <div class="tab-class text-center">
@@ -90,6 +91,7 @@ import Hero from "@/components/User/Home/Hero.vue";
 import ProductCard from "@/components/User/Home/ProductCard.vue";
 import categoryService from "@/services/category.service";
 import productService from "@/services/product.service";
+import Search from "@/components/User/Home/Search.vue";
 
 export default {
   name: "HomeView",
@@ -99,6 +101,7 @@ export default {
     Featurs,
     Hero,
     ProductCard,
+    Search
   },
   data() {
     return {
