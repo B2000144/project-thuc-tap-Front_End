@@ -5,6 +5,7 @@
       <Nav />
       <main class="content px-3 py-2">
         <div class="container-fluid">
+
           <h1 class="mb-4 text-center">Sản phẩm trong cửa hàng</h1>
           <table class="table table-bordered">
             <thead>
@@ -136,4 +137,3 @@ export default {
   text-align: center; /* Center text alignment for list */
 }
 </style>
-ccc
