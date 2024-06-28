@@ -4,15 +4,30 @@
     <div class="container">
       <div class="content">
         <h2>Xác Minh Tài Khoản</h2>
-        <p>Mã OTP đã được gửi đến địa chỉ email của bạn. Vui lòng nhập mã OTP để xác minh.</p>
+        <p>
+          Mã OTP đã được gửi đến địa chỉ email của bạn. Vui lòng nhập mã OTP để
+          xác minh.
+        </p>
         <form @submit.prevent="verifyOtp">
-          <input type="text" v-model="code" maxlength="6" placeholder="Nhập mã OTP" required>
+          <input
+            type="text"
+            v-model="code"
+            maxlength="6"
+            placeholder="Nhập mã OTP"
+            required
+          />
           <button type="submit">Xác Minh</button>
-          <p v-if="timeRemaining > 0" class="time-remaining">Thời gian còn lại: {{ timeRemainingDisplay }}</p>
+          <p v-if="timeRemaining > 0" class="time-remaining">
+            Thời gian còn lại: {{ timeRemainingDisplay }}
+          </p>
         </form>
-        <p v-if="showResendMessage" class="resend-message">{{ resendMessage }}</p>
-        
-        <p class="resend" >Không nhận được mã? <a @click="EmailOtp">Gửi lại mã</a></p>
+        <p v-if="showResendMessage" class="resend-message">
+          {{ resendMessage }}
+        </p>
+
+        <p class="resend">
+          Không nhận được mã? <a @click="sendNewOtp">Gửi lại mã</a>
+        </p>
       </div>
     </div>
     <AppFooter />
@@ -24,6 +39,7 @@ import AppFooter from "@/components/User/layout/AppFooter.vue";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AuthService from "@/services/auth.service";
 import EmailService from "@/services/email.service";
+
 export default {
   name: "otpUser",
   components: {
@@ -32,84 +48,86 @@ export default {
   },
   data() {
     return {
-      email: '',
-      code: '',
-      otpSentTime: null,
-      timeRemaining: 300,
-      showResendMessage: false,
-      resendMessage: 'Mã OTP mới đã được gửi.'
+      email: "", // Thêm trường email để lưu trữ email đăng ký
+      code: "", // Biến lưu mã OTP nhập vào từ người dùng
+      otpSentTime: null, // Thời điểm gửi mã OTP
+      timeRemaining: 300, // Thời gian còn lại để nhập mã OTP
+      showResendMessage: false, // Hiển thị thông báo gửi lại mã
+      resendMessage: "", // Tin nhắn hiển thị khi gửi lại mã
     };
   },
   computed: {
     timeRemainingDisplay() {
       const minutes = Math.floor(this.timeRemaining / 60);
       const seconds = this.timeRemaining % 60;
-      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    }
+      return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    },
   },
-  methods:{
-        async EmailOtp(){
-        try {
-           const response = EmailService.sendMailOTP({
-            email: localStorage.getItem('registeredEmail')
-           });
-        const { message, success } = response;
+  methods: {
+    async sendNewOtp() {
+      try {
+        const response = await EmailService.sendMailOTP({
+          email: this.email, // Sử dụng this.email thay vì localStorage.getItem("registeredEmail")
+        });
+        const { message, success } = response.data; // Trích xuất dữ liệu từ phản hồi
         if (success) {
           this.showResendMessage = true;
-          this.resendMessage = message || 'Mã OTP mới đã được gửi.';
+          this.resendMessage = message || "Mã OTP mới đã được gửi.";
           this.otpSentTime = new Date();
           this.timeRemaining = 300;
-          alert('Mã OTP mới đã được gửi.');
+          alert("Mã OTP mới đã được gửi.");
         } else {
-          alert(message || 'Có lỗi xảy ra khi gửi lại mã OTP.');
+          throw new Error(message || "Có lỗi xảy ra khi gửi lại mã OTP.");
         }
       } catch (error) {
-        console.error('Lỗi khi gửi lại mã OTP:', error);
-        alert('Đã xảy ra lỗi trong quá trình gửi lại mã OTP.');
+        console.error("Lỗi khi gửi lại mã OTP:", error);
+        alert("Đã xảy ra lỗi trong quá trình gửi lại mã OTP.");
       }
     },
-  
+
     async verifyOtp() {
       const currentTime = new Date();
-      if (!this.otpSentTime || (currentTime - this.otpSentTime) > 300000) {
-        alert('Mã OTP đã hết hạn. Vui lòng gửi lại mã.');
-        this.resendOtp();
+      if (!this.otpSentTime || currentTime - this.otpSentTime > 300000) {
+        alert("Mã OTP đã hết hạn. Vui lòng gửi lại mã.");
+        this.sendNewOtp();
         return;
       }
-      
+
       try {
-        const response = await AuthService.activeOtp(localStorage.getItem('registeredEmail'), this.code);
-        const  success  = response;
-        console.log (response)
+        const response = await AuthService.activeOtp(this.email, this.code);
+        const success = response; // Trích xuất dữ liệu từ phản hồi
         if (success) {
-          alert('Xác minh thành công.');
-          //this.otpSentTime = new Date(); // Cập nhật lại thời gian gửi OTP thành công
-          this.$router.push( '/login');
-    
+          alert("Xác minh thành công.");
+          localStorage.removeItem("registeredEmail"); // Xóa email đã lưu trong localStorage
+          this.$router.push("/login");
+        } else {
+          throw new Error("Xác minh không thành công.");
         }
       } catch (error) {
-        console.error('Lỗi khi xác minh OTP:', error);
-        alert('Đã xảy ra lỗi trong quá trình xác minh OTP.');
+        console.error("Lỗi khi xác minh OTP:", error);
+        alert("Đã xảy ra lỗi trong quá trình xác minh OTP.");
       }
     },
+
     resendOtp() {
       this.showResendMessage = true;
       this.otpSentTime = new Date();
       this.timeRemaining = 300;
-      localStorage.setItem('registeredEmail', this.email);
+      localStorage.setItem("registeredEmail", this.email);
     },
+
     updateTimeRemaining() {
       const currentTime = new Date();
       const elapsedTime = Math.floor((currentTime - this.otpSentTime) / 1000);
       this.timeRemaining = Math.max(300 - elapsedTime, 0);
-    }
+    },
   },
   mounted() {
-    const storedEmail = localStorage.getItem('registeredEmail');
+    const storedEmail = localStorage.getItem("registeredEmail");
     if (storedEmail) {
       this.email = storedEmail;
     }
-    
+
     this.resendOtp();
     setInterval(this.updateTimeRemaining, 1000);
   },
@@ -133,7 +151,7 @@ export default {
   text-align: center;
   max-width: 400px;
   width: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: white;
 }
 
@@ -185,7 +203,6 @@ button:hover {
 
 .resend a {
   color: #0072ff;
-
 }
 
 .resend a:hover {

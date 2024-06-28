@@ -27,6 +27,12 @@
               @click="selectTab('shipping-address')"
               >Địa chỉ giao hàng</a
             >
+            <a
+              class="list-group-item list-group-item-action"
+              href="#order"
+              @click="selectTab('order')"
+              >Đơn hàng</a
+            >
             <button type="button" class="btn btn-danger mt-3" @click="logout">
               Đăng xuất
             </button>
@@ -370,6 +376,57 @@
                 </div>
               </div>
             </div>
+            <!-- tab thông tin đơn hàng -->
+            <div
+              class="tab-pane fade"
+              :class="{ 'active show': selectedTab === 'order' }"
+              id="order"
+            >
+              <div class="card-body pb-2">
+                <h1>Danh sách đơn hàng mới nhất</h1>
+                <div class="container mt-5">
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col">STT</th>
+                          <th scope="col">Mã đơn hàng</th>
+                          <th scope="col">Ngày đặt</th>
+                          <th scope="col">Thành tiền</th>
+                          <th scope="col">Trạng thái thanh toán</th>
+                          <th scope="col">Phương thức thanh toán</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="(order, index) in filteredOrders"
+                          :key="order._id"
+                        >
+                          <td>{{ index + 1 }}</td>
+                          <td>{{ order.ORDER_CODE }}</td>
+                          <td>{{ formatDateTime(order.TIME_PAYMENT) }}</td>
+                          <td>
+                            {{
+                              totalPriceOrder(order).toLocaleString("vi-VN", {
+                                style: "currency",
+                                currency: "VND",
+                              })
+                            }}
+                          </td>
+                          <td>
+                            {{
+                              getLastOrderStatus(order.LIST_STATUS).STATUS_NAME
+                            }}
+                          </td>
+                          <td>{{ order.PAYMENT_METHOD }}</td>
+                        </tr>
+                        <!-- Các dòng dữ liệu khác có thể thêm vào đây -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -383,6 +440,8 @@ import AddressService from "@/services/addresses.service";
 import userService from "@/services/user.service";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
+import orderService from "@/services/order.service";
+
 export default {
   name: "UserInformation",
   components: {
@@ -391,6 +450,7 @@ export default {
   },
   data() {
     return {
+      orderUser: [],
       is_loading: true,
       showModal: false,
       showModalEdit: false,
@@ -429,8 +489,37 @@ export default {
     console.log(this.user);
     await this.fetchUserById();
     console.log("lấy user theo ID", this.userById);
+    await this.fetchOrderUser();
+    console.log("lấy order theo user", this.orderUser[0]);
   },
   methods: {
+    async fetchOrderUser() {
+      try {
+        const response = await orderService.getOrderUser();
+        if (response && response.data) {
+          this.orderUser = response.data;
+          console.log(this.orderUser);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    getLastOrderStatus(statusList) {
+      // Lấy trạng thái đơn hàng cuối cùng từ danh sách trạng thái
+      return statusList[statusList.length - 1];
+    },
+    formatDateTime(dateTimeStr) {
+      // Hàm format ngày giờ theo định dạng mong muốn
+      // Bạn có thể sử dụng thư viện moment.js hoặc native JavaScript
+      return dateTimeStr ? new Date(dateTimeStr).toLocaleString() : "";
+    },
+    totalPriceOrder(order) {
+      let totalPriceOrder = 0;
+      order.LIST_PRODUCT.forEach((product) => {
+        totalPriceOrder += product.UNITPRICES * product.QLT;
+      });
+      return totalPriceOrder;
+    },
     async fetchUserById() {
       try {
         const response = await userService.getUserById(this.user.USER_ID);
@@ -555,6 +644,17 @@ export default {
 
     selectTab(tab) {
       this.selectedTab = tab;
+    },
+  },
+  computed: {
+    filteredOrders() {
+      const uniqueOrders = {};
+      this.orderUser.forEach((order) => {
+        if (!uniqueOrders[order.ORDER_CODE]) {
+          uniqueOrders[order.ORDER_CODE] = order;
+        }
+      });
+      return Object.values(uniqueOrders);
     },
   },
   closeModal() {

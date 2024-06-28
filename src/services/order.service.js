@@ -11,5 +11,13 @@ class OrderService {
       console.log(error);
     }
   }
+  async getOrderUser() {
+    try {
+      const response = await this.api.get("/");
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 export default new OrderService();
