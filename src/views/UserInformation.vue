@@ -33,7 +33,11 @@
               @click="selectTab('order')"
               >Đơn hàng</a
             >
-            <button type="button" class="btn btn-danger mt-3" @click="logout">
+            <button
+              type="button"
+              class="btn btn-danger mt-3 my-3"
+              @click="logout"
+            >
               Đăng xuất
             </button>
           </div>
@@ -383,18 +387,20 @@
               id="order"
             >
               <div class="card-body pb-2">
-                <h1>Danh sách đơn hàng mới nhất</h1>
+                <h1 class="text-center">Danh sách đơn hàng mới nhất</h1>
                 <div class="container mt-5">
                   <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                       <thead class="thead-dark">
                         <tr>
-                          <th scope="col">STT</th>
-                          <th scope="col">Mã đơn hàng</th>
-                          <th scope="col">Ngày đặt</th>
-                          <th scope="col">Thành tiền</th>
-                          <th scope="col">Trạng thái thanh toán</th>
-                          <th scope="col">Phương thức thanh toán</th>
+                          <th class="col text-center">STT</th>
+                          <th class="col text-center">Mã đơn hàng</th>
+                          <th class="col text-center">Ngày đặt</th>
+                          <th class="col text-center">Thành tiền</th>
+                          <th class="col text-center">Trạng thái thanh toán</th>
+                          <th class="col text-center">
+                            Phương thức thanh toán
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -402,10 +408,12 @@
                           v-for="(order, index) in filteredOrders"
                           :key="order._id"
                         >
-                          <td>{{ index + 1 }}</td>
-                          <td>{{ order.ORDER_CODE }}</td>
-                          <td>{{ formatDateTime(order.TIME_PAYMENT) }}</td>
-                          <td>
+                          <td class="text-center">{{ index + 1 }}</td>
+                          <td class="text-center">{{ order.ORDER_CODE }}</td>
+                          <td class="text-center">
+                            {{ formatDateTime(order.TIME_PAYMENT) }}
+                          </td>
+                          <td class="text-center">
                             {{
                               totalPriceOrder(order).toLocaleString("vi-VN", {
                                 style: "currency",
@@ -413,12 +421,14 @@
                               })
                             }}
                           </td>
-                          <td>
+                          <td class="text-center">
                             {{
                               getLastOrderStatus(order.LIST_STATUS).STATUS_NAME
                             }}
                           </td>
-                          <td>{{ order.PAYMENT_METHOD }}</td>
+                          <td class="text-center">
+                            {{ order.PAYMENT_METHOD }}
+                          </td>
                         </tr>
                         <!-- Các dòng dữ liệu khác có thể thêm vào đây -->
                       </tbody>
