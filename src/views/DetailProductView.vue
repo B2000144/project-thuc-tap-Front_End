@@ -563,6 +563,7 @@ import cartService from "@/services/cart.service";
 import categoryService from "@/services/category.service";
 import Search from "@/components/User/Home/Search.vue";
 import Swal from "sweetalert2";
+import getCookie from "@/utils/getCookie";
 export default {
   name: "UserDetail",
   components: {
@@ -574,6 +575,7 @@ export default {
     return {
       products: [],
       price: [],
+      priceKV: [],
       cart: [],
       productCategory: [],
       nameCategory: [],
@@ -603,16 +605,16 @@ export default {
   async created() {
     try {
       await this.getProduct();
-      console.log("Mãng product", this.products);
+
       await this.getPriceProduct();
-      console.log("Mảng price", this.price);
+
       await this.getCategory();
-      console.log("Mảng categories", this.nameCategory);
+
       await this.getProductCategory();
-      console.log("mãng product category", this.productCategory);
+
       await this.selectColor();
-      // console.log("mau sac duoc chon", this.color);
-      console.log("ID sản phẩm:", this.productId);
+
+      await this.getPriceKV();
     } catch (error) {
       console.error(error);
     }
@@ -636,26 +638,6 @@ export default {
         console.error(error);
       }
     },
-    //   async getPriceProduct(productId) {
-    //   try {
-    //     const response = await PriceService.getDefaultPrice(productId);
-    //     if (response && response.data && response.data[0]) {
-    //       if (productId === this.$route.params.id) {
-    //         this.price = response.data[0].PRICE_NUMBER;
-    //       } else {
-    //         const productIndex = this.productCategory.flat().findIndex(product => product._id === productId);
-    //         if (productIndex !== -1) {
-    //           this.productCategory.flat()[productIndex].price = response.data[0].PRICE_NUMBER;
-    //         }
-    //       }
-    //     } else {
-    //       console.error("Unexpected response structure:", response);
-    //     }
-    //   } catch (error) {
-    //     console.error("lỗi khi lấy giá:", error);
-    //     throw error; // Re-throw error to be caught by the caller
-    //   }
-    // },
     async getPriceProduct() {
       try {
         const response = await PriceService.getDefaultPrice(
@@ -673,6 +655,51 @@ export default {
     },
     async addToCartClick() {
       try {
+        if (getCookie("access_token")) {
+          const productId = this.$route.params.id;
+          const colorKey = this.products.LIST_PRODUCT_METADATA[0].KEY;
+          const sizeKey = this.products.LIST_PRODUCT_METADATA[1].KEY;
+          const selectedColorValue = this.selectedColor;
+          const selectedSizeValue = this.selectedSize;
+          const payload = {
+            key: [colorKey, sizeKey],
+            value: [selectedColorValue, selectedSizeValue],
+          };
+          const response = await cartService.addToCart(productId, payload);
+          if (response && response.data) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 800,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Thêm sản phẩm vào giỏ hàng thành công",
+            });
+            // console.log("Đã thêm sản phẩm vào giỏ hàng:", response.data);
+            // console.log(`${colorKey}:${selectedColorValue}, ${sizeKey}:${selectedSizeValue}`);
+          } else {
+            console.error("Lỗi khi thêm vào giỏ hàng:", response);
+          }
+        } else {
+          Swal.fire({
+            title: "Bạn chưa đăng nhập?",
+            text: "hãy đăng nhập để thêm sản phẩm vào giỏ hàng",
+            icon: "question",
+          });
+        }
+      } catch (error) {
+        console.error(error.message, response);
+      }
+    },
+    async getPriceKV() {
+      try {
         const productId = this.$route.params.id;
         const colorKey = this.products.LIST_PRODUCT_METADATA[0].KEY;
         const sizeKey = this.products.LIST_PRODUCT_METADATA[1].KEY;
@@ -682,30 +709,18 @@ export default {
           key: [colorKey, sizeKey],
           value: [selectedColorValue, selectedSizeValue],
         };
-        const response = await cartService.addToCart(productId, payload);
+        const response = await PriceService.getPriceKeyValue(
+          productId,
+          payload
+        );
         if (response && response.data) {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 800,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Thêm sản phẩm vào giỏ hàng thành công",
-          });
-          // console.log("Đã thêm sản phẩm vào giỏ hàng:", response.data);
-          // console.log(`${colorKey}:${selectedColorValue}, ${sizeKey}:${selectedSizeValue}`);
+          this.priceKV = response.data;
+          console.log("Mảng price kv:", this.priceKV);
         } else {
-          console.error("Lỗi khi thêm vào giỏ hàng:", response);
+          console.error("Unexpected response structure:", response);
         }
       } catch (error) {
-        console.error("Lỗi khi thêm vào giỏ hàng:", error);
+        console.error(error.message, response);
       }
     },
     async getCategory() {
@@ -718,24 +733,6 @@ export default {
         console.log("error", error);
       }
     },
-
-    // async getProductCategory() {
-    //   try {
-    //     const categoryId = this.products.CATEGORY_ID; // Lấy CATEGORY_ID của sản phẩm hiện tại
-    //     const productPromises = this.nameCategory.map(async (category) => {
-    //       if (category._id === categoryId) {
-    //         const response = await productService.getProductByIdCategory(category._id);
-    //         await this.getPriceProduct();
-    //         return response && response.data ? response.data.filter(product => product._id !== this.products._id) : [];
-    //         //filter loại bỏ sản phẩm hiện tại
-    //       }
-    //       return []; // Trả về mảng rỗng nếu không phải danh mục hiện tại
-    //     });
-    //     this.productCategory = await Promise.all(productPromises);
-    //   } catch (error) {
-    //     console.log("error", error);
-    //   }
-    // },
     async getProductCategory() {
       try {
         const categoryId = this.products.CATEGORY_ID; // Lấy CATEGORY_ID của sản phẩm hiện tại
@@ -769,9 +766,11 @@ export default {
     },
     selectColor(color) {
       this.selectedColor = color;
+      this.getPriceKV();
     },
     selectSize(size) {
       this.selectedSize = size;
+      this.getPriceKV();
     },
 
     increaseQuanlity() {

@@ -300,7 +300,6 @@ export default {
         const response = await AuthService.register(this.formData);
         this.message = "Đăng ký thành công!";
         this.alertClass = "alert-success";
-        console.log("Registration response:", response);
         localStorage.setItem("registeredEmail", this.formData.email_user);
         this.$router.push({ name: "OTP" });
       } catch (error) {

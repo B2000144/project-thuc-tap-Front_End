@@ -13,7 +13,6 @@ class CartService {
   }
    async addToCart(id, payload) {
     try {
-      console.log(payload)
       const response = await this.api.post(`/${id}`, payload);
       return response.data;
     } catch (error) {
