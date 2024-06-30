@@ -59,18 +59,6 @@
                     <span class="visually-hidden">Next</span>
                   </button>
                 </div>
-
-                <!-- <a href="#">
-                  <img
-                    v-if="
-                      products.LIST_FILE_ATTACHMENT_DEFAULT &&
-                      products.LIST_FILE_ATTACHMENT_DEFAULT.length > 0
-                    "
-                    :src="image_url"
-                    class="img-fluid rounded"
-                    alt="Image"
-                  />
-                </a> -->
               </div>
             </div>
             <div class="col-lg-6">
@@ -86,13 +74,6 @@
                   })
                 }}
               </h5>
-              <!-- <div class="d-flex mb-4">
-                <i class="fa fa-star text-secondary"></i>
-                <i class="fa fa-star text-secondary"></i>
-                <i class="fa fa-star text-secondary"></i>
-                <i class="fa fa-star text-secondary"></i>
-                <i class="fa fa-star"></i>
-              </div> -->
               <p class="mb-4">
                 {{ products.SHORT_DESC }}
               </p>
@@ -178,27 +159,6 @@
                       </button>
                     </div>
                   </section>
-                  <!-- Section for Quantity -->
-                  <!-- <section class="flex items-center OaFP0p">
-                <h3 class="From">Số lượng</h3>
-                <div class="flex items-center"> -->
-                  <!-- <div style="margin-right: 15px;">
-                        <div class="_9m0o30 shopee-input-quantity">
-                            <button aria-label="Decrease" class="suQW3X">
-                                <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0" class="shopee-svg-icon">
-                                    <polygon points="4.5 4.5 3.5 4.5 0 4.5 0 5.5 3.5 5.5 4.5 5.5 10 5.5 10 4.5"></polygon>
-                                </svg>
-                            </button>
-                            <input class="suQW3X u00pLG" type="text" role="spinbutton" aria-live="assertive" aria-valuenow="1" value="1">
-                            <span aria-live="polite" class="Bf9ap6">Số lượng 1</span>
-                            <button aria-label="Increase" class="suQW3X">                                <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0" class="shopee-svg-icon icon-plus-sign">
-                                    <polygon points="10 4.5 5.5 4.5 5.5 0 4.5 0 4.5 4.5 0 4.5 0 5.5 4.5 5.5 4.5 10 5.5 10 5.5 10 5.5"></polygon>
-                                </svg>
-                            </button>
-                        </div>
-                    </div> -->
-                  <!-- </div>
-            </section> -->
                 </div>
               </div>
               <nav>
@@ -215,18 +175,6 @@
                   >
                     Chi Tiết Sản Phẩm
                   </button>
-                  <!-- <button
-                    class="nav-link border-white border-bottom-0"
-                    type="button"
-                    role="tab"
-                    id="nav-mission-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#nav-mission"
-                    aria-controls="nav-mission"
-                    aria-selected="false"
-                  >
-                    Đánh Giá Sản Phẩm
-                  </button> -->
                 </div>
               </nav>
               <div class="tab-content mb-5">
@@ -245,7 +193,7 @@
           </div>
         </div>
       </div>
-      <h1 class="fw-bold mb-0">Related products</h1>
+      <h1 class="fw-bold mb-0">Sản phẩm liên quan</h1>
       <div class="row g-4">
         <div
           v-for="product in productCategory.flat()"
@@ -269,7 +217,7 @@
                 <h5 class="card-title">{{ product.NAME_PRODUCT }}</h5>
                 <p class="fw-bold mb-3">
                   {{
-                    price.toLocaleString("vi-VN", {
+                    defaultPrice.toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
                     })
@@ -278,275 +226,6 @@
               </div>
             </div>
           </router-link>
-        </div>
-      </div>
-
-      <div class="vesitable">
-        <div class="owl-carousel vegetable-carousel justify-content-center">
-          <div
-            class="border border-primary rounded position-relative vesitable-item"
-          >
-            <div class="vesitable-img">
-              <img
-                src="img/vegetable-item-6.jpg"
-                class="img-fluid w-100 rounded-top"
-                alt=""
-              />
-            </div>
-            <div
-              class="text-white bg-primary px-3 py-1 rounded position-absolute"
-              style="top: 10px; right: 10px"
-            >
-              Vegetable
-            </div>
-            <div class="p-4 pb-0 rounded-bottom">
-              <h4>Parsely</h4>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit sed do
-                eiusmod te incididunt
-              </p>
-              <div class="d-flex justify-content-between flex-lg-wrap">
-                <p class="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                <a
-                  href="#"
-                  class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                  ><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                  cart</a
-                >
-              </div>
-            </div>
-          </div>
-          <div
-            class="border border-primary rounded position-relative vesitable-item"
-          >
-            <div class="vesitable-img">
-              <img
-                src="img/vegetable-item-1.jpg"
-                class="img-fluid w-100 rounded-top"
-                alt=""
-              />
-            </div>
-            <div
-              class="text-white bg-primary px-3 py-1 rounded position-absolute"
-              style="top: 10px; right: 10px"
-            >
-              Vegetable
-            </div>
-            <div class="p-4 pb-0 rounded-bottom">
-              <h4>Parsely</h4>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit sed do
-                eiusmod te incididunt
-              </p>
-              <div class="d-flex justify-content-between flex-lg-wrap">
-                <p class="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                <a
-                  href="#"
-                  class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                  ><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                  cart</a
-                >
-              </div>
-            </div>
-          </div>
-          <div
-            class="border border-primary rounded position-relative vesitable-item"
-          >
-            <div class="vesitable-img">
-              <img
-                src="img/vegetable-item-3.png"
-                class="img-fluid w-100 rounded-top bg-light"
-                alt=""
-              />
-            </div>
-            <div
-              class="text-white bg-primary px-3 py-1 rounded position-absolute"
-              style="top: 10px; right: 10px"
-            >
-              Vegetable
-            </div>
-            <div class="p-4 pb-0 rounded-bottom">
-              <h4>Banana</h4>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit sed do
-                eiusmod te incididunt
-              </p>
-              <div class="d-flex justify-content-between flex-lg-wrap">
-                <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                <a
-                  href="#"
-                  class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                  ><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                  cart</a
-                >
-              </div>
-            </div>
-          </div>
-          <div
-            class="border border-primary rounded position-relative vesitable-item"
-          >
-            <div class="vesitable-img">
-              <img
-                src="img/vegetable-item-4.jpg"
-                class="img-fluid w-100 rounded-top"
-                alt=""
-              />
-            </div>
-            <div
-              class="text-white bg-primary px-3 py-1 rounded position-absolute"
-              style="top: 10px; right: 10px"
-            >
-              Vegetable
-            </div>
-            <div class="p-4 pb-0 rounded-bottom">
-              <h4>Bell Papper</h4>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit sed do
-                eiusmod te incididunt
-              </p>
-              <div class="d-flex justify-content-between flex-lg-wrap">
-                <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                <a
-                  href="#"
-                  class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                  ><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                  cart</a
-                >
-              </div>
-            </div>
-          </div>
-          <div
-            class="border border-primary rounded position-relative vesitable-item"
-          >
-            <div class="vesitable-img">
-              <img
-                src="img/vegetable-item-5.jpg"
-                class="img-fluid w-100 rounded-top"
-                alt=""
-              />
-            </div>
-            <div
-              class="text-white bg-primary px-3 py-1 rounded position-absolute"
-              style="top: 10px; right: 10px"
-            >
-              Vegetable
-            </div>
-            <div class="p-4 pb-0 rounded-bottom">
-              <h4>Potatoes</h4>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit sed do
-                eiusmod te incididunt
-              </p>
-              <div class="d-flex justify-content-between flex-lg-wrap">
-                <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                <a
-                  href="#"
-                  class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                  ><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                  cart</a
-                >
-              </div>
-            </div>
-          </div>
-          <div
-            class="border border-primary rounded position-relative vesitable-item"
-          >
-            <div class="vesitable-img">
-              <img
-                src="img/vegetable-item-6.jpg"
-                class="img-fluid w-100 rounded-top"
-                alt=""
-              />
-            </div>
-            <div
-              class="text-white bg-primary px-3 py-1 rounded position-absolute"
-              style="top: 10px; right: 10px"
-            >
-              Vegetable
-            </div>
-            <div class="p-4 pb-0 rounded-bottom">
-              <h4>Parsely</h4>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit sed do
-                eiusmod te incididunt
-              </p>
-              <div class="d-flex justify-content-between flex-lg-wrap">
-                <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                <a
-                  href="#"
-                  class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                  ><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                  cart</a
-                >
-              </div>
-            </div>
-          </div>
-          <div
-            class="border border-primary rounded position-relative vesitable-item"
-          >
-            <div class="vesitable-img">
-              <img
-                src="img/vegetable-item-5.jpg"
-                class="img-fluid w-100 rounded-top"
-                alt=""
-              />
-            </div>
-            <div
-              class="text-white bg-primary px-3 py-1 rounded position-absolute"
-              style="top: 10px; right: 10px"
-            >
-              Vegetable
-            </div>
-            <div class="p-4 pb-0 rounded-bottom">
-              <h4>Potatoes</h4>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit sed do
-                eiusmod te incididunt
-              </p>
-              <div class="d-flex justify-content-between flex-lg-wrap">
-                <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                <a
-                  href="#"
-                  class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                  ><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                  cart</a
-                >
-              </div>
-            </div>
-          </div>
-          <div
-            class="border border-primary rounded position-relative vesitable-item"
-          >
-            <div class="vesitable-img">
-              <img
-                src="img/vegetable-item-6.jpg"
-                class="img-fluid w-100 rounded-top"
-                alt=""
-              />
-            </div>
-            <div
-              class="text-white bg-primary px-3 py-1 rounded position-absolute"
-              style="top: 10px; right: 10px"
-            >
-              Vegetable
-            </div>
-            <div class="p-4 pb-0 rounded-bottom">
-              <h4>Parsely</h4>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit sed do
-                eiusmod te incididunt
-              </p>
-              <div class="d-flex justify-content-between flex-lg-wrap">
-                <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                <a
-                  href="#"
-                  class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                  ><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                  cart</a
-                >
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -564,6 +243,7 @@ import categoryService from "@/services/category.service";
 import Search from "@/components/User/Home/Search.vue";
 import Swal from "sweetalert2";
 import getCookie from "@/utils/getCookie";
+import priceService from "@/services/price.service";
 export default {
   name: "UserDetail",
   components: {
@@ -577,6 +257,7 @@ export default {
       price: [],
       priceKV: [],
       cart: [],
+      prices: {},
       productCategory: [],
       nameCategory: [],
       selectedColor: null,
@@ -589,6 +270,12 @@ export default {
   computed: {
     allProducts() {
       return this.productCategory.flat();
+    },
+    defaultPrice() {
+      if (this.products._id) {
+        return this.getPriceDefault(this.products._id);
+      }
+      return 0; // hoặc giá trị mặc định nếu không có sản phẩm nào được chọn
     },
   },
   watch: {
@@ -615,6 +302,7 @@ export default {
       await this.selectColor();
 
       await this.getPriceKV();
+      console.log("sp theo cate", this.productCategory);
     } catch (error) {
       console.error(error);
     }
@@ -664,6 +352,7 @@ export default {
           const payload = {
             key: [colorKey, sizeKey],
             value: [selectedColorValue, selectedSizeValue],
+            number: this.quantity,
           };
           const response = await cartService.addToCart(productId, payload);
           if (response && response.data) {
@@ -695,7 +384,25 @@ export default {
           });
         }
       } catch (error) {
-        console.error(error.message,);
+        console.error(error.message);
+      }
+    },
+    async getPriceDefault(id) {
+      try {
+        let price = 0;
+        const response = await priceService.getDefaultPrice(id);
+
+        if (response && response.data && response.data.length > 0) {
+          price = response.data[0].PRICE_NUMBER;
+        } else {
+          console.error("No default price found for product ID:", id);
+          // Bạn có thể xử lý thêm ở đây nếu cần
+        }
+
+        return price;
+      } catch (error) {
+        console.error("Error fetching default price:", error.message);
+        throw error; // Ném lỗi để xử lý ở phía gọi hàm nếu cần
       }
     },
     async getPriceKV() {
@@ -705,14 +412,13 @@ export default {
         const sizeKey = this.products.LIST_PRODUCT_METADATA[1].KEY;
         const selectedColorValue = this.selectedColor;
         const selectedSizeValue = this.selectedSize;
-        const payload = {
+
+        // Truyền thông tin key và value dưới dạng query parameters
+        const response = await PriceService.getPriceKeyValue(productId, {
           key: [colorKey, sizeKey],
           value: [selectedColorValue, selectedSizeValue],
-        };
-        const response = await PriceService.getPriceKeyValue(
-          productId,
-          payload
-        );
+        });
+
         if (response && response.data) {
           this.priceKV = response.data;
           console.log("Mảng price kv:", this.priceKV);
@@ -720,9 +426,10 @@ export default {
           console.error("Unexpected response structure:", response);
         }
       } catch (error) {
-        console.error(error.message, );
+        console.error(error.message);
       }
     },
+
     async getCategory() {
       try {
         const response = await categoryService.getAll();

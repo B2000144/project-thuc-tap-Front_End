@@ -265,28 +265,56 @@ export default {
       item_id
     ) {
       try {
-        const response = await cartService.updateCart({
-          id_product: id_product,
-          id_list_product: id_list_product,
-          numberCart: newNumber,
-        });
+        // Tìm sản phẩm trong giỏ hàng
+        const itemIndex = this.cart.findIndex(
+          (item) => item.ITEM._id === item_id
+        );
+        if (itemIndex !== -1) {
+          const productInCart = this.cart[itemIndex];
 
-        if (response && response.success) {
-          // Cập nhật số lượng trong giỏ hàng cục bộ
-          const itemIndex = this.cart.findIndex(
-            (item) => item.ITEM._id === item_id
-          );
-          if (itemIndex !== -1) {
-            // Update QUANTITY trong ITEM
-            this.cart[itemIndex].ITEM.QUANTITY = newNumber;
+          // Kiểm tra nếu số lượng mới vượt quá số lượng sản phẩm trong kho
+          if (newNumber > productInCart.ITEM.NUMBER_PRODUCT) {
+            Swal.fire({
+              icon: "error",
+              title: "Số lượng vượt quá số lượng trong kho",
+              text: `Sản phẩm này chỉ còn ${productInCart.ITEM.NUMBER_PRODUCT} trong kho.`,
+            });
+            return;
           }
-        } else {
-          console.error("Cập nhật giỏ hàng thất bại", response.message);
+
+          const response = await cartService.updateCart({
+            id_product: id_product,
+            id_list_product: id_list_product,
+            numberCart: newNumber,
+          });
+
+          if (response && response.success) {
+            // Cập nhật số lượng trong giỏ hàng cục bộ
+            if (newNumber === 0) {
+              const result = await Swal.fire({
+                title: "Bạn có muốn xóa sản phẩm ra khỏi giỏ hàng",
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: "Có",
+                denyButtonText: `Không`,
+              });
+              if (result.isConfirmed) {
+                await cartService.deleteCart(item_id);
+                this.cart.splice(itemIndex, 1);
+              }
+            } else {
+              // Update QUANTITY trong ITEM
+              this.cart[itemIndex].ITEM.QUANTITY = newNumber;
+            }
+          } else {
+            console.error("Cập nhật giỏ hàng thất bại", response.message);
+          }
         }
       } catch (error) {
         console.error(error);
       }
     },
+
     async updateNumberCartMinus(
       id_product,
       id_list_product,
