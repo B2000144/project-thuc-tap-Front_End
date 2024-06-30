@@ -12,10 +12,14 @@ class PriceService {
     }
   }
 
-  async getPriceKeyValue(id, payload) {
+  async getPriceKeyValue(id, key, value) {
     try {
-      console.log("payload service", payload);
-      const response = await this.api.get(`/${id}`, payload);
+      const response = await this.api.get(`/${id}`, {
+        params: {
+          key: key,
+          value: value,
+        },
+      });
       return response.data;
     } catch (error) {
       console.log(error);
