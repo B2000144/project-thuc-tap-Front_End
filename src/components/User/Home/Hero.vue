@@ -3,8 +3,8 @@
     <div class="container py-5">
       <div class="row g-5 align-items-center">
         <div class="col-md-12 col-lg-7">
-          <h4 class="mb-3 text-secondary">Mua hàng nhanh chóng, tiện lợi</h4>
-          <h1 class="mb-5 display-3 text-primary">
+          <h4 class="mb-3 text-a">Mua hàng nhanh chóng, tiện lợi</h4>
+          <h1 class="mb-5 display-3 text-a">
            Thương Mại Điện Tử
           </h1>
           
@@ -81,6 +81,10 @@
 export default {
   name: "HomeHero",
 };
+
 </script>
 
-<style></style>
+<style>
+.text-a{
+  color:black
+}</style>
