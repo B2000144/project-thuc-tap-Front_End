@@ -76,7 +76,7 @@
           <div class="d-flex flex-column text-start footer-item">
             <h4 class="text-light mb-3">Thông tin liên hệ</h4>
             <a class="btn-link" href="">Về chúng tôi</a>
-            <a class="btn-link" href="">Liên hệ chúng tôi</a>
+            <router-link class="btn-link" to="/contact">Liên hệ chúng tôi</router-link>
             <a class="btn-link" href="">Chính sách bảo mật</a>
             <a class="btn-link" href="">Điều khoản & Điều kiện</a>
             <a class="btn-link" href="">Chính sách hoàn trả</a>
@@ -86,9 +86,9 @@
         <div class="col-lg-3 col-md-6">
           <div class="d-flex flex-column text-start footer-item">
             <h4 class="text-light mb-3">Tài khoản</h4>
-            <a class="btn-link" href="">Tài khoản của tôi</a>
-            <a class="btn-link" href="">Chi tiết cửa hàng</a>
-            <a class="btn-link" href="">Giỏ hàng</a>
+            <router-link class="btn-link" to="/userinformation">Tài khoản của tôi</router-link>
+            <router-link class="btn-link" to="/details">Chi tiết cửa hàng</router-link>
+            <router-link class="btn-link" to="/cart">Giỏ hàng</router-link>
             <a class="btn-link" href="">Danh sách yêu thích</a>
             <a class="btn-link" href="">Lịch sử mua hàng</a>
             <a class="btn-link" href="">Đơn đặt hàng quốc tế</a>
@@ -101,7 +101,14 @@
             <p>Email: Example@gmail.com</p>
             <p>Điện thoại: +0123 4567 8910</p>
             <p>Thanh toán được chấp nhận</p>
-            <img src="img/payment.png" class="img-fluid" alt="" />
+            <div class="d-flex payment-icons">
+              <a href="https://zalopay.vn/" target="_blank">
+                <img src="/img/zalo.jpg" class="img-fluid" alt="Zalo Pay" />
+              </a>
+              <a href="https://momo.vn/" target="_blank">
+                <img src="/img/momo.jpg" class="img-fluid" alt="MoMo" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -120,4 +127,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.payment-icons img {
+  width: 50px; /* Điều chỉnh kích thước theo nhu cầu */
+  margin-right: 10px; /* Khoảng cách giữa các biểu tượng */
+}
+</style>
