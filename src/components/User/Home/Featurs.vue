@@ -61,8 +61,8 @@
         <div class="col-md-6 col-lg-4">
           <a href="#">
             <div class="service-item bg-secondary rounded border border-secondary">
-              <img src="img/15prm2.jpg" class="img-fluid rounded-top w-100" alt="Fresh Apples">
-              <div class="px-4 rounded-bottom">
+              <img src="https://res.cloudinary.com/dgfwiff6k/image/upload/v1717646398/test_folder/gdwjvwku6u2oww8cnpic.webp" class="img-fluid rounded-top w-100" alt="Fresh Apples">
+              <div class="px-4 rounded-bottom text-b">
                 <div class="service-content bg-primary text-center p-4 rounded">
                   <h5 class="text-white">iphone 15 Pro Max</h5>
                   <h3 class="mb-0">Hàng mới 100%</h3>
@@ -74,11 +74,11 @@
         <div class="col-md-6 col-lg-4">
           <a href="#">
             <div class="service-item bg-dark rounded border border-dark">
-              <img src="img/pizza.jpg" class="img-fluid rounded-top w-100" alt="Tasty Fruits">
-              <div class="px-4 rounded-bottom">
-                <div class="service-content bg-light text-center p-4 rounded">
-                  <h5 class="text-primary">Pizza New York Bò </h5>
-                  <h3 class="mb-0">Món ăn hấp dẫn </h3>
+              <img src="https://res.cloudinary.com/dgfwiff6k/image/upload/v1718022208/test_folder/nkbc69rdjva1ndmpjnll.png" class="img-fluid rounded-top w-100" alt="Tasty Fruits">
+              <div class="px-4 rounded-bottom text-b">
+                <div class="service-content bg-light text-center  rounded">
+                  <h5 class="text-c">Pizza New York Bò </h5>
+                  <h3 class="mb-0 text-c">Món ăn hấp dẫn </h3>
                 </div>
               </div>
             </div>
@@ -87,7 +87,7 @@
         <div class="col-md-6 col-lg-4">
           <a href="#">
             <div class="service-item bg-primary rounded border border-primary">
-              <img src="img/ao.jpg" class="img-fluid rounded-top w-100" alt="Exotic Vegetable">
+              <img src="https://res.cloudinary.com/dgfwiff6k/image/upload/v1718010799/test_folder/bchtr89pfqyahbiolzir.webp" class="img-fluid rounded-top w-100" alt="Exotic Vegetable">
               <div class="px-4 rounded-bottom">
                 <div class="service-content bg-secondary text-center p-4 rounded">
                   <h5 class="text-white">Áo Thun Nam BeTod</h5>
@@ -151,5 +151,11 @@ export default {
 
 .featurs-content {
   flex-grow: 1;
+}
+.text-b {
+      margin: 25px;
+}
+.text-c{
+  color: #282828
 }
 </style>
