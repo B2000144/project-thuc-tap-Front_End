@@ -49,14 +49,26 @@
               </td>
               <td>
                 <p class="mb-0 mt-4">
-                  <span class="d-block"
-                    >{{ item.ITEM.LIST_MATCH_KEY[0].KEY }}:
-                    {{ item.ITEM.LIST_MATCH_KEY[0].VALUE }}</span
+                  <span
+                    v-if="
+                      item.ITEM.LIST_MATCH_KEY && item.ITEM.LIST_MATCH_KEY[0]
+                    "
+                    class="d-block"
                   >
-                  <span class="d-block"
-                    >{{ item.ITEM.LIST_MATCH_KEY[1].KEY }}:
-                    {{ item.ITEM.LIST_MATCH_KEY[1].VALUE }}</span
+                    {{ item.ITEM.LIST_MATCH_KEY[0].KEY }}:
+                    {{ item.ITEM.LIST_MATCH_KEY[0].VALUE }}
+                  </span>
+                  <span v-else class="d-block">Thông tin không có sẵn</span>
+                  <span
+                    v-if="
+                      item.ITEM.LIST_MATCH_KEY && item.ITEM.LIST_MATCH_KEY[1]
+                    "
+                    class="d-block"
                   >
+                    {{ item.ITEM.LIST_MATCH_KEY[1].KEY }}:
+                    {{ item.ITEM.LIST_MATCH_KEY[1].VALUE }}
+                  </span>
+                  <span v-else class="d-block">Thông tin không có sẵn</span>
                 </p>
               </td>
               <td>
