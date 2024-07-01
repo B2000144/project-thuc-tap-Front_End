@@ -55,6 +55,70 @@
           </div>
         </div>
       </div>
+
+      <!--  -->
+      <div class="row g-4 justify-content-center mt-5">
+        <div class="col-md-6 col-lg-4">
+          <a href="#">
+            <div class="service-item bg-secondary rounded border border-secondary">
+              <img src="img/15prm2.jpg" class="img-fluid rounded-top w-100" alt="Fresh Apples">
+              <div class="px-4 rounded-bottom">
+                <div class="service-content bg-primary text-center p-4 rounded">
+                  <h5 class="text-white">iphone 15 Pro Max</h5>
+                  <h3 class="mb-0">Hàng mới 100%</h3>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a href="#">
+            <div class="service-item bg-dark rounded border border-dark">
+              <img src="img/pizza.jpg" class="img-fluid rounded-top w-100" alt="Tasty Fruits">
+              <div class="px-4 rounded-bottom">
+                <div class="service-content bg-light text-center p-4 rounded">
+                  <h5 class="text-primary">Pizza New York Bò </h5>
+                  <h3 class="mb-0">Món ăn hấp dẫn </h3>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a href="#">
+            <div class="service-item bg-primary rounded border border-primary">
+              <img src="img/ao.jpg" class="img-fluid rounded-top w-100" alt="Exotic Vegetable">
+              <div class="px-4 rounded-bottom">
+                <div class="service-content bg-secondary text-center p-4 rounded">
+                  <h5 class="text-white">Áo Thun Nam BeTod</h5>
+                  <h3 class="mb-0">Mẫu mới 2024</h3>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+<!-- Banner Section Start -->
+      <div class="container-fluid banner bg-secondary my-5">
+        <div class="container py-5">
+          <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+              <div class="py-4">
+                <h1 class="display-3 text-white">Thiết kế thời trang</h1>
+                <p class="fw-normal display-3 text-dark mb-4">Độ bền ấn tượng</p>
+                <p class="mb-4 text-dark">Cạnh viền uốn cong nhẹ nhàng đi kèm với khung viền Titan giúp thiết bị toát lên được vẻ ngoài sang trọng đầy tính thời thượng</p>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="position-relative">
+                <img src="img/15prm1.jpg" class="img-fluid w-100 rounded" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Banner Section End -->
+
     </div>
   </div>
 </template>
@@ -65,4 +129,27 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+/* Các kiểu hiện có */
+
+/* Thêm các kiểu bổ sung cho phần mới */
+.service-item {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.service-content {
+  flex-grow: 1;
+}
+
+.featurs-item {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.featurs-content {
+  flex-grow: 1;
+}
+</style>
