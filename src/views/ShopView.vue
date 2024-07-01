@@ -3,37 +3,67 @@
   <Search />
   <div class="container-fluid fruite">
     <div class="container py-5">
-      <h1 class="mb-4">Fresh fruits shop</h1>
+       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" >
+        <ol class="carousel-indicators slide-indi">
+          <li data-bs-target="#carouselExampleIndicators " data-bs-slide-to="0" class="active"></li>
+          <li data-bs-target="#carouselExampleIndicators " data-bs-slide-to="1"></li>
+          <li data-bs-target="#carouselExampleIndicators " data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="https://res.cloudinary.com/dgfwiff6k/image/upload/v1719589353/test_folder/nqq1g7p7fhtfhl7tc2gp.webp" class="d-block w-100 custom-img-size" alt="Slide 1">
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="https://res.cloudinary.com/dgfwiff6k/image/upload/v1719589985/test_folder/xiasufqignvtjfqknre0.webp" class="d-block w-100 custom-img-size" alt="Slide 2">
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="https://res.cloudinary.com/dgfwiff6k/image/upload/v1719590222/test_folder/gchx3lm4a9lh6dtbgnss.webp" class="d-block w-100 custom-img-size" alt="Slide 3">
+            <div class="carousel-caption d-none d-md-block">  
+            </div>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </a>
+      </div>
       <div class="row g-4">
         <div class="col-lg-12">
           <div class="row g-4">
             <div class="col-xl-3">
             </div>
             <div class="col-6"></div>
-            <div class="col-xl-3">
-              <div
-                class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4"
-              >
-                <label for="fruits">Xếp Theo:</label>
-                <select
-                  id="fruits"
-                  name="fruitlist"
-                  class="border-0 form-select-sm bg-light me-3"
-                  form="fruitform"
+             <div class="col-xl-3">
+                <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                  <label for="fruits">Xếp Theo:</label>
+                  <select
+                    id="fruits"
+                    name="fruitlist"
+                    class="border-0 form-select-sm bg-light me-3"
+                    form="fruitform"
+                    @change="filterProductsByPrice($event.target.value)"
                   >
                     <option value="all">Tất Cả</option>
-                    <option value="high">Giá Thấp Đến Cao</option>
-                    <option value="short">Giá Cao Đến Thấp</option>
+                    <option value="lowToHigh">Giá Tăng Dần</option>
+                    <option value="highToLow">Giá Thấp Dần</option>
                   </select>
+                </div>
               </div>
-            </div>
           </div>
           <div class="row g-4">
             <div class="col-lg-3">
               <div class="row g-4">
                 <div class="col-lg-12">
                   <div class="mb-3">
-                     <h4>Categories</h4>
+                     <h4>BỘ SƯU TẬP</h4>
                       <ul class="list-unstyled fruite-categorie">
                         <li v-for="category in nameCategory" :key="category._id">
                           <div class="d-flex justify-content-between fruite-name">
@@ -48,192 +78,18 @@
                   </div>
                 </div>
                 <div class="col-lg-12">
-                  <div class="mb-3">
-                    <h4 class="mb-2">Price</h4>
-                    <input
-                      type="range"
-                      class="form-range w-100"
-                      id="rangeInput"
-                      name="rangeInput"
-                      min="0"
-                      max="500"
-                      value="0"
-                      oninput="amount.value=rangeInput.value"
-                    />
-                    <output
-                      id="amount"
-                      name="amount"
-                      min-velue="0"
-                      max-value="500"
-                      for="rangeInput"
-                      >0</output
-                    >
-                  </div>
-                </div>
-                <!-- <div class="col-lg-12">
-                  <div class="mb-3">
-                    <h4>Additional</h4>
-                    <div class="mb-2">
-                      <input
-                        type="radio"
-                        class="me-2"
-                        id="Categories-1"
-                        name="Categories-1"
-                        value="Beverages"
-                      />
-                      <label for="Categories-1"> Organic</label>
-                    </div>
-                    <div class="mb-2">
-                      <input
-                        type="radio"
-                        class="me-2"
-                        id="Categories-2"
-                        name="Categories-1"
-                        value="Beverages"
-                      />
-                      <label for="Categories-2"> Fresh</label>
-                    </div>
-                    <div class="mb-2">
-                      <input
-                        type="radio"
-                        class="me-2"
-                        id="Categories-3"
-                        name="Categories-1"
-                        value="Beverages"
-                      />
-                      <label for="Categories-3"> Sales</label>
-                    </div>
-                    <div class="mb-2">
-                      <input
-                        type="radio"
-                        class="me-2"
-                        id="Categories-4"
-                        name="Categories-1"
-                        value="Beverages"
-                      />
-                      <label for="Categories-4"> Discount</label>
-                    </div>
-                    <div class="mb-2">
-                      <input
-                        type="radio"
-                        class="me-2"
-                        id="Categories-5"
-                        name="Categories-1"
-                        value="Beverages"
-                      />
-                      <label for="Categories-5"> Expired</label>
-                    </div>
-                  </div>
-                </div> -->
-                <!-- <div class="col-lg-12">
-                  <h4 class="mb-3">Featured products</h4>
-                  <div class="d-flex align-items-center justify-content-start">
-                    <div
-                      class="rounded me-4"
-                      style="width: 100px; height: 100px"
-                    >
-                      <img
-                        src="img/featur-1.jpg"
-                        class="img-fluid rounded"
-                        alt=""
-                      />
-                    </div>
-                    <div>
-                      <h6 class="mb-2">Big Banana</h6>
-                      <div class="d-flex mb-2">
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star"></i>
-                      </div>
-                      <div class="d-flex mb-2">
-                        <h5 class="fw-bold me-2">2.99 $</h5>
-                        <h5 class="text-danger text-decoration-line-through">
-                          4.11 $
-                        </h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-start">
-                    <div
-                      class="rounded me-4"
-                      style="width: 100px; height: 100px"
-                    >
-                      <img
-                        src="img/featur-2.jpg"
-                        class="img-fluid rounded"
-                        alt=""
-                      />
-                    </div>
-                    <div>
-                      <h6 class="mb-2">Big Banana</h6>
-                      <div class="d-flex mb-2">
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star"></i>
-                      </div>
-                      <div class="d-flex mb-2">
-                        <h5 class="fw-bold me-2">2.99 $</h5>
-                        <h5 class="text-danger text-decoration-line-through">
-                          4.11 $
-                        </h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-start">
-                    <div
-                      class="rounded me-4"
-                      style="width: 100px; height: 100px"
-                    >
-                      <img
-                        src="img/featur-3.jpg"
-                        class="img-fluid rounded"
-                        alt=""
-                      />
-                    </div>
-                    <div>
-                      <h6 class="mb-2">Big Banana</h6>
-                      <div class="d-flex mb-2">
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star text-secondary"></i>
-                        <i class="fa fa-star"></i>
-                      </div>
-                      <div class="d-flex mb-2">
-                        <h5 class="fw-bold me-2">2.99 $</h5>
-                        <h5 class="text-danger text-decoration-line-through">
-                          4.11 $
-                        </h5>
-                      </div>
-                    </div>
-                  </div> -->
-                  <!-- <div class="d-flex justify-content-center my-4">
-                    <a
-                      href="#"
-                      class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100"
-                      >Vew More</a
-                    >
-                  </div>
-                </div> -->
-                <div class="col-lg-12">
                   <div class="position-relative">
                     <img
-                      src="img/banner-fruits.jpg"
+                      src="https://res.cloudinary.com/dgfwiff6k/image/upload/v1719677132/test_folder/jqdflnig4gch6vkprys9.jpg"
                       class="img-fluid w-100 rounded"
                       alt=""
                     />
                     <div
                       class="position-absolute"
-                      style="top: 50%; right: 10px; transform: translateY(-50%)"
+                      style="top: 90%; left: 52px; transform: translateY(-50%)"
                     >
                       <h3 class="text-secondary fw-bold">
-                        Fresh <br />
-                        Fruits <br />
-                        Banner
+                        NEW ARRIVAL<br />
                       </h3>
                     </div>
                   </div>
@@ -243,9 +99,9 @@
             <div class="col-lg-9">
               <div class="row g-4 justify-content-center">
                 <div
-                  class="col-md-6 col-lg-6 col-xl-4 min-height"
+                  class="col-md-6 col-lg-6 col-xl-4 min-height product-container"
                   v-for="item in products"
-                  :key="item._id"
+                  :key="item._id" 
                 >
                   <div
                     class="border border-top-0 rounded position-relative fruite-item"
@@ -259,12 +115,6 @@
                           alt=""
                         /></div
                     ></router-link>
-                    <!-- <div
-                      class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                      style="top: 10px; left: 10px"
-                    >
-                      New
-                    </div> -->
                     <div class="p-4 rounded-bottom size-text">
                       <h4>{{ item.NAME_PRODUCT }}</h4>
                       <p>
@@ -287,6 +137,10 @@
                           <i class="fa fa-shopping-bag me-2 text-primary"></i>
                           Thêm Vào Giỏ Hàng
                         </p>
+                         <div class="eye-icon" @click="openModal(item)">
+                          <i class="fa fa-eye text-black"></i>
+                        </div>
+                         <p class="quick-view-text">Xem Nhanh</p>
                       </div>
                     </div>
                   </div>
@@ -310,6 +164,98 @@
     </div>
   </div>
   <AppFooter />
+  <!-- Modal for product preview -->
+  <div v-if="selectedProduct" class="modal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5);" @click.self="closeModal">
+  <div class="modal-dialog">
+    <div class="modal-content a">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ selectedProduct.NAME_PRODUCT }}</h5>
+        <button type="button" class="btn-close" @click="closeModal"></button>
+      </div>
+      <div class="modal-body">
+        <div
+          id="carouselExampleControls"
+          class="carousel slide"
+          data-bs-ride="carousel"
+        >
+          <div class="carousel-indicators">
+            <button
+              v-for="(item, index) in selectedProduct.LIST_FILE_ATTACHMENT"
+              :key="index"
+              type="button"
+              :data-bs-target="'#carouselExampleControls'"
+              :data-bs-slide-to="index"
+              :class="{ active: index === 0 }"
+              :aria-label="'Slide ' + (index + 1)"
+              :aria-current="index === 0 ? 'true' : undefined"
+            ></button>
+          </div>
+          <div class="carousel-inner">
+            <div
+              class="carousel-item"
+              v-for="(item, index) in selectedProduct.LIST_FILE_ATTACHMENT"
+              :key="index"
+              :class="{ active: index === 0 }"
+            >
+              <img :src="item.FILE_URL" class="d-block w-100" alt="" />
+            </div>
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselExampleControls"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselExampleControls"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+        <div class="p">
+          <p>{{ selectedProduct.SHORT_DESC }}</p>
+        </div>
+        
+        <p class="text-dark fs-5 fw-bold mb-0">
+          {{
+            getPrice(selectedProduct._id).toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })
+          }}
+        </p>
+
+        <!-- Color selection section -->
+        <!-- <div v-if="selectedProduct.LIST_PRODUCT_METADATA.length > 0">
+          <h5 class="mt-3">{{ selectedProduct.LIST_PRODUCT_METADATA[0].KEY }}</h5>
+          <div class="d-flex">
+            <button
+              v-for="color in selectedProduct.LIST_PRODUCT_METADATA[0].VALUE"
+              :key="color"
+              class="btn btn-outline-primary me-2"
+              :class="{ 'btn-primary': selectedColor === color }"
+              @click="selectColor(color)"
+            >
+              {{ color }}
+            </button>
+          </div>
+        </div> -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" @click="closeModal">Đóng</button>
+        <router-link :to="{ name: 'UserDetail', params: { id: selectedProduct._id } }" class="btn btn-primary">Xem Chi Tiết</router-link>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 <script>
 import NavBar from "@/components/User/layout/NavBar.vue";
@@ -321,6 +267,8 @@ import cartService from "@/services/cart.service";
 import Swal from "sweetalert2";
 import Search from "@/components/User/Home/Search.vue";
 import categoryService from "@/services/category.service";
+
+
 export default {
   name: "ShopView",
   components: {
@@ -336,11 +284,13 @@ export default {
       products: [],
       productAll: [],
       prices: [],
-
       cart: [],
+      // selectedColor: null,
       page: 1,
       limit: 6,
       skip: 1,
+      selectedProduct: null, 
+
     };
   },
 
@@ -356,7 +306,24 @@ export default {
       console.error("Error during component initialization:", error);
     }
   },
+  watch: {
+    products: {
+      handler: "getPriceProduct",
+      immediate: true // Gọi ngay lập tức khi component được tạo
+    }
+  },
   methods: {
+   
+    // selectColor(color) {
+    //   this.selectedColor = color;
+    //   const selectedAttachment = this.selectedProduct.LIST_FILE_ATTACHMENT.find(
+    //     (item) => item.COLOR === color
+    //   );
+    //   if (selectedAttachment) {
+    //     this.selectedProduct.LIST_FILE_ATTACHMENT_DEFAULT = [selectedAttachment];
+    //   }
+    // },
+
     async getAllProduct() {
       try {
         const product = await productService.getAllProduct();
@@ -395,13 +362,13 @@ export default {
       this.products = this.productAll.filter(product => product.CATEGORY_ID === categoryId);
     },
     getProductCountByCategory(categoryId, typeProductId) {
-  // Tính số lượng sản phẩm trong danh mục và loại sản phẩm
-  let count = 0;
-  for (const product of this.productAll) {
-    if (product.CATEGORY_ID === categoryId && product.TYPE_PRODUCT_ID === typeProductId) {
-      count += 1;
-    }
-  }
+      // Tính số lượng sản phẩm trong danh mục và loại sản phẩm
+      let count = 0;
+      for (const product of this.productAll) {
+        if (product.CATEGORY_ID === categoryId && product.TYPE_PRODUCT_ID === typeProductId) {
+          count += 1;
+        }
+      }
   return count;
     },
     async getProduct() {
@@ -478,6 +445,42 @@ export default {
         console.error("lỗi khi thêm sp vào giỏ:", error);
       }
     },
+    async filterProductsByPrice(sortOption) {
+      try {
+        switch (sortOption) {
+          case "lowToHigh":
+            this.products.sort((a, b) => {
+              const priceA = this.getPrice(a._id);
+              const priceB = this.getPrice(b._id);
+              return priceA - priceB;
+            });
+            break;
+          case "highToLow":
+            this.products.sort((a, b) => {
+              const priceA = this.getPrice(a._id);
+              const priceB = this.getPrice(b._id);
+              return priceB - priceA;
+            });
+            break;
+          case "all":
+          default:
+            await this.getProduct(); // Call your method to fetch products again
+            break;
+        }
+      } catch (error) {
+        console.error("Error filtering products by price:", error);
+      }
+    },
+     openModal(product) {
+    this.selectedProduct = product;
+  },
+  closeModal() {
+    this.selectedProduct = null;
+    },
+   openProductDetail(product) {
+      this.selectedProduct = product; // Lưu sản phẩm được chọn vào biến selectedProduct
+      ('#productDetailModal').modal('show'); // Hiển thị modal
+    },
     
   },
 };
@@ -492,9 +495,9 @@ export default {
 }
 
 .fruite-img img {
-  width: 100%; /* Đảm bảo rằng hình ảnh luôn đầy đủ chiều rộng của khung */
-  height: 100%; /* Đảm bảo rằng hình ảnh luôn đầy đủ chiều cao của khung */
-  object-fit: cover; /* Hiển thị hình ảnh mà không biến dạng tỷ lệ */
+  width: 100%; /*  hình ảnh luôn đầy đủ chiều rộng của khung */
+  height: 100%; /* hình ảnh luôn đầy đủ chiều cao của khung */
+  object-fit: cover; /* Hiển thị không biến dạng tỷ lệ */
 }
 .min-height {
   min-height: 595px;
@@ -537,5 +540,69 @@ export default {
 .a{
   color: black;
 }
+.btn.border-secondary {
+    margin: revert;
+    transition: 0.5s;
+}
+/*slide*/
+.custom-img-size {
+  max-height: 400px;
+  margin: 0 auto; 
+  border-radius: 15px;
+}
+.slide-indi li {
+  width: 12px !important; 
+  height: 12px !important; 
+  border-radius: 50%;  
+  background-color: #fff; 
+  margin: 9px 7px !important;
+}
+.slide.indi .active{
+  width: 13px;
+    height: 13px;
+}
+/*modal*/
+.a{
+  width: 80%;
+}
+.p{
+  margin-top: 10px;
+  font-family: cursive;
+  font-size: large;
+}
+/*eyes*/
+.eye-icon {
+  position: absolute;
+  top: 56%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  cursor: pointer;
+}
+.product-container {
+  position: relative;
+}
+
+.product-container:hover .eye-icon {
+  display: block;
+}
+.eye-icon:hover + .quick-view-text {
+  display: block; /* Hiển thị quick-view-text khi di chuột vào eye-icon */
+}
+
+.quick-view-text {
+  display: none; 
+  position: absolute;
+  top: 280px; 
+  left: 51%; 
+  transform: translateX(-50%);
+  background-color: black; 
+  color: white; 
+  padding: 5px 10px; 
+  border-radius: 36px; 
+  z-index: 1; 
+  font-size: small !important;
+}
+
 
 </style>
