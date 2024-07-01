@@ -294,7 +294,7 @@ export default {
       await this.getProduct();
 
       await this.getPriceProduct();
-
+      console.log("sản phẩm được lấy về", this.products);
       await this.getCategory();
 
       await this.getProductCategory();
