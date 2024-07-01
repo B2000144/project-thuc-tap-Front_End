@@ -28,6 +28,7 @@
                   <div class="carousel-inner">
                     <div
                       class="carousel-item active"
+                      style="height: 100%"
                       v-for="(item, index) in products.LIST_FILE_ATTACHMENT"
                       :key="index._id"
                     >
