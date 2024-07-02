@@ -17,12 +17,6 @@
             >
             <a
               class="list-group-item list-group-item-action"
-              href="#account-change-password"
-              @click="selectTab('change-password')"
-              >Đổi mật khẩu</a
-            >
-            <a
-              class="list-group-item list-group-item-action"
               href="#shipping-address"
               @click="selectTab('shipping-address')"
               >Địa chỉ giao hàng</a
@@ -130,45 +124,6 @@
                     class="form-control"
                     v-model="userById.GENGER_USER"
                     readonly
-                  />
-                </div>
-              </div>
-            </div>
-            <!-- Tab Đổi mật khẩu -->
-            <div
-              class="tab-pane fade"
-              :class="{ 'active show': selectedTab === 'change-password' }"
-              id="account-change-password"
-            >
-              <div class="card-body pb-2">
-                <div class="form-group">
-                  <label for="currentPassword" class="form-label"
-                    >Mật khẩu hiện tại</label
-                  >
-                  <input
-                    id="currentPassword"
-                    type="password"
-                    class="form-control"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="newPassword" class="form-label"
-                    >Mật khẩu mới</label
-                  >
-                  <input
-                    id="newPassword"
-                    type="password"
-                    class="form-control"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="confirmPassword" class="form-label"
-                    >Nhập lại mật khẩu mới</label
-                  >
-                  <input
-                    id="confirmPassword"
-                    type="password"
-                    class="form-control"
                   />
                 </div>
               </div>
