@@ -7,38 +7,41 @@
       <form action="#">
         <div class="row g-5">
           <div class="col-md-12 col-lg-6 col-xl-7">
-            <button
-              @click="paymentCOD()"
-              type="button"
-              class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
-            >
-              Thanh toán tại nhà
-            </button>
-            <button
-              @click="paymentMomo()"
-              type="button"
-              class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
-            >
-              Thanh toán qua Momo
-            </button>
-            <button
-              @click="paymentZaloPay()"
-              type="button"
-              class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
-            >
-              Thanh toán qua ZaloPay
-            </button>
-          </div>
+    <button
+      @click="paymentCOD()"
+      type="button"
+      class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
+    >
+      <i class="fas fa-truck me-2"></i>
+      Thanh toán tại nhà
+    </button>
+    <button
+      @click="paymentMomo()"
+      type="button"
+      class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
+    >
+      <img src="/img/momo.jpg" alt="Momo" class="img-fluid" style="width: 24px; height: 24px;">
+      Thanh toán qua Momo
+    </button>
+    <button
+      @click="paymentZaloPay()"
+      type="button"
+      class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
+    >
+      <img src="/img/zalo.jpg" alt="ZaloPay" class="img-fluid" style="width: 24px; height: 24px;">
+      Thanh toán qua ZaloPay
+    </button>
+  </div>
           <div class="col-md-12 col-lg-6 col-xl-5">
             <div class="table-responsive">
               <table class="table">
                 <thead>
                   <tr>
-                    <th scope="col">Products</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Total</th>
+                    <th scope="col">Sản Phẩm</th>
+                    <th scope="col">Tên Sản Phẩm</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Số Lượng</th>
+                    <th scope="col">Tổng Cộng</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -71,19 +74,21 @@
                     <td class="py-5"></td>
                     <td class="py-5"></td>
                     <td class="py-5">
-                      <p class="mb-0 text-dark py-3">Subtotal</p>
+                      <p class="mb-0 text-dark py-3">Tổng Đơn Giá</p>
                     </td>
                     <td class="py-5">
                       <div class="py-3 border-bottom border-top">
-                        <p class="mb-0 text-dark">$414.00</p>
+                        <p class="mb-0 text-dark">
+                          {{ formatPrice(calculateTotalCart()) }}
+                        </p>
                       </div>
                     </td>
                   </tr>
 
-                  <tr>
+                  <!-- <tr>
                     <th scope="row"></th>
                     <td class="py-5">
-                      <p class="mb-0 text-dark text-uppercase py-3">TOTAL</p>
+                      <p class="mb-0 text-dark text-uppercase py-3">Tổng Tiền</p>
                     </td>
                     <td class="py-5"></td>
                     <td class="py-5"></td>
@@ -92,7 +97,7 @@
                         <p class="mb-0 text-dark">$135.00</p>
                       </div>
                     </td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
             </div>
@@ -116,6 +121,8 @@ import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
 import SinglePageHeader from "../components/User/payment/SinglePageHeader.vue";
 import paymentService from "@/services/payment.service";
+import formatUtils from "../utils/format";
+
 export default {
   name: "paymentMethod",
   components: {
@@ -178,6 +185,19 @@ export default {
         alert("bạn chưa có hàng trong giỏ");
       }
     },
+    formatPrice(price) {
+      if (typeof price !== "undefined") {
+        const formatter = formatUtils.formatNumber(); // Initialize the formatter function
+        return formatter(price); // Format the price using the formatter function
+      } else {
+        return "0"; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+      }
+    },
+     calculateTotalCart() {
+      return this.cart.reduce((total, item) => {
+        return total + this.totalPrice(item.ITEM.PRICE, item.ITEM.QUANTITY);
+      }, 0);
+    },
     async addOrder() {
       await orderService.addOrder();
     },
@@ -216,6 +236,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style></style>
