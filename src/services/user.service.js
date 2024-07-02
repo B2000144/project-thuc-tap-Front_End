@@ -19,5 +19,13 @@ class UserService {
       console.error(error);
     }
   }
+  async getAllUsers() {
+    try {
+      const response = await this.api.get("/");
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 export default new UserService();
