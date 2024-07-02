@@ -133,7 +133,7 @@
         </table>
       </div>
       <div v-if="cart.length > 0">
-        <div class="mt-5">
+        <!-- <div class="mt-5">
           <input
             type="text"
             class="border-0 border-bottom rounded me-5 py-3 mb-4"
@@ -145,7 +145,7 @@
           >
             Apply Coupon
           </button>
-        </div>
+        </div> -->
         <div class="row g-4 justify-content-end">
           <div class="col-8"></div>
           <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">

@@ -61,22 +61,23 @@
           <div class="row g-4">
             <div class="col-lg-3">
               <div class="row g-4">
-                <div class="col-lg-12">
-                  <div class="mb-3">
-                     <h4>BỘ SƯU TẬP</h4>
-                      <ul class="list-unstyled fruite-categorie">
-                        <li v-for="category in nameCategory" :key="category._id">
-                          <div class="d-flex justify-content-between fruite-name">
-                            <a href="#" class="a" 
-                              @click="filterProductsByCategory(category._id)">
-                              <i class="fas fa-apple-alt me-2"></i>{{ category.CATEGORY_NAME }}
-                            </a>
-                            <span>({{ getProductCountByCategory(category._id) }})</span>
-                          </div>
-                        </li>
-                      </ul>
+                  <div class="col-lg-12">
+                    <div class="mb-3">
+                      <h4>BỘ SƯU TẬP</h4>
+                        <ul class="list-unstyled fruite-categorie">
+                          <li v-for="category in nameCategory" :key="category._id">
+                            <div class="d-flex justify-content-between fruite-name">
+                              <a href="#" class="a" 
+                                @click="filterProductsByCategory(category._id)"
+                                :class="{ active: selectedCategory === category._id }">
+                                <i class="fas fa-apple-alt me-2"></i>{{ category.CATEGORY_NAME }}
+                              </a>
+                              <span>({{ getProductCountByCategory(category._id) }})</span>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
                   </div>
-                </div>
                 <div class="col-lg-12">
                   <div class="position-relative">
                     <img
@@ -290,6 +291,7 @@ export default {
       limit: 6,
       skip: 1,
       selectedProduct: null, 
+       selectedCategory: null,
 
     };
   },
@@ -358,8 +360,10 @@ export default {
       }
     },
     filterProductsByCategory(categoryId) {
+      this.selectedCategory = categoryId;
       // Lọc sản phẩm theo loại danh mục
       this.products = this.productAll.filter(product => product.CATEGORY_ID === categoryId);
+
     },
     getProductCountByCategory(categoryId, typeProductId) {
       // Tính số lượng sản phẩm trong danh mục và loại sản phẩm
@@ -602,6 +606,10 @@ export default {
   border-radius: 36px; 
   z-index: 1; 
   font-size: small !important;
+}
+/*sáng lựa chọn*/
+.fruite-categorie .a.active {
+  color: #ff9300; 
 }
 
 
