@@ -1,72 +1,73 @@
 <template>
   <NavBar />
   <Search />
+  <SinglePageHeaderVue />
   <div class="container-fluid py-5 mt-5">
     <div class="container py-5">
-  <div class="row g-4 mb-5">
-    <div class="col-lg-8 col-xl-12">
-      <div class="row g-4">
-        <div class="col-lg-6">
-          <div class="border rounded">
-            <div
-              id="carouselExampleControls"
-              class="carousel slide"
-              data-bs-ride="carousel"
-            >
-              <div class="carousel-indicators">
-                <button
-                  v-for="(item, index) in products.LIST_FILE_ATTACHMENT"
-                  :key="index"
-                  type="button"
-                  :data-bs-target="'#carouselExampleControls'"
-                  :data-bs-slide-to="index"
-                  :class="{ active: index === 0 }"
-                  :aria-label="'Slide ' + (index + 1)"
-                  :aria-current="index === 0 ? 'true' : undefined"
-                ></button>
-              </div>
-              <div class="carousel-inner">
+      <div class="row g-4 mb-5">
+        <div class="col-lg-8 col-xl-12">
+          <div class="row g-4">
+            <div class="col-lg-6">
+              <div class="border rounded">
                 <div
-                  v-for="(item, index) in products.LIST_FILE_ATTACHMENT"
-                  :key="index._id"
-                  :class="['carousel-item', { active: index === 0 }]"
-                  style="height: 100%;"
+                  id="carouselExampleControls"
+                  class="carousel slide"
+                  data-bs-ride="carousel"
                 >
-                  <img
-                    :src="item.FILE_URL"
-                    class="d-block w-100"
-                    style="object-fit: cover; height: 100%;"
-                    alt=""
-                  />
+                  <div class="carousel-indicators">
+                    <button
+                      v-for="(item, index) in products.LIST_FILE_ATTACHMENT"
+                      :key="index"
+                      type="button"
+                      :data-bs-target="'#carouselExampleControls'"
+                      :data-bs-slide-to="index"
+                      :class="{ active: index === 0 }"
+                      :aria-label="'Slide ' + (index + 1)"
+                      :aria-current="index === 0 ? 'true' : undefined"
+                    ></button>
+                  </div>
+                  <div class="carousel-inner">
+                    <div
+                      v-for="(item, index) in products.LIST_FILE_ATTACHMENT"
+                      :key="index._id"
+                      :class="['carousel-item', { active: index === 0 }]"
+                      style="height: 100%"
+                    >
+                      <img
+                        :src="item.FILE_URL"
+                        class="d-block w-100"
+                        style="object-fit: cover; height: 100%"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <button
+                    class="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#carouselExampleControls"
+                    data-bs-slide="prev"
+                  >
+                    <span
+                      class="carousel-control-prev-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button
+                    class="carousel-control-next"
+                    type="button"
+                    data-bs-target="#carouselExampleControls"
+                    data-bs-slide="next"
+                  >
+                    <span
+                      class="carousel-control-next-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
                 </div>
               </div>
-              <button
-                class="carousel-control-prev"
-                type="button"
-                data-bs-target="#carouselExampleControls"
-                data-bs-slide="prev"
-              >
-                <span
-                  class="carousel-control-prev-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button
-                class="carousel-control-next"
-                type="button"
-                data-bs-target="#carouselExampleControls"
-                data-bs-slide="next"
-              >
-                <span
-                  class="carousel-control-next-icon"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Next</span>
-              </button>
             </div>
-          </div>
-        </div>
 
             <div class="col-lg-6">
               <h4 class="fw-bold mb-3">{{ products.NAME_PRODUCT }}</h4>
@@ -209,7 +210,6 @@
         >
           <router-link
             :to="{ name: 'UserDetail', params: { id: product._id } }"
-            
           >
             <div>
               <img
@@ -252,15 +252,16 @@ import Search from "@/components/User/Home/Search.vue";
 import Swal from "sweetalert2";
 import getCookie from "@/utils/getCookie";
 import priceService from "@/services/price.service";
+import SinglePageHeaderVue from "../components/User/detail/SinglePageHeader.vue";
 export default {
   name: "UserDetail",
   components: {
     NavBar,
     AppFooter,
     Search,
-    
+    SinglePageHeaderVue,
   },
-  
+
   data() {
     return {
       products: [],
@@ -484,38 +485,45 @@ export default {
     //   }
     // },
     async getProductCategory() {
-  try {
-    const categoryId = this.products.CATEGORY_ID; // Lấy CATEGORY_ID của sản phẩm hiện tại
-    const productPromises = this.nameCategory.map(async (category) => {
-      if (category._id === categoryId) {
-        const response = await productService.getProductByIdCategory(category._id);
-        if (response && response.data) {
-          const relatedProducts = response.data.filter(
-            (product) => product._id !== this.products._id
-          );
+      try {
+        const categoryId = this.products.CATEGORY_ID; // Lấy CATEGORY_ID của sản phẩm hiện tại
+        const productPromises = this.nameCategory.map(async (category) => {
+          if (category._id === categoryId) {
+            const response = await productService.getProductByIdCategory(
+              category._id
+            );
+            if (response && response.data) {
+              const relatedProducts = response.data.filter(
+                (product) => product._id !== this.products._id
+              );
 
-          // Lấy giá cho từng sản phẩm liên quan
-          for (const product of relatedProducts) {
-            const priceResponse = await priceService.getDefaultPrice(product._id);
-            if (priceResponse && priceResponse.data && priceResponse.data.length > 0) {
-              product.price = priceResponse.data[0].PRICE_NUMBER;
-            } else {
-              product.price = 0; // Hoặc giá trị mặc định nếu không có giá
+              // Lấy giá cho từng sản phẩm liên quan
+              for (const product of relatedProducts) {
+                const priceResponse = await priceService.getDefaultPrice(
+                  product._id
+                );
+                if (
+                  priceResponse &&
+                  priceResponse.data &&
+                  priceResponse.data.length > 0
+                ) {
+                  product.price = priceResponse.data[0].PRICE_NUMBER;
+                } else {
+                  product.price = 0; // Hoặc giá trị mặc định nếu không có giá
+                }
+              }
+
+              return relatedProducts;
             }
+            return [];
           }
-
-          return relatedProducts;
-        }
-        return [];
+          return []; // Trả về mảng rỗng nếu không phải danh mục hiện tại
+        });
+        this.productCategory = await Promise.all(productPromises);
+      } catch (error) {
+        console.log("error", error);
       }
-      return []; // Trả về mảng rỗng nếu không phải danh mục hiện tại
-    });
-    this.productCategory = await Promise.all(productPromises);
-  } catch (error) {
-    console.log("error", error);
-  }
     },
-
 
     getCategoryName(categoryId) {
       const category = this.nameCategory.find((cat) => cat._id === categoryId);
@@ -663,7 +671,7 @@ body {
 .Bf9ap6 {
   display: none;
 }
-.img-fluid-a{
+.img-fluid-a {
   max-width: 84%;
   height: 285px;
 }
