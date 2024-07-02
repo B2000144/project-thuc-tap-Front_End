@@ -114,7 +114,7 @@ import cartService from "@/services/cart.service";
 import productService from "@/services/product.service";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
-import SinglePageHeader from "../components/User/checkout/SinglePageHeader.vue";
+import SinglePageHeader from "../components/User/payment/SinglePageHeader.vue";
 import paymentService from "@/services/payment.service";
 export default {
   name: "paymentMethod",

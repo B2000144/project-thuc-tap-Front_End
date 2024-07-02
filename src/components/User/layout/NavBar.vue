@@ -25,12 +25,6 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/details" class="nav-link" active-class="active">
-              <i class="fas fa-info-circle"></i> Chi tiết cửa hàng
-            </router-link>
-          </li>
-
-          <li class="nav-item">
             <router-link to="/contact" class="nav-link" active-class="active">
               <i class="fas fa-envelope"></i> Liên hệ
             </router-link>

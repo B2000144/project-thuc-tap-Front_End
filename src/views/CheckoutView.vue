@@ -11,20 +11,13 @@
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-2 text-center p-0">
-                    <div class="avatar">
+                    <div class="avatar my-5">
                       <img src="../../public/img/avatar.jpg" alt="" />
+                      <div v-if="user && user.USER_ID">
+                        {{ user.USER_NAME }}
+                      </div>
+                      <div v-else>Loading...</div>
                     </div>
-                    <div v-if="user && user.USER_ID">
-                      {{ user.USER_NAME }}
-                    </div>
-                    <div v-else>Loading...</div>
-                  </div>
-                  <div class="col-md-2 p-0 r mt-4">
-                    <div v-if="user && user.USER_ID">
-                      {{ user.USER_ID.EMAIL_USER }}
-                    </div>
-                    <div v-else>Loading...</div>
-                    <div class="logout">Đăng xuất</div>
                   </div>
                 </div>
               </div>
