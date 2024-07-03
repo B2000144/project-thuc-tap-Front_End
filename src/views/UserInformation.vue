@@ -309,7 +309,7 @@
               >
                 <div class="text-end">
                   <button @click="deleteAddress(item._id)">
-                    <i class="bi bi-x-circle-fill"></i>
+                    <i class="text-danger bi bi-x-circle-fill"></i>
                   </button>
                 </div>
                 <div class="col-md-6">
@@ -321,8 +321,7 @@
                   <p>số điện thoại</p>
                   <p>email</p>
                 </div>
-                <div class="col-md-6">
-                  <button>đặt làm mặt định</button>
+                <div class="col-md-6 pt-2" style="text-align: end">
                   <button
                     type="button"
                     class="btn btn-primary"
