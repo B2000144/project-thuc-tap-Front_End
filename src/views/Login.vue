@@ -14,12 +14,21 @@
                 type="text"
                 id="form2Example1"
                 class="form-control text-center"
+                required
+                aria-describedby="username-error"
               />
               <label
                 class="form-label text-center text-muted"
                 for="form2Example1"
                 >Tên người dùng</label
               >
+              <small
+                v-if="!isUserNameValid && user_name.length > 0"
+                id="username-error"
+                class="form-text text-danger"
+              >
+                Tên đăng nhập phải có ít nhất 5 ký tự.
+              </small>
             </div>
             <div data-mdb-input-init class="form-outline mb-4">
               <div class="password-container">
@@ -28,6 +37,8 @@
                   :type="showPassword ? 'text' : 'password'"
                   id="form2Example2"
                   class="form-control text-center"
+                  required
+                  aria-describedby="password-error"
                 />
                 <span class="toggle-password" @click="togglePasswordVisibility">
                   <i
@@ -40,6 +51,13 @@
                 for="form2Example2"
                 >Mật khẩu</label
               >
+              <small
+                v-if="!isPasswordValid && password.length > 0"
+                id="password-error"
+                class="form-text text-danger"
+              >
+                Mật khẩu phải có ít nhất 3 ký tự.
+              </small>
             </div>
             <div class="text-center mb-4">
               <button type="submit" class="btn-custom-green">Đăng nhập</button>
@@ -70,7 +88,7 @@ import AuthService from "@/services/auth.service";
 import Cookies from "js-cookie";
 
 export default {
-  name: "loginUser",
+  name: "LoginUser",
   components: {
     AppFooter,
     NavBar,
@@ -80,37 +98,41 @@ export default {
       user_name: "",
       password: "",
       errorMessage: "",
-      showPassword: false, // Track password visibility
+      showPassword: false,
     };
+  },
+  computed: {
+    isUserNameValid() {
+      return this.user_name.length >= 5;
+    },
+    isPasswordValid() {
+      return this.password.length >= 3;
+    },
   },
   methods: {
     async login() {
-      console.log("Bắt đầu yêu cầu đăng nhập");
+      this.errorMessage = ""; // Clear any previous error message
+
+      if (!this.isUserNameValid || !this.isPasswordValid) {
+        return;
+      }
 
       try {
         const data = await AuthService.login({
           user_name: this.user_name,
           password: this.password,
         });
-        console.log("Dữ liệu phản hồi:", data.data);
 
-        if (data && typeof data === "object") {
-          if (data.data.accessToken) {
-            console.log("Đăng nhập thành công");
-            Cookies.set("access_token", data.data.accessToken, { expires: 1 });
-            Cookies.set("refresh_token", data.data.refreshToken, {
-              expires: 1,
-            });
-            this.$router.push("/");
-          } else {
-            throw new Error("Không có accessToken trong phản hồi");
-          }
+        if (data && data.data && data.data.accessToken) {
+          Cookies.set("access_token", data.data.accessToken, { expires: 1 });
+          Cookies.set("refresh_token", data.data.refreshToken, { expires: 1 });
+          this.$router.push("/");
         } else {
-          throw new Error("Dữ liệu phản hồi không hợp lệ");
+          throw new Error("Không có accessToken trong phản hồi");
         }
       } catch (error) {
-        console.error("Lỗi:", error);
-        this.errorMessage = "Bạn đã nhập sai tên đăng nhập hoặc mật khẩu.";
+        console.error("Lỗi khi đăng nhập:", error);
+        this.errorMessage = "Tên người dùng hoặc mật khẩu không đúng.";
       }
     },
     redirectToRegister() {

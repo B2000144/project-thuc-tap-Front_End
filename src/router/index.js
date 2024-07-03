@@ -159,7 +159,7 @@ router.beforeEach((to, from, next) => {
   const token = getCookieValue("access_token");
 
   if (to.path === "/login" && token && isTokenValid(token)) {
-    next("/");
+    return next("/");
   } else if (to.meta.requiredAuth) {
     if (token) {
       if (isTokenValid(token)) {
