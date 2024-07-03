@@ -1,7 +1,9 @@
 <template>
   <div class="login-page">
     <NavBar />
-    <div class="login-container d-flex align-items-center justify-content-center">
+    <div
+      class="login-container d-flex align-items-center justify-content-center"
+    >
       <div class="card login-card shadow-lg p-3 mb-5 bg-white rounded">
         <div class="card-body">
           <h5 class="card-title text-center mb-4">Đăng nhập</h5>
@@ -13,7 +15,11 @@
                 id="form2Example1"
                 class="form-control text-center"
               />
-              <label class="form-label text-center text-muted" for="form2Example1">Tên người dùng</label>
+              <label
+                class="form-label text-center text-muted"
+                for="form2Example1"
+                >Tên người dùng</label
+              >
             </div>
             <div data-mdb-input-init class="form-outline mb-4">
               <div class="password-container">
@@ -24,10 +30,16 @@
                   class="form-control text-center"
                 />
                 <span class="toggle-password" @click="togglePasswordVisibility">
-                  <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+                  <i
+                    :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"
+                  ></i>
                 </span>
               </div>
-              <label class="form-label text-center text-muted" for="form2Example2">Mật khẩu</label>
+              <label
+                class="form-label text-center text-muted"
+                for="form2Example2"
+                >Mật khẩu</label
+              >
             </div>
             <div class="text-center mb-4">
               <button type="submit" class="btn-custom-green">Đăng nhập</button>
@@ -36,7 +48,9 @@
           <div class="text-center mb-4">
             <p class="text-muted">Trở thành thành viên của chúng tôi</p>
             <p>
-              <strong class="register-link" @click="redirectToRegister">Đăng ký ngay</strong>
+              <strong class="register-link" @click="redirectToRegister"
+                >Đăng ký ngay</strong
+              >
             </p>
           </div>
           <div v-if="errorMessage" class="alert alert-danger" role="alert">
@@ -84,7 +98,9 @@ export default {
           if (data.data.accessToken) {
             console.log("Đăng nhập thành công");
             Cookies.set("access_token", data.data.accessToken, { expires: 1 });
-            Cookies.set("refresh_token", data.data.refreshToken, { expires: 1 });
+            Cookies.set("refresh_token", data.data.refreshToken, {
+              expires: 1,
+            });
             this.$router.push("/");
           } else {
             throw new Error("Không có accessToken trong phản hồi");

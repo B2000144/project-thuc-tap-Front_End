@@ -5,8 +5,8 @@ import deleteCookie from "../utils/deleteCookie";
 import isTokenValid from "../utils/isTokenValid";
 const routes = [
   {
-    path: '/contact',
-    name: 'Contact',
+    path: "/contact",
+    name: "Contact",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Contact.vue"),
   },
@@ -140,18 +140,14 @@ const routes = [
     path: "/admin/user",
     name: "DashboardAddProduct",
     component: () =>
-      import(
-        /* webpackChunkName: "about" */ "../views/DashBoardUser.vue"
-      ),
+      import(/* webpackChunkName: "about" */ "../views/DashBoardUser.vue"),
   },
 
   {
     path: "/admin/category",
     name: "DashboardCategory",
     component: () =>
-      import(
-        /* webpackChunkName: "about" */ "../views/DashBoardCategory.vue"
-      ),
+      import(/* webpackChunkName: "about" */ "../views/DashBoardCategory.vue"),
   },
 ];
 
@@ -160,8 +156,11 @@ const router = createRouter({
   routes,
 });
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiredAuth) {
-    const token = getCookieValue("access_token");
+  const token = getCookieValue("access_token");
+
+  if (to.path === "/login" && token && isTokenValid(token)) {
+    next("/");
+  } else if (to.meta.requiredAuth) {
     if (token) {
       if (isTokenValid(token)) {
         next();
@@ -176,4 +175,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
 export default router;
