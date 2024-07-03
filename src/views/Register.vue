@@ -113,6 +113,9 @@
                           placeholder="Tên đăng nhập"
                           required
                         />
+                        <small v-if="!isUserNameValid" class="invalid-feedback">
+                          Tên đăng nhập phải có ít nhất 5 ký tự.
+                        </small>
                       </div>
                     </div>
 
@@ -127,6 +130,9 @@
                           placeholder="Email"
                           required
                         />
+                        <!-- <small v-if="!isEmailValid" class="invalid-feedback">
+                          Vui lòng nhập email hợp lệ.
+                        </small> -->
                       </div>
                     </div>
                   </div>
@@ -157,6 +163,9 @@
                             ></i>
                           </span>
                         </div>
+                        <small v-if="!isPasswordValid" class="invalid-feedback">
+                          Mật khẩu phải có ít nhất 3 ký tự.
+                        </small>
                       </div>
                     </div>
                     <div class="col-md-6 mb-4">
@@ -271,20 +280,28 @@ export default {
       isLastNameValid: true,
       isMiddleNameValid: true,
       isPhoneNumberValid: true,
+      isUserNameValid: true,
+      isPasswordValid: true,
       isPasswordMatch: true,
       showPassword: {
         password: false,
         confirmPassword: false,
       },
+      genderSelected: false,
     };
   },
   methods: {
     async register() {
+      this.isUserNameValid = this.formData.user_name.length >= 5;
+      this.isPasswordValid = this.formData.password.length >= 3;
+
       if (
         !this.isFirstNameValid ||
         !this.isLastNameValid ||
         !this.isMiddleNameValid ||
         !this.isPhoneNumberValid ||
+        !this.isUserNameValid ||
+        !this.isPasswordValid ||
         !this.isPasswordMatch ||
         !this.formData.gender_user
       ) {
@@ -333,6 +350,15 @@ export default {
     confirmPassword(newVal) {
       this.isPasswordMatch = newVal === this.formData.password;
     },
+    "formData.user_name"(newVal) {
+      this.isUserNameValid = newVal.length >= 5;
+    },
+    "formData.password"(newVal) {
+      this.isPasswordValid = newVal.length >= 3;
+    },
+    // "formData.email_user"(newVal) {
+    //   this.isEmailValid = this.validateEmail(newVal);
+    // },
   },
 };
 </script>
