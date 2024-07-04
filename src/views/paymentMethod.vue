@@ -7,31 +7,41 @@
       <form action="#">
         <div class="row g-5">
           <div class="col-md-12 col-lg-6 col-xl-7">
-    <button
-      @click="paymentCOD()"
-      type="button"
-      class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
-    >
-      <i class="fas fa-truck me-2"></i>
-      Thanh toán tại nhà
-    </button>
-    <button
-      @click="paymentMomo()"
-      type="button"
-      class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
-    >
-      <img src="/img/momo.jpg" alt="Momo" class="img-fluid" style="width: 24px; height: 24px;">
-      Thanh toán qua Momo
-    </button>
-    <button
-      @click="paymentZaloPay()"
-      type="button"
-      class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
-    >
-      <img src="/img/zalo.jpg" alt="ZaloPay" class="img-fluid" style="width: 24px; height: 24px;">
-      Thanh toán qua ZaloPay
-    </button>
-  </div>
+            <button
+              @click="paymentCOD()"
+              type="button"
+              class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
+            >
+              <i class="fas fa-truck me-2"></i>
+              Thanh toán tại nhà
+            </button>
+            <button
+              @click="paymentMomo()"
+              type="button"
+              class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
+            >
+              <img
+                src="/img/momo.jpg"
+                alt="Momo"
+                class="img-fluid"
+                style="width: 24px; height: 24px"
+              />
+              Thanh toán qua Momo
+            </button>
+            <button
+              @click="paymentZaloPay()"
+              type="button"
+              class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary my-3"
+            >
+              <img
+                src="/img/zalo.jpg"
+                alt="ZaloPay"
+                class="img-fluid"
+                style="width: 24px; height: 24px"
+              />
+              Thanh toán qua ZaloPay
+            </button>
+          </div>
           <div class="col-md-12 col-lg-6 col-xl-5">
             <div class="table-responsive">
               <table class="table">
@@ -62,10 +72,14 @@
                     <td class="py-5">
                       {{ item.ITEM.PRODUCT_DETAILS.NAME_PRODUCT }}
                     </td>
-                    <td class="py-5">{{ item.ITEM.PRICE }}</td>
-                    <td class="py-5">{{ item.ITEM.QUANTITY }}</td>
+                    <td class="py-5">{{ formatPrice(item.ITEM.PRICE) }}</td>
+                    <td class="py-5">x {{ item.ITEM.QUANTITY }}</td>
                     <td class="py-5">
-                      {{ totalPrice(item.ITEM.PRICE, item.ITEM.QUANTITY) }}
+                      {{
+                        formatPrice(
+                          totalPrice(item.ITEM.PRICE, item.ITEM.QUANTITY)
+                        )
+                      }}
                     </td>
                   </tr>
 
@@ -193,7 +207,7 @@ export default {
         return "0"; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
       }
     },
-     calculateTotalCart() {
+    calculateTotalCart() {
       return this.cart.reduce((total, item) => {
         return total + this.totalPrice(item.ITEM.PRICE, item.ITEM.QUANTITY);
       }, 0);
@@ -236,7 +250,6 @@ export default {
     },
   },
 };
-
 </script>
 
 <style></style>
