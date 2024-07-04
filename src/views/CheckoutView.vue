@@ -131,10 +131,14 @@
                     <td class="py-5">
                       {{ item.ITEM.PRODUCT_DETAILS.NAME_PRODUCT }}
                     </td>
-                    <td class="py-5">{{ item.ITEM.PRICE }}</td>
-                    <td class="py-5">{{ item.ITEM.QUANTITY }}</td>
+                    <td class="py-5">{{ formatPrice(item.ITEM.PRICE) }}</td>
+                    <td class="py-5">x {{ item.ITEM.QUANTITY }}</td>
                     <td class="py-5">
-                      {{ totalPrice(item.ITEM.PRICE, item.ITEM.QUANTITY) }}
+                      {{
+                        formatPrice(
+                          totalPrice(item.ITEM.PRICE, item.ITEM.QUANTITY)
+                        )
+                      }}
                     </td>
                   </tr>
 
@@ -180,6 +184,7 @@ import SinglePageHeader from "../components/User/checkout/SinglePageHeader.vue";
 import userService from "@/services/user.service";
 import addressesService from "@/services/addresses.service";
 import formatUtils from "../utils/format";
+import Swal from "sweetalert2";
 export default {
   name: "CheckOutView",
   components: {
@@ -264,7 +269,12 @@ export default {
       try {
         const response = await orderService.addOrder(this.selectedAddress);
         if (!this.addressSelected) {
-          alert("Vui lòng chọn địa chỉ giao hàng");
+          Swal.fire({
+            icon: "error",
+            title: "Chưa có địa chỉ giao hàng",
+            text: "bạn cần chọn địa chỉ giao hàng để tiếp tục",
+            footer: "Nếu chưa có bạn hãy cập nhật ở thông tin người dùng",
+          });
           return;
         }
         if (response && response.success) {
