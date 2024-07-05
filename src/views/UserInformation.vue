@@ -1,4 +1,5 @@
 <template>
+  <Search />
   <NavBar />
   <div class="container light-style flex-grow-1 container-p-y">
     <h4 class="font-weight-bold py-3 mb-4">Thông tin tài khoản</h4>
@@ -178,7 +179,7 @@
                       </div>
                       <div class="modal-body">
                         <div class="form-group">
-                          <label for="">Tỉnh</label>
+                          <label for="">Tỉnh/Thành Phố</label>
                           <input
                             type="text"
                             v-model="newAddress.provide"
@@ -187,7 +188,7 @@
                           />
                         </div>
                         <div class="form-group">
-                          <label for="">Huyện</label>
+                          <label for="">Quận/Huyện</label>
                           <input
                             type="text"
                             v-model="newAddress.district"
@@ -196,7 +197,7 @@
                           />
                         </div>
                         <div class="form-group">
-                          <label for="">Xã</label>
+                          <label for="">Xã/Phường</label>
                           <input
                             type="text"
                             v-model="newAddress.commune"
@@ -216,10 +217,13 @@
                       </div>
                       <div class="modal-footer">
                         <button
+                          data-dismiss="modal"
+                          aria-label="Close"
                           type="button"
-                          class="btn btn-primary"
+                          class="btn btn-primary close"
                           @click="createAddress()"
                         >
+                          <span aria-hidden="true"></span>
                           Lưu
                         </button>
                       </div>
@@ -253,7 +257,7 @@
                       </div>
                       <div class="modal-body">
                         <div class="form-group">
-                          <label for="">Tỉnh</label>
+                          <label for="">Tỉnh/Thành Phố</label>
                           <input
                             type="text"
                             class="form-control"
@@ -261,7 +265,7 @@
                           />
                         </div>
                         <div class="form-group">
-                          <label for="">Huyện</label>
+                          <label for="">Quận/Huyện </label>
                           <input
                             type="text"
                             class="form-control"
@@ -269,7 +273,7 @@
                           />
                         </div>
                         <div class="form-group">
-                          <label for="">Xã</label>
+                          <label for="">Xã/Phường</label>
                           <input
                             type="text"
                             v-model="updateAddress.COMMUNE"
@@ -314,12 +318,20 @@
                 </div>
                 <div class="col-md-6">
                   <p>
-                    {{
-                      item.DESC + item.COMMUNE + item.DISTRICT + item.PROVINCE
+                    <b>Địa chỉ:</b
+                    >{{
+                      " " +
+                      item.DESC +
+                      " " +
+                      item.COMMUNE +
+                      " " +
+                      item.DISTRICT +
+                      " " +
+                      item.PROVINCE
                     }}
                   </p>
-                  <p>số điện thoại</p>
-                  <p>email</p>
+                  <p><b>số điện thoại:</b> {{ userById.PHONE_NUMBER }}</p>
+                  <p><b>email:</b> {{ userById.EMAIL_USER }}</p>
                 </div>
                 <div class="col-md-6 pt-2" style="text-align: end">
                   <button
@@ -405,12 +417,14 @@ import userService from "@/services/user.service";
 import NavBar from "@/components/User/layout/NavBar.vue";
 import AppFooter from "@/components/User/layout/AppFooter.vue";
 import orderService from "@/services/order.service";
-
+import Search from "@/components/User/Home/Search.vue";
+import Swal from "sweetalert2";
 export default {
   name: "UserInformation",
   components: {
     NavBar,
     AppFooter,
+    Search,
   },
   data() {
     return {
@@ -512,17 +526,24 @@ export default {
     async createAddress() {
       try {
         const addAddress = await AddressService.createAddress(this.newAddress);
-        console.log(addAddress);
+        this.fetchAddresses();
       } catch (error) {
         console.error(error);
       }
     },
     async deleteAddress(id) {
       try {
-        const deleteAddres = await AddressService.deleteAddress(id);
-        console.log(deleteAddres);
-        // Xóa thành công từ server, cập nhật lại danh sách địa chỉ trên giao diện
-        this.address = this.address.filter((item) => item._id !== id);
+        const result = await Swal.fire({
+          title: "Bạn có chắc chắn xóa địa chỉ này không?",
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: "Có",
+          denyButtonText: `Không`,
+        });
+        if (result.isConfirmed) {
+          const deleteAddres = await AddressService.deleteAddress(id);
+          this.address = this.address.filter((item) => item._id !== id);
+        }
       } catch (error) {
         console.error(error);
       }

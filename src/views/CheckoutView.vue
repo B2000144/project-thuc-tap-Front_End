@@ -1,5 +1,6 @@
 <template>
   <NavBar />
+  <Search />
   <SinglePageHeader />
   <div class="container-fluid py-5">
     <div class="container py-5">
@@ -185,12 +186,14 @@ import userService from "@/services/user.service";
 import addressesService from "@/services/addresses.service";
 import formatUtils from "../utils/format";
 import Swal from "sweetalert2";
+import Search from "@/components/User/Home/Search.vue";
 export default {
   name: "CheckOutView",
   components: {
     NavBar,
     AppFooter,
     SinglePageHeader,
+    Search,
   },
   data() {
     return {
