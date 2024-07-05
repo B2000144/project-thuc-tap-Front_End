@@ -1,5 +1,6 @@
 <template>
   <NavBar />
+  <Search />
   <SinglePageHeaderVue />
   <div class="container-fluid py-5">
     <div class="container py-5">
@@ -188,12 +189,14 @@ import AppFooter from "@/components/User/layout/AppFooter.vue";
 import SinglePageHeaderVue from "@/components/User/cart/SinglePageHeader.vue";
 import formatUtils from "../utils/format";
 import Swal from "sweetalert2";
+import Search from "@/components/User/Home/Search.vue";
 export default {
   name: "CartView",
   components: {
     NavBar,
     AppFooter,
     SinglePageHeaderVue,
+    Search,
   },
   data() {
     return {
